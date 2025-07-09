@@ -1,0 +1,181 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  username     String    @unique
+  name         String
+  password     String
+  avatar       String?
+  designation  String
+  bio          String?
+  location     String?
+  website      String?
+  phone        String?
+  skills       String[]
+  socialLinks  SocialLinks[]
+  otp          String?
+  isOtpValid   DateTime?
+  isVerified   Boolean?  @default(false)
+  registeredAt DateTime  @default(now())
+
+  // Relationships
+  Task          Task[]
+  projectOwner  Project[]
+  projects      ProjectMembers[]
+  memberships   CommunityMember[]
+  calendarTasks CommunityCalendar[]
+  messages      Message[]
+  followers     User[]              @relation("UserFollowers")
+  following     User[]              @relation("UserFollowers")
+}
+
+model Community {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  coverImage  String?
+  scope       Scope    @default(PUBLIC)
+  joinCode    String?  @unique
+  createdAt   DateTime @default(now())
+
+  // Relationships
+  projects       Project[]
+  projectMembers ProjectMembers[]
+  members        CommunityMember[]
+  calendarTasks  CommunityCalendar[]
+}
+
+model Project {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  deadline    DateTime
+  milestones  String[]
+  owner       User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId     Int
+  community   Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  communityId Int
+  createdAt   DateTime  @default(now())
+
+  projectMembers ProjectMembers[]
+  tasks          Task[]
+  messages       Message[]
+}
+
+model Task {
+  id             Int       @id @default(autoincrement())
+  title          String
+  description    String?
+  referenceLinks String[]
+  milestone      String
+  priority       Priority  @default(MEDIUM)
+  status         Status    @default(INPROGRESS)
+  deadline       DateTime
+  completedDate  DateTime?
+  createdAt      DateTime  @default(now())
+  content        String?
+  projectId      Int
+  assignId       Int
+  project        Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user           User      @relation(fields: [assignId], references: [id], onDelete: Cascade)
+}
+
+model ProjectMembers {
+  id          Int       @id @default(autoincrement())
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId   Int
+  community   Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  communityId Int
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int
+
+  @@unique([communityId, projectId, userId], name: "unique_user_in_project")
+}
+
+model CommunityMember {
+  id          Int       @id @default(autoincrement())
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int
+  community   Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  communityId Int
+  role        Role      @default(MEMBER)
+
+  joinedAt DateTime @default(now())
+
+  @@unique([userId, communityId])
+}
+
+model CommunityCalendar {
+  id          Int       @id @default(autoincrement())
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      Int
+  community   Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  communityId Int
+  title       String
+  color       String
+  description String
+  startTime   DateTime
+  endTime     DateTime
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+
+  sender    User    @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  senderId  Int
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId Int
+}
+
+enum Status {
+  INPROGRESS
+  PENDING
+  COMPLETED
+}
+
+enum Priority {
+  CRITICAL
+  HIGH
+  LOW
+  MEDIUM
+}
+
+enum Role {
+  OWNER // The user who created the community
+  ADMIN // Admins with elevated permissions
+  MEMBER // Regular members
+  QUEUE
+  BANNED
+}
+
+enum Scope {
+  PRIVATE
+  PUBLIC
+}
+
+enum SocialLinks {
+  TWITTER
+  GITHUB
+  LINKEDIN
+  INSTAGRAM
+  FACEBOOK
+  LEETCODE
+  CODEFORCES
+  CODECHEF
+}

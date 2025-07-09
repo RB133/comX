@@ -1,0 +1,18 @@
+# Exclude node_modules directory
+node_modules/
+
+# Exclude local environment files
+.env
+*.log
+
+# Exclude test-related files
+tests/
+__tests__/
+coverage/
+
+# Exclude config files
+webpack.config.js
+tsconfig.json
+
+# Exclude build artifacts if they're not necessary
+dist/

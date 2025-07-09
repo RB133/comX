@@ -1,0 +1,5 @@
+-- CreateEnum
+CREATE TYPE "SocialLinks" AS ENUM ('TWITTER', 'GITHUB', 'LINKEDIN', 'INSTAGRAM', 'FACEBOOK', 'LEETCODE', 'CODEFORCES', 'CODECHEF');
+
+-- DropEnum
+DROP TYPE "socialLinks";
