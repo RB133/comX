@@ -69,7 +69,7 @@ Ideal for teams that need lightweight communication and coordination.
 1. **Clone the repo**
 
    ```bash
-   git clone https://github.com/PrathamJain2601/ComX
+   git clone https://github.com/RB133/comX
    cd ComX
     ```
 
