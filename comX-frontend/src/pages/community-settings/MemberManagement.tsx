@@ -96,6 +96,7 @@ export default function MemberManagement() {
             setConfirmMessage={setConfirmMessage}
             setShowConfirmDialog={setShowConfirmDialog}
             filteredMembers={filteredMembers}
+            communityMembers={communityMembers}
           />
         )}
 
@@ -105,6 +106,7 @@ export default function MemberManagement() {
             setConfirmMessage={setConfirmMessage}
             setShowConfirmDialog={setShowConfirmDialog}
             filteredMembers={filteredMembers}
+            communityMembers={communityMembers}
           />
         )}
 
@@ -114,6 +116,7 @@ export default function MemberManagement() {
             setConfirmMessage={setConfirmMessage}
             setShowConfirmDialog={setShowConfirmDialog}
             filteredMembers={filteredMembers}
+            communityMembers={communityMembers}
           />
         )}
 
@@ -123,6 +126,7 @@ export default function MemberManagement() {
             setConfirmMessage={setConfirmMessage}
             setShowConfirmDialog={setShowConfirmDialog}
             filteredMembers={filteredMembers}
+            communityMembers={communityMembers}
           />
         )}
       </div>

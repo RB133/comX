@@ -5,4 +5,5 @@ export default interface PROPS {
   setConfirmMessage: React.Dispatch<React.SetStateAction<string>>;
   setShowConfirmDialog: React.Dispatch<React.SetStateAction<boolean>>;
   filteredMembers: Member[];
+  communityMembers: Member[];
 }

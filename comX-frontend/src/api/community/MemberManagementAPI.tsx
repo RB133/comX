@@ -13,6 +13,7 @@ export default function MemberManagementAPI({
   setConfirmMessage,
   setShowConfirmDialog,
   filteredMembers,
+  communityMembers,
 }: PROPS) {
   const user = useSelector((state: RootState) => state.userDetails);
   const { ID } = useParams();
@@ -22,12 +23,12 @@ export default function MemberManagementAPI({
   // Check if the current user is an admin
   const isAdmin = useMemo(
     () =>
-      filteredMembers.some(
+      communityMembers.some(
         (m) =>
           (m.role === "ADMIN" || m.role === "OWNER") &&
           m.id === user.user?.id
       ),
-    [filteredMembers, user]
+    [communityMembers, user.user?.id]
   );
 
   const handleAction = (action: () => void, message: string) => {
