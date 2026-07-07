@@ -11,6 +11,7 @@ import { ItemPicker } from "@/components/Item-Picker";
 import { designation } from "@/lib/destignation";
 import { Button } from "@/components/ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { useNavigate } from "react-router-dom";
 import { BottomGradient, LabelInputContainer } from "./SignUpExtraComponenets";
 
 const backend_url = import.meta.env.VITE_BACKEND_URL;
@@ -23,6 +24,7 @@ export default function SignUpFormPage1({
   setCurrentPage: (value: number) => void;
   email: React.MutableRefObject<HTMLInputElement>;
 }) {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -50,7 +52,9 @@ export default function SignUpFormPage1({
       });
     },
     onSuccess: () => {
-      setCurrentPage(2);
+      setCurrentPage(1);
+      navigate("/", { replace: true });
+      toast.success("Sign Up Successful");
     },
     onError: (error) => {
       console.error(error);

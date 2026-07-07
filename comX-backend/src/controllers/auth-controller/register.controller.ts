@@ -42,12 +42,11 @@ export const register = async (req: Request, res: Response) => {
                 username: username,
                 password: hashedPassword,
                 designation: designation,
-                avatar: avatarUrl
+                avatar: avatarUrl,
+                isVerified: true
             }
         })
         await create_token(res, user);
-        const otp = generateOTP();
-        await sendOtpEmail(user.email, otp, 'Email Verification OTP', `Your OTP for email verification is: ${otp}. It is valid for 10 minutes.`);
         user.password = "";
         return responseCodes.success.created(res, user, "User created successfully");
     }
