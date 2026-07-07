@@ -11,6 +11,11 @@ export function generateOTP(): string {
 
 export async function sendOtpEmail(toEmail: string, otp: string, subject: string, text: string): Promise<void> {
   try {
+    console.log('--- DEBUG SMTP ENV VARIABLES ---');
+    console.log('SMTP_USER length:', process.env.SMTP_USER ? process.env.SMTP_USER.length : 0, 'Value:', process.env.SMTP_USER);
+    console.log('SMTP_PASS length:', process.env.SMTP_PASS ? process.env.SMTP_PASS.length : 0);
+    console.log('---------------------------------');
+
     const transporter = nodemailer.createTransport({
       host: 'smtp-relay.brevo.com',
       port: 2525,
