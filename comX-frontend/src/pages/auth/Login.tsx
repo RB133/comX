@@ -5,7 +5,7 @@ import { Label } from "@radix-ui/react-label";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/state/userDetails/userDetails";
@@ -108,9 +108,7 @@ function LoginInForm() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </LabelInputContainer>
-        <LabelInputContainer className="mb-4 text-sm font-bold">
-          <Link to="/forgot-password">Forgot Password ?</Link>
-        </LabelInputContainer>
+
 
         {isPending ? (
           <Button

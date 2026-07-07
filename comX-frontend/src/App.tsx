@@ -11,7 +11,6 @@ import Contact from "./pages/genral/Contact";
 import Profile from "./pages/profile/Profile";
 import ChatApp from "./pages/chatApp/ChatApp";
 import Dashboard from "./pages/dashboard/DashBoard";
-import ForgotPassword from "./pages/auth/components/ForgotPassword";
 import CommunityLayout from "./pages/community/Community";
 import MainCalendar from "./pages/Calendar/MainCalendar";
 import BasicInformation from "./pages/community-settings/BasicInfo";
@@ -51,10 +50,6 @@ function App() {
     {
       path: "profile/:username",
       element: <Profile />,
-    },
-    {
-      path: "forgot-password",
-      element: <ForgotPassword />,
     },
     {
       path: "testing",

@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { Prisma } from "@prisma/client";
 import { create_token } from "../../utils/token";
 import { responseCodes } from "../../utils/response-codes";
-import { generateOTP, sendOtpEmail } from "./send-email-otp.controller";
 import { prisma } from "../../config/dbConnect";
 import bcryptjs from "bcryptjs";
 import fs from "fs";
