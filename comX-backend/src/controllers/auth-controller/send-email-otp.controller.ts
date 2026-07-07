@@ -12,9 +12,9 @@ export function generateOTP(): string {
 export async function sendOtpEmail(toEmail: string, otp: string, subject: string, text: string): Promise<void> {
   try {
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      secure: true,
-      port: 465,
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.EMAIL,
         pass: process.env.PASSWORD
@@ -22,7 +22,7 @@ export async function sendOtpEmail(toEmail: string, otp: string, subject: string
     });
 
     const mailOptions = {
-      from: "comX <comX@gmail.com>",
+      from: `comX <${process.env.EMAIL}>`,
       to: toEmail,
       subject: subject,
       text: text,
