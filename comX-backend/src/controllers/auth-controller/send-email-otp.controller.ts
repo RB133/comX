@@ -1,4 +1,4 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { Request, Response } from "express";
 import { responseCodes } from '../../utils/response-codes';
 import { prisma } from '../../config/dbConnect';
@@ -11,22 +11,7 @@ export function generateOTP(): string {
 
 export async function sendOtpEmail(toEmail: string, otp: string, subject: string, text: string): Promise<void> {
   try {
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASSWORD
-      }
-    });
-
-    const mailOptions = {
-      from: `comX <${process.env.EMAIL}>`,
-      to: toEmail,
-      subject: subject,
-      text: text,
-    };
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     await prisma.user.update({
       where: {
@@ -39,7 +24,12 @@ export async function sendOtpEmail(toEmail: string, otp: string, subject: string
       },
     });
 
-    await transporter.sendMail(mailOptions);
+    await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: toEmail,
+      subject: subject,
+      text: text,
+    });
   } catch (error) {
     console.error('Error sending OTP email:', error);
   }
