@@ -42,8 +42,7 @@ This repository contains:
 
 ## Features
 
-- Email/password authentication with OTP verification
-- Forgot-password OTP flow
+- Email/password authentication
 - Community creation and join-code based onboarding
 - Role-based member management (`OWNER`, `ADMIN`, `MEMBER`, `QUEUE`, `BANNED`)
 - Project creation with milestones and team assignment
@@ -80,7 +79,6 @@ This repository contains:
 - Socket.IO
 - JWT via cookies
 - bcryptjs
-- Nodemailer
 - Multer
 - Cloudinary
 - LiveKit Server SDK
@@ -145,9 +143,6 @@ PORT=5000
 DATABASE_URL=postgresql://username:password@localhost:5432/comx
 JWT_SECRET=your_jwt_secret
 FRONTEND_URL=http://localhost:5173
-
-EMAIL=your_email_address
-PASSWORD=your_email_app_password
 
 CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
