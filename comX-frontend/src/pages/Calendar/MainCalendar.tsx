@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { DateTime } from "luxon";
+import { endOfMonth, isSameDay, parseISO } from "date-fns";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import CalendarAPI from "@/api/calendar/CalendarAPI";
@@ -22,18 +22,30 @@ export default function MainCalendar() {
   const activeChannel = useSelector((state: RootState) => state.activeChannel);
   const year = useSelector((state: RootState) => state.year);
 
-  const [currentDate, setCurrentDate] = useState(DateTime.now());
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
+    // activeChannel carries the selected month as 1-12 (from the sidebar's
+    // Months list); Date's own month is 0-11, so it's converted at the edge.
     const handleSetMonth = (month: number) => {
-      if (currentDate.month !== month) {
-        setCurrentDate((prevDate) => prevDate.set({ month }));
+      if (currentDate.getMonth() !== month - 1) {
+        setCurrentDate((prevDate) => {
+          const next = new Date(prevDate);
+          next.setDate(1); // avoid rolling into the wrong month for day 29-31
+          next.setMonth(month - 1);
+          return next;
+        });
       }
     };
 
     const handleSetYear = (newYear: number) => {
-      if (currentDate.year !== newYear) {
-        setCurrentDate((prevDate) => prevDate.set({ year: newYear }));
+      if (currentDate.getFullYear() !== newYear) {
+        setCurrentDate((prevDate) => {
+          const next = new Date(prevDate);
+          next.setDate(1);
+          next.setFullYear(newYear);
+          return next;
+        });
       }
     };
 
@@ -47,30 +59,27 @@ export default function MainCalendar() {
     }
   }, [year, activeChannel, currentDate]);
 
-  // useEffect(()=>{
-  // if(!tasksLoading) setEvents(tasks);
-  // },[tasksLoading,tasks])
-
   if (tasksLoading) return <div>Loading...</div>;
   if (tasksError) return <ErrorPage />;
 
   const events: CalendarEvent[] = Array.isArray(tasks) ? tasks : [];
 
   const getDaysInMonth = (year: number, month: number) => {
-    const firstDay = DateTime.local(year, month, 1);
-    const lastDay = firstDay.endOf("month");
-    const days = [];
+    const firstDay = new Date(year, month, 1);
+    const lastDay = endOfMonth(firstDay);
+    const days: Date[] = [];
 
-    for (let i = 1; i <= lastDay.day; i++) {
-      days.push(DateTime.local(year, month, i));
+    for (let i = 1; i <= lastDay.getDate(); i++) {
+      days.push(new Date(year, month, i));
     }
     return days;
   };
 
   const renderCalendar = () => {
-    const days = getDaysInMonth(currentDate.year, currentDate.month);
-    const firstDayOfMonth = days[0].weekday;
-    const paddingDays = firstDayOfMonth === 7 ? 0 : firstDayOfMonth;
+    const days = getDaysInMonth(currentDate.getFullYear(), currentDate.getMonth());
+    // getDay() is already Sun=0..Sat=6, matching the weekdays array order,
+    // so no special-casing is needed for the padding count.
+    const paddingDays = days[0].getDay();
 
     return (
       <div className="grid grid-cols-7 gap-1 w-full">
@@ -86,24 +95,22 @@ export default function MainCalendar() {
           ))}
         {days.map((day) => {
           const dayEvents = events.filter((event) => {
-            const start = DateTime.fromISO(event.startTime);
-            const end = DateTime.fromISO(event.endTime);
+            const start = parseISO(event.startTime);
+            const end = parseISO(event.endTime);
             return day >= start && day <= end;
           });
           return (
             <motion.div
-              key={day.toISO()}
+              key={day.toISOString()}
               className="p-2 border border-gray-200 rounded-lg aspect-square"
               whileHover={{ scale: 1.05 }}
             >
               <div
                 className={`text-center ${
-                  day.hasSame(DateTime.now(), "day")
-                    ? "font-bold text-blue-500"
-                    : ""
+                  isSameDay(day, new Date()) ? "font-bold text-blue-500" : ""
                 }`}
               >
-                {day.day}
+                {day.getDate()}
               </div>
               {dayEvents.map((event) => (
                 <motion.div

@@ -1,28 +1,34 @@
+import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import HomePage from "./pages/general/Home";
-import SignUp from "./pages/auth/Signup";
-import LoginPage from "./pages/auth/Login";
 import NotFoundPage from "./pages/general/404Page";
 import ErrorPage from "./pages/general/ErrorPage";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Contact from "./pages/general/Contact";
-import Profile from "./pages/profile/Profile";
-import ChatApp from "./pages/chatApp/ChatApp";
-import Dashboard from "./pages/dashboard/DashBoard";
-import CommunityLayout from "./pages/community/Community";
-import MainCalendar from "./pages/Calendar/MainCalendar";
-import BasicInformation from "./pages/community-settings/BasicInfo";
-import MemberManagement from "./pages/community-settings/MemberManagement";
-import NotificationSettings from "./pages/community-settings/NotificationSettings";
-import Permissions from "./pages/community-settings/Permissions";
-import ProjectDashboard from "./pages/project/ProjectDashboard";
-import TaskPage from "./pages/tasks/TasksPage";
-import ChatSkeleton from "./pages/chatApp/ChatSkeleton";
-import Code from "./pages/code/Code";
-import Call from "./pages/call/Call";
+
+const SignUp = lazy(() => import("./pages/auth/Signup"));
+const LoginPage = lazy(() => import("./pages/auth/Login"));
+const Contact = lazy(() => import("./pages/general/Contact"));
+const Profile = lazy(() => import("./pages/profile/Profile"));
+const ChatApp = lazy(() => import("./pages/chatApp/ChatApp"));
+const Dashboard = lazy(() => import("./pages/dashboard/DashBoard"));
+const CommunityLayout = lazy(() => import("./pages/community/Community"));
+const MainCalendar = lazy(() => import("./pages/Calendar/MainCalendar"));
+const BasicInformation = lazy(() => import("./pages/community-settings/BasicInfo"));
+const MemberManagement = lazy(() => import("./pages/community-settings/MemberManagement"));
+const NotificationSettings = lazy(() => import("./pages/community-settings/NotificationSettings"));
+const Permissions = lazy(() => import("./pages/community-settings/Permissions"));
+const ProjectDashboard = lazy(() => import("./pages/project/ProjectDashboard"));
+const TaskPage = lazy(() => import("./pages/tasks/TasksPage"));
+const ChatSkeleton = lazy(() => import("./pages/chatApp/ChatSkeleton"));
+const Code = lazy(() => import("./pages/code/Code"));
+const Call = lazy(() => import("./pages/call/Call"));
 
 // Created once at module scope so the query cache survives re-renders.
 const queryClient = new QueryClient();
+
+const withSuspense = (element: React.ReactNode) => (
+  <Suspense fallback={<div>Loading...</div>}>{element}</Suspense>
+);
 
 function App() {
   const router = createBrowserRouter([
@@ -33,82 +39,82 @@ function App() {
     },
     {
       path: "SignUp",
-      element: <SignUp />,
+      element: withSuspense(<SignUp />),
     },
     {
       path: "login",
-      element: <LoginPage />,
+      element: withSuspense(<LoginPage />),
     },
     {
       path: "dashboard",
-      element: <Dashboard />,
+      element: withSuspense(<Dashboard />),
       errorElement: <ErrorPage />,
     },
     {
       path: "contact",
-      element: <Contact />,
+      element: withSuspense(<Contact />),
     },
     {
       path: "profile/:username",
-      element: <Profile />,
+      element: withSuspense(<Profile />),
       errorElement: <ErrorPage />,
     },
     {
       path: "community/:ID",
-      element: <CommunityLayout />,
+      element: withSuspense(<CommunityLayout />),
       errorElement: <ErrorPage />,
       children: [
         {
           path: "calendar",
-          element: <MainCalendar />,
+          element: withSuspense(<MainCalendar />),
         },
         {
           path: "call",
-          element: <Call />,
+          element: withSuspense(<Call />),
         },
         {
           path: "settings/basic-info",
-          element: <BasicInformation />,
+          element: withSuspense(<BasicInformation />),
         },
         {
           path: "settings/member-management",
-          element: <MemberManagement />,
+          element: withSuspense(<MemberManagement />),
         },
         {
           path: "settings/privacy-permissions",
-          element: <Permissions />,
+          element: withSuspense(<Permissions />),
         },
         {
           path: "settings/notification",
-          element: <NotificationSettings />,
+          element: withSuspense(<NotificationSettings />),
         },
         {
           path: "chat-skeleton",
-          element: <ChatSkeleton />,
+          element: withSuspense(<ChatSkeleton />),
         },
         {
           path: "chat/:projectId",
-          element: <ChatApp />,
+          element: withSuspense(<ChatApp />),
         },
         {
           path: "project/:projectId",
-          element: <ProjectDashboard />,
+          element: withSuspense(<ProjectDashboard />),
         },
         {
           path: "project",
-          element: <ProjectDashboard />,
+          element: withSuspense(<ProjectDashboard />),
         },
         {
           path: "task",
-          element: <TaskPage />,
+          element: withSuspense(<TaskPage />),
         },
         {
           path: "task/:projectId",
-          element: <TaskPage />,
+          element: withSuspense(<TaskPage />),
         },
         {
           path: "code",
-          element: <Code />,
+          element: withSuspense(<Code />),
         },
       ],
     },
