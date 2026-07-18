@@ -4,6 +4,7 @@ import HomePage from "./pages/genral/Home";
 import SignUp from "./pages/auth/Signup";
 import LoginPage from "./pages/auth/Login";
 import NotFoundPage from "./pages/genral/404Page";
+import ErrorPage from "./pages/genral/ErrorPage";
 import { RootState } from "./state/store";
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -20,7 +21,6 @@ import Permissions from "./pages/community-settings/Permissions";
 import ProjectDashboard from "./pages/project/ProjectDashboard";
 import TaskPage from "./pages/tasks/TasksPage";
 import ChatSkeleton from "./pages/chatApp/ChatSkeleton";
-import Testing from "./pages/Testing";
 import Code from "./pages/code/Code";
 import Call from "./pages/call/Call";
 
@@ -42,6 +42,7 @@ function App() {
     {
       path: "dashboard",
       element: <Dashboard />,
+      errorElement: <ErrorPage />,
     },
     {
       path: "contact",
@@ -50,14 +51,12 @@ function App() {
     {
       path: "profile/:username",
       element: <Profile />,
-    },
-    {
-      path: "testing",
-      element: <Testing />
+      errorElement: <ErrorPage />,
     },
     {
       path: "community/:ID",
       element: <CommunityLayout />,
+      errorElement: <ErrorPage />,
       children: [
         {
           path: "calendar",
