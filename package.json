@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "ComX — full-stack collaboration platform for teams and communities",
+  "author": "Rishit Bansal <rishitbansal231@gmail.com>",
   "scripts": {
     "setup": "npm install && npm --prefix comX-backend install && npm --prefix comX-frontend install",
     "db:up": "docker compose up -d",

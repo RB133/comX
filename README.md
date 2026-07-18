@@ -5,15 +5,6 @@ ComX is a full-stack collaboration platform for teams and communities. Create a 
 - **`comX-frontend`** — React 18 + TypeScript + Vite single-page app
 - **`comX-backend`** — Express + TypeScript API with Prisma (PostgreSQL) and a Socket.IO chat server
 
-## Screenshots
-
-| | |
-|---|---|
-| ![Landing Page](./screenshots/landing_page.png) | ![Dashboard](./screenshots/dashboard.png) |
-| ![Project Overview](./screenshots/project_general.png) | ![Tasks](./screenshots/tasks.png) |
-| ![Project Chat](./screenshots/project_chat.png) | ![Calendar](./screenshots/calendar.png) |
-| ![Community Calls](./screenshots/call.png) | ![Profile](./screenshots/profile.png) |
-
 ## Features
 
 - Email/password authentication with httpOnly JWT cookies

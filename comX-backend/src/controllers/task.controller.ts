@@ -101,10 +101,22 @@ export const getAllTasksInCommunity = asyncHandler(async (req: Request, res: Res
   ok(res, memberships.flatMap((m) => m.project.tasks));
 });
 
+// Public-safe fields only — never leak password/otp hashes to the client.
+const taskAssigneeSelect = {
+  select: {
+    id: true,
+    name: true,
+    username: true,
+    email: true,
+    avatar: true,
+    designation: true,
+  },
+};
+
 export const getAllTasksInProject = asyncHandler(async (req: Request, res: Response) => {
   const tasks = await prisma.task.findMany({
     where: { projectId: Number(req.params.projectId) },
-    include: { user: true },
+    include: { user: taskAssigneeSelect },
   });
   ok(res, tasks, tasks.length ? "Tasks retrieved successfully." : "No tasks found for this project.");
 });
@@ -112,7 +124,7 @@ export const getAllTasksInProject = asyncHandler(async (req: Request, res: Respo
 export const getAllTasksInMilestone = asyncHandler(async (req: Request, res: Response) => {
   const tasks = await prisma.task.findMany({
     where: { projectId: Number(req.params.projectId), milestone: req.params.milestone },
-    include: { user: true },
+    include: { user: taskAssigneeSelect },
   });
   ok(res, tasks, tasks.length ? "Tasks retrieved successfully." : "No tasks found for this milestone.");
 });
