@@ -1,0 +1,19 @@
+{
+  "name": "comx",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ComX — full-stack collaboration platform for teams and communities",
+  "scripts": {
+    "setup": "npm install && npm --prefix comX-backend install && npm --prefix comX-frontend install",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "migrate": "npm --prefix comX-backend run migrate:dev",
+    "dev": "concurrently -n backend,frontend -c blue,magenta \"npm:dev:backend\" \"npm:dev:frontend\"",
+    "dev:backend": "npm --prefix comX-backend run dev",
+    "dev:frontend": "npm --prefix comX-frontend run dev",
+    "build": "npm --prefix comX-backend run build && npm --prefix comX-frontend run build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
