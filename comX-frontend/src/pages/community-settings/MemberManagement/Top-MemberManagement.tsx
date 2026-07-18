@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserCog, Users, UserX as UserBan, UserRoundPen } from "lucide-react";
 
-export default function Top_MemoryManagement({
+export default function Top_MemberManagement({
   memberCount,
   adminCount,
   bannedCount,

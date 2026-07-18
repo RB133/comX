@@ -6,14 +6,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Months } from "@/lib/DummyData";
+import { Months } from "@/lib/sidebarNavigation";
 import { setYear } from "@/state/calendar/year";
 import { setActiveChannel } from "@/state/sidebar/activeChannel";
 import { RootState } from "@/state/store";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import CommunityHeader from "./ComunityHeader";
+import CommunityHeader from "./CommunityHeader";
 import UserControlBox from "./UserControlBox";
 
 export default function CalendarList() {

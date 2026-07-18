@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { designation } from "@/lib/destignation";
+import { designation } from "@/lib/designation";
 import { PublicProfile } from "@/types/UserProfile";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";

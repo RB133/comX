@@ -1,8 +1,8 @@
-import { Setting } from "@/lib/DummyData";
+import { Setting } from "@/lib/sidebarNavigation";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserControlBox from "./UserControlBox";
-import CommunityHeader from "./ComunityHeader";
+import CommunityHeader from "./CommunityHeader";
 
 
 export default function SettingsList() {

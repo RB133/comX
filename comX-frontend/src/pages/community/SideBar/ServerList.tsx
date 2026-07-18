@@ -1,4 +1,4 @@
-import { Server } from "@/lib/DummyData";
+import { Server } from "@/lib/sidebarNavigation";
 import { cn } from "@/lib/utils";
 import { setActiveServer } from "@/state/sidebar/activeServer";
 import { RootState } from "@/state/store";

@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import PROPS from "@/types/MemberMangementProps";
+import { MemberManagementProps } from "@/types/MemberManagementProps";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar, Mail, UserCheck } from "lucide-react";
 import { useParams } from "react-router-dom";
 import MemberManagementAPI from "../../../api/community/MemberManagementAPI";
 
-export default function Invite_MemberManagement(props: PROPS) {
+export default function Invite_MemberManagement(props: MemberManagementProps) {
   const { ID } = useParams();
 
   const { mutations,isAdmin,handleAction } = MemberManagementAPI(props);

@@ -14,7 +14,7 @@ import {
 export const Server = [
   {
     id: 1,
-    name: "Calender",
+    name: "Calendar",
     link: <Calendar />,
   },
   {
@@ -48,18 +48,8 @@ export const Groups = [
   {
     id: 1,
     name: "Text Channels",
-    link: <Hash className={`w-5 h-5 mr-1.5 text-gray-400`} />,
+    link: <Hash className="w-5 h-5 mr-1.5 text-gray-400" />,
   },
-  // {
-  //   id: 2,
-  //   name: "Voice Channels",
-  //   link: <Volume2 className="w-5 h-5 mr-1.5 text-gray-400" />,
-  // },
-  // {
-  //   id: 3,
-  //   name: "Video Channels",
-  //   link: <Video className="w-5 h-5 mr-1.5 text-gray-400" />,
-  // },
 ];
 
 export const Setting = [
@@ -151,18 +141,3 @@ export const Months = [
     link: <CloudSnow className="w-6 h-6 text-blue-500" />,
   },
 ];
-
-export type Task = {
-  id: number;
-  title: string;
-  description: string;
-  referenceLinks: string[];
-  milestone: string;
-  priority: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
-  status: "in-progress" | "pending" | "overdue" | "completed";
-  deadline: Date;
-  createdAt: Date;
-  content: string;
-  projectId: number;
-  assignId: number;
-};

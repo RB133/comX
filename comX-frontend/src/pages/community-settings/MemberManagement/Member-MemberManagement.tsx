@@ -4,9 +4,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Calendar, Mail, Trash2, UserPlus, UserX } from "lucide-react";
 import { useParams } from "react-router-dom";
 import MemberManagementAPI from "../../../api/community/MemberManagementAPI";
-import PROPS from "@/types/MemberMangementProps";
+import { MemberManagementProps } from "@/types/MemberManagementProps";
 
-export default function Members_MemberManagement(props: PROPS) {
+export default function Members_MemberManagement(props: MemberManagementProps) {
   const { ID } = useParams();
 
   const { mutations, isAdmin, handleAction } = MemberManagementAPI(props);

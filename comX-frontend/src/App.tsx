@@ -1,14 +1,14 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useSelector } from "react-redux";
-import HomePage from "./pages/genral/Home";
+import HomePage from "./pages/general/Home";
 import SignUp from "./pages/auth/Signup";
 import LoginPage from "./pages/auth/Login";
-import NotFoundPage from "./pages/genral/404Page";
-import ErrorPage from "./pages/genral/ErrorPage";
+import NotFoundPage from "./pages/general/404Page";
+import ErrorPage from "./pages/general/ErrorPage";
 import { RootState } from "./state/store";
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Contact from "./pages/genral/Contact";
+import Contact from "./pages/general/Contact";
 import Profile from "./pages/profile/Profile";
 import ChatApp from "./pages/chatApp/ChatApp";
 import Dashboard from "./pages/dashboard/DashBoard";

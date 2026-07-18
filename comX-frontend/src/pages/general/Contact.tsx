@@ -17,10 +17,11 @@ export default function Contact() {
     message:"",
   }})
 
-  const onSubmit = async (data:any) => {
+  const onSubmit = async () => {
+    // No backend endpoint exists for contact messages yet; this simulates
+    // the round-trip so the form's success state can still be demoed.
     await new Promise(resolve => setTimeout(resolve, 2000))
     setIsSubmitted(true)
-    console.log(data)
   }
 
   return (

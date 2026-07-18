@@ -1,11 +1,11 @@
 import CommunityAPI from "@/api/community/CommunityAPI";
-import ErrorPage from "@/pages/genral/ErrorPage";
+import ErrorPage from "@/pages/general/ErrorPage";
 
 export default function CommunityHeader() {
   const { community, communityLoading, communityError } = CommunityAPI();
 
   if (communityLoading) {
-    return <div>Loading . . .</div>;
+    return <div>Loading...</div>;
   }
 
   if (communityError) {
