@@ -7,12 +7,12 @@ import useAuthCheck from "@/hooks/useAuthCheck";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import { Toaster } from "react-hot-toast";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ErrorPage from "../general/ErrorPage";
 import CommunityCard from "./components/CommunityCard";
 import CreateCommunity from "./components/CreateCommunity";
 import JoinCommunity from "./components/JoinCommunity";
 import LastTask from "./components/Last-Task";
-
 
 const fetchCommunityList = async () => {
   const response = await api.get(`/community/get-user-communities`);
@@ -24,55 +24,62 @@ export default function Dashboard() {
 
   useAuthCheck(user.user);
 
-  const { isError, data:communities , isPending } = useQuery({
+  const { isError, data: communities, isPending } = useQuery({
     queryKey: [`communityList${user.user?.id}`],
     queryFn: fetchCommunityList,
     staleTime: Infinity,
   });
 
-  if(isPending){
-    return <div>Loading...</div>
+  if (isPending) {
+    return <div>Loading...</div>;
   }
 
-  if(isError){
-    return <ErrorPage />
+  if (isError) {
+    return <ErrorPage />;
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-muted/40 p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">Dashboard</h1>
+        <h1 className="text-3xl font-bold tracking-tight mb-6">Dashboard</h1>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <motion.div
-            className="lg:col-span-2 bg-white p-6 rounded-lg shadow-lg"
+            className="lg:col-span-2"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-xl font-semibold mb-4 flex items-center">
-              <Users className="mr-2" /> Your Communities
-            </h2>
-            {communities.length === 0 ? (
-              <p className="text-sm text-gray-500">
-                You haven't joined or created any communities yet. Create one or join with a code to get started.
-              </p>
-            ) : (
-              <div className="grid grid-cols-1 gap-6">
-                {communities.map((community: Community) => (
-                  <CommunityCard
-                    key={community.id}
-                    coverImage={community.coverImage}
-                    createdAt={community.createdAt}
-                    description={community.description}
-                    memberCount={community.memberCount}
-                    name={community.name}
-                    owner={community.owner}
-                    id={community.id}
-                    joinCode={community.joinCode}
-                  />
-                ))}
-              </div>
-            )}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-xl flex items-center gap-2">
+                  <Users className="h-5 w-5" /> Your Communities
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {communities.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">
+                    You haven't joined or created any communities yet. Create
+                    one or join with a code to get started.
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-1 gap-6">
+                    {communities.map((community: Community) => (
+                      <CommunityCard
+                        key={community.id}
+                        coverImage={community.coverImage}
+                        createdAt={community.createdAt}
+                        description={community.description}
+                        memberCount={community.memberCount}
+                        name={community.name}
+                        owner={community.owner}
+                        id={community.id}
+                        joinCode={community.joinCode}
+                      />
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </motion.div>
 
           <div className="space-y-6">

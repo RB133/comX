@@ -13,35 +13,40 @@ import ProjectOverviewSettings from "./project-settings/ProjectOverviewSettings"
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import ProjectAPI from "@/api/project/ProjectAPI";
+import TasksAPI from "@/api/tasks/TasksAPI";
 
 export default function ProjectOverview() {
 
   const user = useSelector((state: RootState) => state.userDetails);
 
   const { project, projectLoading, projectError } = ProjectAPI();
-  
+  const { tasks, tasksLoading, tasksError } = TasksAPI();
 
-  if (projectLoading) {
+
+  if (projectLoading || tasksLoading) {
     return <div>Loading...</div>;
   }
 
-  if (projectError) {
+  if (projectError || tasksError) {
     return <ErrorPage />;
   }
 
   const isAdmin = user.user?.id === project.ownerId;
 
+  const completedCount = tasks.filter((task: { status: string }) => task.status === "COMPLETED").length;
+  const progress = tasks.length === 0 ? 0 : Math.round((completedCount / tasks.length) * 100);
+
   return (
     <>
-      <Card className="rounded-lg bg-white p-6 space-y-4">
+      <Card className="space-y-4">
         <CardHeader>
           {isAdmin && <ProjectOverviewSettings project={project} />}
           <div className="flex justify-between items-center">
             <div>
-              <CardTitle className="text-2xl font-bold text-gray-900">
+              <CardTitle className="text-2xl font-bold">
                 {project.name}
               </CardTitle>
-              <CardDescription className="text-sm text-gray-600 mt-1">
+              <CardDescription className="mt-1">
                 {project.description}
               </CardDescription>
             </div>
@@ -54,7 +59,7 @@ export default function ProjectOverview() {
                 />
                 <AvatarFallback>{project.owner.name.charAt(0)}</AvatarFallback>
               </Avatar>
-              <span className="text-lg font-medium text-gray-700">
+              <span className="text-lg font-medium text-foreground/80">
                 {project.owner.username}
               </span>
             </div>
@@ -64,8 +69,8 @@ export default function ProjectOverview() {
         <CardContent>
           {/* Deadline and Progress Section */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-            <div className="flex items-center gap-2 text-gray-700">
-              <Calendar className="h-5 w-5 text-gray-500" />
+            <div className="flex items-center gap-2">
+              <Calendar className="h-5 w-5 text-muted-foreground" />
               <span className="font-medium">
                 Deadline:{" "}
                 <span className="font-semibold">
@@ -79,24 +84,21 @@ export default function ProjectOverview() {
             </div>
 
             <div className="w-full sm:w-1/2">
-              <p className="text-sm text-gray-600 mb-1 font-medium">
+              <p className="text-sm text-muted-foreground mb-1 font-medium">
                 Project Progress
               </p>
-              <Progress
-                value={65}
-                className="w-full h-3 rounded-lg bg-gray-200"
-              />
-              <p className="text-xs text-gray-500 mt-1 text-right">
-                {65}% Complete
+              <Progress value={progress} className="w-full h-3 rounded-lg" />
+              <p className="text-xs text-muted-foreground mt-1 text-right">
+                {progress}% Complete
               </p>
             </div>
           </div>
 
           {/* Divider */}
-          <hr className="my-4 border-gray-200" />
+          <hr className="my-4 border-border" />
 
           {/* Start and End Dates */}
-          <div className="flex justify-between text-sm text-gray-600">
+          <div className="flex justify-between text-sm text-muted-foreground">
             <span>
               <strong>Start: </strong>
               <span className="font-semibold">

@@ -53,7 +53,7 @@ export default function CommunityCard({
 
   return (
     <motion.div
-      className="bg-gray-50 rounded-lg shadow overflow-hidden"
+      className="rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden cursor-pointer"
       whileHover={{ scale: 1.02 }}
       transition={{ type: "spring", stiffness: 400, damping: 10 }}
       onClick={redirectToCommunity}
@@ -64,7 +64,7 @@ export default function CommunityCard({
       />
       <div className="p-4">
         <h3 className="font-semibold text-xl mb-2">{name}</h3>
-        <p className="text-sm text-gray-600 mb-4">{description}</p>
+        <p className="text-sm text-muted-foreground mb-4">{description}</p>
         <div className="flex items-center mb-4">
           <img
             src={ownerAvatar}
@@ -73,9 +73,9 @@ export default function CommunityCard({
             height={40}
             className="rounded-full mr-2"
           />
-          <span className="text-sm text-gray-700">Founded by {ownerName}</span>
+          <span className="text-sm text-foreground/80">Founded by {ownerName}</span>
         </div>
-        <div className="flex items-center justify-between text-sm text-gray-500">
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
           <div className="flex items-center">
             <User className="w-4 h-4 mr-1" />
             <span>{memberCount} members</span>

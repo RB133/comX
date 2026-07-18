@@ -77,7 +77,9 @@ export default function TaskPage() {
         </CardContent>
         <Button
           variant="outline"
-          className="absolute right-12 bg-gray-50 h-12 bottom-6 w-36"
+          disabled
+          title="Task filtering is coming soon"
+          className="absolute right-12 h-12 bottom-6 w-36"
         >
           <Filter className="h-4 w-4 mr-2" />
           Filter

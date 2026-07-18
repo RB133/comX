@@ -45,7 +45,7 @@ export default function FollowerList() {
           className={`py-2 px-4 font-semibold transition-colors ${
             activeTab === "following"
               ? "text-blue-600 border-b-2 border-blue-600"
-              : "text-gray-600"
+              : "text-muted-foreground"
           }`}
           onClick={() => setActiveTab("following")}
         >
@@ -55,7 +55,7 @@ export default function FollowerList() {
           className={`py-2 px-4 font-semibold transition-colors ${
             activeTab === "followers"
               ? "text-blue-600 border-b-2 border-blue-600"
-              : "text-gray-600"
+              : "text-muted-foreground"
           }`}
           onClick={() => setActiveTab("followers")}
         >
@@ -66,7 +66,7 @@ export default function FollowerList() {
       <AnimatePresence mode="wait">
         <motion.div key={activeTab} variants={tabVariants} initial="hidden" animate="visible" exit="exit">
           {connections.length === 0 ? (
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-muted-foreground">
               {activeTab === "following" ? "Not following anyone yet." : "No followers yet."}
             </p>
           ) : (

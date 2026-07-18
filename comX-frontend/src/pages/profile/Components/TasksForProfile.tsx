@@ -108,7 +108,7 @@ export default function TaskForProfile() {
           </Table>
         </div>
       ) : (
-        <p className="text-center text-gray-500">
+        <p className="text-center text-muted-foreground">
           No tasks found in this category.
         </p>
       )}

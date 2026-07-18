@@ -18,7 +18,7 @@ export default function TeamMembers() {
   const user = useSelector((state: RootState) => state.userDetails);
 
   const { project, projectLoading, projectError } = ProjectAPI();
-  
+
 
   if (projectLoading) {
     return <div>Loading...</div>;
@@ -31,19 +31,19 @@ export default function TeamMembers() {
   const isAdmin = user.user?.id === project.ownerId;
 
   return (
-    <Card className="flex flex-col justify-between items-center rounded-lg bg-white shadow-lg p-6 w-full">
+    <Card className="flex flex-col justify-between items-center w-full">
       {isAdmin && <TeamMembersSettings project={project} />}
       <CardHeader className="w-full text-center flex items-start">
-        <CardTitle className="text-xl font-semibold text-gray-800">
+        <CardTitle className="text-xl">
           Team Members
         </CardTitle>
-        <CardDescription className="text-sm text-gray-500 mt-1">
+        <CardDescription className="mt-1">
           Project contributors and their roles
         </CardDescription>
-        <hr className="my-3 border-gray-200 w-full" />
+        <hr className="my-3 border-border w-full" />
       </CardHeader>
 
-      <CardContent className="w-full bg-white rounded-lg">
+      <CardContent className="w-full">
         <div className="flex flex-row items-center w-full justify-center z-50 mb-8">
           <AnimatedTooltip items={project.projectMembers} />
         </div>
@@ -59,15 +59,15 @@ export default function TeamMembers() {
             }) => (
               <div
                 key={item.email}
-                className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+                className="flex items-center gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors duration-200"
               >
-                <Avatar className="w-12 h-12 border border-gray-200 rounded-full overflow-hidden">
+                <Avatar className="w-12 h-12 border border-border rounded-full overflow-hidden">
                   <AvatarImage src={item.avatar} />
                   <AvatarFallback>{item.name[0]}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
-                  <h1 className="font-medium text-gray-800">{item.name}</h1>
-                  <p className="text-sm text-gray-500">{item.designation}</p>
+                  <h1 className="font-medium">{item.name}</h1>
+                  <p className="text-sm text-muted-foreground">{item.designation}</p>
                 </div>
               </div>
             )

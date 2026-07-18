@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { RootState } from "@/state/store";
 import { Label } from "@radix-ui/react-label";
@@ -7,7 +9,7 @@ import axios from "axios";
 import { motion } from "framer-motion";
 import { LogIn } from "lucide-react";
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 
 
@@ -44,42 +46,39 @@ export default function JoinCommunity() {
 
   return (
     <motion.div
-      className="bg-white p-6 rounded-lg shadow-lg"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
     >
-      <h2 className="text-xl font-semibold mb-4 flex items-center">
-        <LogIn className="mr-2" /> Join Community
-      </h2>
-      <form onSubmit={handleJoinCommunity} className="space-y-4">
-        <div>
-          <Label
-            htmlFor="joinCode"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Community Code
-          </Label>
-          <Input
-            type="text"
-            id="joinCode"
-            value={joinCode}
-            onChange={(e) => setJoinCode(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter community code"
-          />
-        </div>
-        <motion.button
-          type="submit"
-          disabled={isPending}
-          className={`w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors duration-300 ${isPending && "bg-green-900 hover:bg-green-900 cursor-not-allowed"}`}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-        >
-          {isPending ? "Joining..." : "Join Community"}
-        </motion.button>
-      </form>
-      <Toaster />
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <LogIn className="h-5 w-5" /> Join Community
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleJoinCommunity} className="space-y-4">
+            <div>
+              <Label
+                htmlFor="joinCode"
+                className="block text-sm font-medium mb-1"
+              >
+                Community Code
+              </Label>
+              <Input
+                type="text"
+                id="joinCode"
+                value={joinCode}
+                onChange={(e) => setJoinCode(e.target.value)}
+                placeholder="Enter community code"
+              />
+            </div>
+            <Button type="submit" disabled={isPending} className="w-full">
+              {isPending ? "Joining..." : "Join Community"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </motion.div>
   );
 }

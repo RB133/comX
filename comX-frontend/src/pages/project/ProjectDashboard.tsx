@@ -18,7 +18,7 @@ export default function ProjectDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="bg-gray-100 bg-opacity-90 backdrop-blur-lg shadow-xl overflow-hidden"
+        className="bg-muted/90 backdrop-blur-lg shadow-xl overflow-hidden"
       >
         <div className="p-6 sm:p-8 md:p-10 space-y-8">
           <ProjectOverview />

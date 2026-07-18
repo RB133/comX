@@ -13,10 +13,10 @@ export default function Profile() {
       </div>
       <div className="w-full flex flex-col gap-4 bg-none">
         <div className="flex w-full justify-between">
-          <div className="border border-gray-200 bg-card rounded-lg shadow-xl w-[49%]">
+          <div className="border border-border bg-card rounded-lg shadow-xl w-[49%]">
             <TaskForProfile />
           </div>
-          <div className="border border-gray-200 bg-card rounded-lg shadow-xl w-[49%]">
+          <div className="border border-border bg-card rounded-lg shadow-xl w-[49%]">
             <PieChartTask />
           </div>
         </div>
@@ -24,10 +24,10 @@ export default function Profile() {
           <ImprovedCodeHeatmap />
         </div>
         <div className="flex w-full justify-between">
-          <div className="border border-gray-200 bg-card rounded-lg shadow-xl w-[49%] h-[440px]">
+          <div className="border border-border bg-card rounded-lg shadow-xl w-[49%] h-[440px]">
             <FollowerList />
           </div>
-          <div className="border border-gray-200 bg-card rounded-lg shadow-xl w-[49%]">
+          <div className="border border-border bg-card rounded-lg shadow-xl w-[49%]">
             <ComingSoon />
           </div>
         </div>

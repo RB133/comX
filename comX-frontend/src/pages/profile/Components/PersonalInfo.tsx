@@ -39,7 +39,7 @@ export default function PersonalInfo() {
   const isOwnProfile = user.user?.username === profile.username;
 
   return (
-    <Card className="w-full max-w-lg shadow-xl border border-gray-200">
+    <Card className="w-full max-w-lg shadow-xl border border-border">
       <CardHeader className="flex flex-col items-center text-center space-y-2">
         <Avatar className="w-24 h-24 mb-3 rounded-full shadow-lg">
           <AvatarImage src={profile.avatar} alt={`${profile.name}'s avatar`} />
