@@ -40,7 +40,13 @@ export default function TaskPage() {
     setActive(tasks.find((item: { id: number }) => item.id === active.id));
   }, [tasks]);
 
-  if (projectId === undefined) return <div>Hello World</div>;
+  if (projectId === undefined) {
+    return (
+      <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">
+        Select a project from the sidebar to view its tasks.
+      </div>
+    );
+  }
 
   if (tasksLoading) {
     return <div>Loading...</div>;

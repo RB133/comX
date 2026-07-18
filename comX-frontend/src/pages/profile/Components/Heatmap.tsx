@@ -42,9 +42,15 @@ const monthNames = [
 ];
 const weekdayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+const NO_ACTIVITY_COLOR = "#ebedf0";
+
 const CustomHeatmap = ({ data }: { data: ContributionData[] }) => {
+  // Guard against a degenerate [0, 0] domain (no activity at all yet) —
+  // scaleLinear would otherwise map every input to the top of the range,
+  // rendering every cell at maximum green intensity instead of empty/grey.
+  const maxCount = Math.max(...data.map((d) => d.count), 0);
   const colorScale = scaleLinear<number>()
-    .domain([0, Math.max(...data.map((d) => d.count))])
+    .domain([0, maxCount || 1])
     .range([0, 1]);
 
   const startDate = data[0].date;
@@ -139,7 +145,8 @@ const CustomHeatmap = ({ data }: { data: ContributionData[] }) => {
               gridRowStart: row + 2,
               width: `${CELL_SIZE - 2}px`,
               height: `${CELL_SIZE - 2}px`,
-              backgroundColor: interpolateGreens(colorScale(day.count)),
+              backgroundColor:
+                day.count === 0 ? NO_ACTIVITY_COLOR : interpolateGreens(colorScale(day.count)),
               borderRadius: "3px",
               textAlign: "center",
               display: "flex",
@@ -183,11 +190,6 @@ export default function ImprovedCodeHeatmap({
       </CardContent>
     </Card>
   );
-}
-
-interface ContributionData {
-  date: Date;
-  count: number;
 }
 
 type Task = {

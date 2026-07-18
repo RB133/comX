@@ -1,12 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useSelector } from "react-redux";
 import HomePage from "./pages/general/Home";
 import SignUp from "./pages/auth/Signup";
 import LoginPage from "./pages/auth/Login";
 import NotFoundPage from "./pages/general/404Page";
 import ErrorPage from "./pages/general/ErrorPage";
-import { RootState } from "./state/store";
-import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Contact from "./pages/general/Contact";
 import Profile from "./pages/profile/Profile";
@@ -23,6 +20,9 @@ import TaskPage from "./pages/tasks/TasksPage";
 import ChatSkeleton from "./pages/chatApp/ChatSkeleton";
 import Code from "./pages/code/Code";
 import Call from "./pages/call/Call";
+
+// Created once at module scope so the query cache survives re-renders.
+const queryClient = new QueryClient();
 
 function App() {
   const router = createBrowserRouter([
@@ -113,18 +113,6 @@ function App() {
       ],
     },
   ]);
-
-  const theme = useSelector((state: RootState) => state.theme);
-
-  useEffect(() => {
-    if (theme === "dark") {
-      document.body.classList.add("dark");
-    } else {
-      document.body.classList.remove("dark");
-    }
-  }, [theme]);
-
-  const queryClient = new QueryClient();
 
   return (
     <>
