@@ -1,207 +1,217 @@
 # ComX
 
-ComX is a full-stack collaboration platform for teams and communities. It combines authentication, community management, project tracking, task workflows, real-time chat, shared calendars, video calls, and public user profiles in one codebase.
+ComX is a full-stack collaboration platform for teams and communities. Create a community, invite members with a join code, spin up projects with milestones and tasks, chat in real time, share a calendar, and hop on a video call — all in one place.
 
-This repository contains:
-
-- `comX-frontend`: React + Vite client
-- `comX-backend`: Express + Prisma API and Socket.IO server
+- **`comX-frontend`** — React 18 + TypeScript + Vite single-page app
+- **`comX-backend`** — Express + TypeScript API with Prisma (PostgreSQL) and a Socket.IO chat server
 
 ## Screenshots
 
-### Landing Page
-![Landing Page](./screenshots/landing_page.png)
-
-### Signup Page
-![signup Page](./screenshots/signup.png)
-
-
-### Dashboard
-![Dashboard](./screenshots/dashboard.png)
-
-### Project Overview
-![Project General](./screenshots/project_general.png)
-
-### Tasks Management
-![Tasks](./screenshots/tasks.png)
-
-### Project Chat (Real-time)
-![Project Chat](./screenshots/project_chat.png)
-
-### Calendar
-![Calendar](./screenshots/calendar.png)
-
-### Community Calls
-![Calls](./screenshots/call.png)
-
-### Member Management
-![Member Management](./screenshots/member_management.png)
-
-### User Profile
-![Profile](./screenshots/profile.png)
+| | |
+|---|---|
+| ![Landing Page](./screenshots/landing_page.png) | ![Dashboard](./screenshots/dashboard.png) |
+| ![Project Overview](./screenshots/project_general.png) | ![Tasks](./screenshots/tasks.png) |
+| ![Project Chat](./screenshots/project_chat.png) | ![Calendar](./screenshots/calendar.png) |
+| ![Community Calls](./screenshots/call.png) | ![Profile](./screenshots/profile.png) |
 
 ## Features
 
-- Email/password authentication
-- Community creation and join-code based onboarding
-- Role-based member management (`OWNER`, `ADMIN`, `MEMBER`, `QUEUE`, `BANNED`)
-- Project creation with milestones and team assignment
-- Task creation, completion, review, and tracking
-- Real-time project chat with Socket.IO
+- Email/password authentication with httpOnly JWT cookies
+- Communities with join-code onboarding and public/private scope
+- Role-based membership: `OWNER`, `ADMIN`, `MEMBER`, `QUEUE`, `BANNED`
+- Projects with milestones and team assignment
+- Task workflow: create, complete, admin review (accept/reject)
+- Real-time project chat over Socket.IO (authenticated per connection)
 - Community calendar events
-- LiveKit-based community calls
-- User profiles, skills, and follow/unfollow support
+- LiveKit-powered community video calls
+- Public user profiles with skills, social links, and follow/unfollow
 
 ## Tech Stack
 
-### Frontend
+**Frontend:** React 18, TypeScript, Vite, React Router, Redux Toolkit, TanStack Query, Axios, Tailwind CSS, Radix UI, Framer Motion, Socket.IO client, LiveKit components
 
-- React 18
-- TypeScript
-- Vite
-- React Router
-- Redux Toolkit
-- TanStack React Query
-- Axios
-- Tailwind CSS
-- Radix UI
-- Framer Motion
-- Socket.IO Client
-- LiveKit Components
+**Backend:** Node.js, Express, TypeScript, Prisma ORM, PostgreSQL, Socket.IO, JWT, bcryptjs, Zod, Multer, Cloudinary, LiveKit Server SDK
 
-### Backend
+---
 
-- Node.js
-- Express
-- TypeScript
-- Prisma ORM
-- PostgreSQL
-- Socket.IO
-- JWT via cookies
-- bcryptjs
-- Multer
-- Cloudinary
-- LiveKit Server SDK
+## Quick Start (Local)
 
-## Repository Structure
+### Prerequisites
+
+- **Node.js 18+** and npm
+- **PostgreSQL** — either [Docker](https://www.docker.com/) (easiest, used below) or a local/hosted Postgres instance
+
+### 1. Clone and install everything
+
+```bash
+git clone <your-repo-url> comX
+cd comX
+npm run setup
+```
+
+`npm run setup` installs the root, backend, and frontend dependencies in one go.
+
+### 2. Create the environment files
+
+```bash
+cp comX-backend/.env.example  comX-backend/.env
+cp comX-frontend/.env.example comX-frontend/.env
+```
+
+The example values already point at the local Docker database and the local frontend, so you can leave them as-is to get running. Generate a real `JWT_SECRET`:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+```
+
+Paste the output into `comX-backend/.env` as `JWT_SECRET`. Cloudinary and LiveKit
+keys are optional — leave them blank and the app runs; only avatar uploads and
+video calls need them (see [Optional integrations](#optional-integrations)).
+
+### 3. Start the database and run migrations
+
+```bash
+npm run db:up     # starts PostgreSQL in Docker
+npm run migrate   # applies the Prisma schema
+```
+
+> No Docker? Point `DATABASE_URL` in `comX-backend/.env` at any PostgreSQL
+> instance and just run `npm run migrate`.
+
+### 4. Run the app
+
+```bash
+npm run dev
+```
+
+This starts both servers together:
+
+- Frontend → http://localhost:5173
+- Backend  → http://localhost:3000
+
+Open http://localhost:5173 and sign up.
+
+### Useful commands
+
+| Command | What it does |
+|---|---|
+| `npm run dev` | Run backend + frontend together |
+| `npm run dev:backend` / `npm run dev:frontend` | Run just one side |
+| `npm run db:up` / `npm run db:down` | Start / stop the Docker Postgres |
+| `npm run migrate` | Apply Prisma migrations (dev) |
+| `npm run build` | Type-check and build both apps |
+| `npm --prefix comX-backend run prisma:studio` | Browse the DB in Prisma Studio |
+
+---
+
+## Deployment
+
+The recommended setup is **Vercel for the frontend** and **Render for the backend**, with a managed PostgreSQL database (Render, Neon, Supabase, etc.). Deploy the backend first so you have its URL for the frontend config.
+
+### 1. Database
+
+Create a PostgreSQL database with any provider and copy its connection string
+(this becomes `DATABASE_URL`).
+
+### 2. Backend → Render
+
+This repo includes [`render.yaml`](./render.yaml). On Render, create a new
+**Blueprint** from your repo and set these environment variables:
+
+| Variable | Value |
+|---|---|
+| `DATABASE_URL` | your managed Postgres connection string |
+| `FRONTEND_URL` | your Vercel URL, e.g. `https://comx.vercel.app` (comma-separate multiple) |
+| `JWT_SECRET` | auto-generated by Render, or set your own |
+| `CLOUDINARY_*` / `LIVEKIT_*` | only if you use those features |
+
+`NODE_ENV=production` is set for you in `render.yaml`. On boot the backend runs
+`prisma migrate deploy` automatically, so your schema is applied on every deploy.
+
+The backend URL will look like `https://comx-backend.onrender.com`.
+
+### 3. Frontend → Vercel
+
+Import the repo into Vercel and set **Root Directory** to `comX-frontend`
+(it auto-detects Vite). Add these environment variables:
+
+| Variable | Value |
+|---|---|
+| `VITE_BACKEND_URL` | your Render backend URL |
+| `VITE_SOCKET_URL` | the same Render backend URL |
+| `VITE_PUBLIC_LIVEKIT_URL` | your LiveKit `wss://…` URL (optional) |
+
+[`comX-frontend/vercel.json`](./comX-frontend/vercel.json) already rewrites all
+routes to `index.html` so client-side routing works on refresh.
+
+### 4. Connect the two
+
+After both are live, make sure the backend's `FRONTEND_URL` exactly matches the
+Vercel domain. Auth cookies are `SameSite=None; Secure` in production, so both
+sides must be served over HTTPS (Vercel and Render both are by default).
+
+---
+
+## Optional integrations
+
+Both are optional — the server starts without them and the related endpoint
+returns a clear `503` if called while unconfigured.
+
+- **Cloudinary** (avatar & community cover uploads): set `CLOUDINARY_CLOUD_NAME`,
+  `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`.
+- **LiveKit** (community video calls): set `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET`
+  on the backend and `VITE_PUBLIC_LIVEKIT_URL` on the frontend. Create a project
+  at [livekit.io](https://livekit.io/) to get these.
+
+---
+
+## Project Structure
 
 ```text
-.
-|-- comX-backend/
-|   |-- prisma/
-|   |   |-- migrations/
-|   |   `-- schema.prisma
-|   `-- src/
-|       |-- config/
-|       |-- controllers/
-|       |-- middlewares/
-|       |-- routes/
-|       |-- schemas/
-|       |-- types/
-|       |-- utils/
-|       `-- server.ts
-`-- comX-frontend/
-    `-- src/
-        |-- api/
-        |-- components/
-        |-- hooks/
-        |-- lib/
-        |-- pages/
-        |-- state/
-        |-- types/
-        |-- App.tsx
-        `-- main.tsx
+comX/
+├── docker-compose.yml        # local PostgreSQL
+├── render.yaml               # backend deployment blueprint
+├── package.json              # root scripts (setup, dev, db, build)
+│
+├── comX-backend/
+│   ├── prisma/
+│   │   ├── migrations/
+│   │   └── schema.prisma
+│   └── src/
+│       ├── config/env.ts     # Zod-validated environment config
+│       ├── lib/              # prisma client, cloudinary
+│       ├── middleware/       # auth, membership, upload, validation, errors
+│       ├── schemas/          # Zod request schemas
+│       ├── controllers/      # one file per domain
+│       ├── routes/           # one file per domain
+│       ├── app.ts            # Express app + route wiring
+│       ├── socket.ts         # authenticated Socket.IO chat gateway
+│       └── server.ts         # HTTP server entrypoint
+│
+└── comX-frontend/
+    └── src/
+        ├── lib/api-client.ts # shared Axios instance (baseURL + credentials)
+        ├── api/              # data-fetching hooks (TanStack Query)
+        ├── components/       # UI + shared components
+        ├── hooks/            # incl. useSocket (realtime chat)
+        ├── pages/            # route views
+        ├── state/            # Redux Toolkit store & slices
+        └── App.tsx
 ```
 
 ## Architecture
 
 ComX is a modular monolith:
 
-- the frontend is a single-page React application
-- the backend is a single Express service
-- PostgreSQL stores relational data
-- Socket.IO handles project chat
-- LiveKit powers video calls
-- Prisma manages schema and data access
+- The frontend is a single-page React app.
+- The backend is a single Express service. Every route is composed from small,
+  single-purpose middleware — `requireAuth` (JWT cookie) → `requireMember` /
+  `requireAdmin` / `requireProjectMember` (authorization) → controller.
+- PostgreSQL stores relational data via Prisma.
+- Socket.IO handles project chat. Each socket is authenticated once from its
+  auth cookie during the handshake, so clients can't act as another user.
+- LiveKit powers video calls.
 
-HTTP APIs are exposed under:
-
-- `/auth`
-- `/community`
-- `/member`
-- `/calendar`
-- `/project`
-- `/task`
-- `/user`
-
-## Environment Variables
-
-### Backend (`comX-backend/.env`)
-
-```env
-PORT=5000
-DATABASE_URL=postgresql://username:password@localhost:5432/comx
-JWT_SECRET=your_jwt_secret
-FRONTEND_URL=http://localhost:5173
-
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-
-LIVEKIT_API_KEY=your_livekit_api_key
-LIVEKIT_API_SECRET=your_livekit_api_secret
-```
-
-### Frontend (`comX-frontend/.env`)
-
-```env
-VITE_BACKEND_URL=http://localhost:5000
-VITE_SOCKET_URL=http://localhost:5000
-VITE_PUBLIC_LIVEKIT_URL=your_livekit_ws_url
-```
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- PostgreSQL
-- npm
-
-### Install dependencies
-
-```bash
-cd comX-backend
-npm install
-
-cd ../comX-frontend
-npm install
-```
-
-### Run database migrations
-
-```bash
-cd comX-backend
-npx prisma migrate deploy
-```
-
-### Start the backend
-
-```bash
-cd comX-backend
-npm run build
-npm start
-```
-
-### Start the frontend
-
-```bash
-cd comX-frontend
-npm run dev
-```
-
-Frontend default URL:
-
-- `http://localhost:5173`
-
-
+HTTP APIs are exposed under `/auth`, `/community`, `/member`, `/calendar`,
+`/project`, `/task`, and `/user`. All responses share the shape
+`{ status, message, data }`.

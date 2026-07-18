@@ -1,3 +1,14 @@
+# Render Blueprint — provisions the PostgreSQL database AND the backend web
+# service together. On Render: New → Blueprint → pick this repo, and it wires
+# DATABASE_URL and JWT_SECRET automatically. You only fill in FRONTEND_URL
+# (after the Vercel deploy) and the optional Cloudinary/LiveKit keys.
+
+databases:
+  - name: comx-db
+    plan: free
+    databaseName: comx
+    user: comx
+
 services:
   - type: web
     name: comx-backend
@@ -8,22 +19,27 @@ services:
     startCommand: npm start
     healthCheckPath: /
     envVars:
+      - key: NODE_ENV
+        value: production
+      # Auto-injected from the database above — nothing to paste.
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: comx-db
+          property: connectionString
+      # Auto-generated strong secret — nothing to paste.
       - key: JWT_SECRET
-        sync: false
+        generateValue: true
+      # Your Vercel URL, e.g. https://comx.vercel.app (comma-separate several).
       - key: FRONTEND_URL
         sync: false
-      - key: EMAIL
-        sync: false
-      - key: PASSWORD
-        sync: false
+      # Optional — only needed for avatar/cover uploads.
       - key: CLOUDINARY_CLOUD_NAME
         sync: false
       - key: CLOUDINARY_API_KEY
         sync: false
       - key: CLOUDINARY_API_SECRET
         sync: false
+      # Optional — only needed for community video calls.
       - key: LIVEKIT_API_KEY
         sync: false
       - key: LIVEKIT_API_SECRET
