@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import axios from "axios";
+import { useRef, useState } from "react";
+import { api } from "@/lib/api-client";
 import toast, { Toaster } from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 import { UserData, UserDataSchema } from "@/types/UserProfile";
@@ -14,16 +14,9 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { useNavigate } from "react-router-dom";
 import { BottomGradient, LabelInputContainer } from "./SignUpExtraComponenets";
 
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 const defaultDesignation = "Student";
 
-export default function SignUpFormPage1({
-  setCurrentPage,
-  email,
-}: {
-  setCurrentPage: (value: number) => void;
-  email: React.MutableRefObject<HTMLInputElement>;
-}) {
+export default function SignUpFormPage1() {
   const navigate = useNavigate();
   const {
     register,
@@ -45,14 +38,13 @@ export default function SignUpFormPage1({
         userData.file = profilePic.current.files[0];
       }
 
-      return await axios.post(`${backend_url}/auth/register`, userData, {
+      return await api.post(`/auth/register`, userData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
     },
     onSuccess: () => {
-      setCurrentPage(1);
       navigate("/", { replace: true });
       toast.success("Sign Up Successful");
     },
@@ -67,8 +59,6 @@ export default function SignUpFormPage1({
       const selectedDesignation =
         designation.find((item) => item.id.toString() === post)?.value ?? defaultDesignation;
       data.designation = selectedDesignation;
-      toast.success("Form Submitted");
-      email.current.value = data.email;
       await submitForm(data);
     } catch (e) {
       console.error(e);

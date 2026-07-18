@@ -20,7 +20,6 @@ export default function ChatApp() {
   const user = useSelector((state: RootState) => state.userDetails);
 
   const { sendMessage, fetchMessages, isConnected } = useSocket(
-    user.user!.id,
     parseInt(projectId!, 10)
   );
 

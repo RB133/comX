@@ -1,76 +1,59 @@
 import { addMessage, setConnected } from "@/state/socket/socketIO";
 import { RootState } from "@/state/store";
 import { Message } from "@/types/Chat";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { io, Socket } from "socket.io-client";
 
-const socketUrl = import.meta.env.VITE_SOCKET_URL; // Your WebSocket URL
+const socketUrl = import.meta.env.VITE_SOCKET_URL;
 
-let socket: Socket | null = null;
-
-const useSocket = (userId: number, projectId: number) => {
+/**
+ * Connects to the project chat room over Socket.IO.
+ *
+ * The connection carries the auth cookie (withCredentials), so the server
+ * identifies the user from the handshake — the client never sends its own
+ * userId, which is why these events only take the room and payload.
+ */
+const useSocket = (projectId: number) => {
   const dispatch = useDispatch();
-  const isConnected = useSelector(
-    (state: RootState) => state.socket.isConnected
+  const isConnected = useSelector((state: RootState) => state.socket.isConnected);
+
+  const socket = useMemo<Socket>(
+    () => io(socketUrl, { withCredentials: true, autoConnect: false }),
+    []
   );
 
   useEffect(() => {
-    // Disconnect existing socket if it exists
-    if (socket) {
-      socket.disconnect();
-    }
-
-    // Create a new socket connection
-    socket = io(socketUrl);
+    const room = projectId.toString();
 
     socket.on("connect", () => {
       dispatch(setConnected(true));
-      socket?.emit("joinRoom", projectId.toString(), userId);
+      socket.emit("joinRoom", room);
     });
-
-    socket.on("disconnect", () => {
-      dispatch(setConnected(false));
-    });
-
-    socket.on("message", (message: Message) => {
-      dispatch(addMessage(message));
-    });
-
-    socket.on("joinSuccess", (message: string) => {
-      console.log(message);
-    });
-
-    socket.on("error", (error: { message: string }) => {
-      console.error(error.message);
-    });
-
+    socket.on("disconnect", () => dispatch(setConnected(false)));
+    socket.on("message", (message: Message) => dispatch(addMessage(message)));
     socket.on("receiveMessages", (messages: Message[]) => {
-      console.log(messages);
-      messages.forEach((item) => {
-        dispatch(addMessage(item));
-      });
+      messages.forEach((message) => dispatch(addMessage(message)));
     });
+    socket.on("error", (error: { message: string }) => console.error(error.message));
 
-    // Cleanup on unmount or when projectId changes
+    socket.connect();
+
     return () => {
-      socket?.disconnect();
+      socket.removeAllListeners();
+      socket.disconnect();
     };
-  }, [dispatch, userId, projectId]); // Re-run effect when projectId changes
+  }, [socket, dispatch, projectId]);
 
   const sendMessage = (message: string) => {
-    if (socket?.connected) {
-      socket.emit("message", {
-        room: projectId.toString(),
-        content: message,
-        userId,
-      });
+    if (socket.connected) {
+      socket.emit("message", { room: projectId.toString(), content: message });
     }
   };
 
   const fetchMessages = (offset: number) => {
-    if (socket?.connected) {
-      socket.emit("fetchMessages", projectId.toString(), userId, offset);
+    if (socket.connected) {
+      socket.emit("fetchMessages", projectId.toString(), offset);
     }
   };
 
