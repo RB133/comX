@@ -54,7 +54,7 @@ export default function Navbar() {
   const { handleLogout, logoutPending } = LogoutAPI();
 
   return (
-    <nav className="bg-primary p-4 shadow-lg dark:bg-black dark:shadow-[#111]">
+    <nav className="bg-primary p-4 shadow-lg">
       <div className="container mx-auto">
         <div className="flex justify-between items-center">
           <motion.div
@@ -120,7 +120,9 @@ export default function Navbar() {
                 <Link to={`/profile/${loginDetails.user.username}`}>
                   <div className="flex gap-2 justify-center items-center">
                     <Avatar>
-                      <AvatarImage src={loginDetails.user.avatar || DEFAULT_AVATAR_URL} />
+                      <AvatarImage
+                        src={loginDetails.user.avatar || DEFAULT_AVATAR_URL}
+                      />
                       <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                     <div className="text-white flex flex-col justify-center items-center">

@@ -28,7 +28,9 @@ export default function SignUpFormPage1() {
   });
 
   const [post, setPost] = useState(
-    designation.find((item) => item.value === defaultDesignation)?.id.toString() ?? ""
+    designation
+      .find((item) => item.value === defaultDesignation)
+      ?.id.toString() ?? "",
   );
   const profilePic = useRef<HTMLInputElement>(null);
 
@@ -56,19 +58,21 @@ export default function SignUpFormPage1() {
 
   const onSubmit: SubmitHandler<UserData> = async (data) => {
     const selectedDesignation =
-      designation.find((item) => item.id.toString() === post)?.value ?? defaultDesignation;
+      designation.find((item) => item.id.toString() === post)?.value ??
+      defaultDesignation;
     data.designation = selectedDesignation;
     // Errors are already surfaced by the mutation's onError toast.
     await submitForm(data).catch(() => {});
   };
 
   return (
-    <div className="max-w-md sm:w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input border border-slate-300 bg-white dark:bg-black w-[80%] translate-y-12">
-      <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
+    <div className="max-w-md sm:w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input border border-slate-300 bg-white w-[80%] translate-y-12">
+      <h2 className="font-bold text-xl text-neutral-800">
         Create your ComX account
       </h2>
-      <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-        Join your team, collaborate on projects, and stay connected in one place.
+      <p className="text-neutral-600 text-sm max-w-sm mt-2">
+        Join your team, collaborate on projects, and stay connected in one
+        place.
       </p>
 
       <form className="my-8" onSubmit={handleSubmit(onSubmit)}>
@@ -116,11 +120,7 @@ export default function SignUpFormPage1() {
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="coverImage">Profile Picture</Label>
-          <Input
-            id="coverImage"
-            type="file"
-            ref={profilePic}
-          />
+          <Input id="coverImage" type="file" ref={profilePic} />
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Password</Label>
@@ -152,22 +152,20 @@ export default function SignUpFormPage1() {
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
           <Label htmlFor="password">Designation</Label>
-          <ItemPicker itemList={designation} 
-          value={post} setValue={setPost}
-           />
+          <ItemPicker itemList={designation} value={post} setValue={setPost} />
         </LabelInputContainer>
 
         {isPending ? (
           <Button
             disabled
-            className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] flex justify-center items-center"
+            className="bg-gradient-to-br relative group/btn from-black to-neutral-600 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] flex justify-center items-center"
           >
             <ReloadIcon className="mr-2 animate-spin w-4 h-4 flex justify-center items-center" />
             Please wait
           </Button>
         ) : (
           <button
-            className={`bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]`}
+            className={`bg-gradient-to-br relative group/btn from-black to-neutral-600 block w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset]`}
             type="submit"
           >
             Next &rarr;

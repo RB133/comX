@@ -20,7 +20,6 @@ export default function SingleTask({
   active: TaskGet | null;
   setActive: React.Dispatch<React.SetStateAction<TaskGet | null>>;
 }) {
-
   const { ID, projectId } = useParams();
 
   const user = useSelector((state: RootState) => state.userDetails);
@@ -29,7 +28,7 @@ export default function SingleTask({
 
   useOutsideClick(ref, () => setActive(null));
 
-  const {handleTaskComplete,taskCompletePending} = TaskFxn();
+  const { handleTaskComplete, taskCompletePending } = TaskFxn();
 
   const handleMarkAsDone = () => {
     handleTaskComplete({
@@ -62,11 +61,11 @@ export default function SingleTask({
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 50, opacity: 0 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="w-full max-w-2xl bg-white dark:bg-neutral-800 rounded-2xl overflow-hidden shadow-xl"
+          className="w-full max-w-2xl bg-white rounded-2xl overflow-hidden shadow-xl"
         >
           <div className="relative">
             <motion.button
-              className="absolute top-4 right-4 p-2 bg-white dark:bg-neutral-800 rounded-full text-neutral-600 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+              className="absolute top-4 right-4 p-2 bg-white rounded-full text-neutral-600 hover:bg-neutral-100 transition-colors"
               onClick={() => setActive(null)}
               aria-label="Close"
             >
@@ -78,7 +77,7 @@ export default function SingleTask({
             <div className="flex justify-between items-center">
               <motion.h3
                 layoutId={`title-${active.title}-${active.id}`}
-                className="text-2xl font-bold text-neutral-800 dark:text-neutral-100"
+                className="text-2xl font-bold text-neutral-800"
               >
                 {active.title}
               </motion.h3>
@@ -86,13 +85,17 @@ export default function SingleTask({
                 variant={isCompleted ? "success" : "secondary"}
                 className="text-sm mr-12"
               >
-                {isCompleted ? "Completed" : isPendingReview ? "Pending Review" : active.priority}
+                {isCompleted
+                  ? "Completed"
+                  : isPendingReview
+                    ? "Pending Review"
+                    : active.priority}
               </Badge>
             </div>
 
             <motion.div
               layoutId={`assignee-${active.title}-${active.id}`}
-              className="flex items-center space-x-2 text-sm text-neutral-600 dark:text-neutral-300"
+              className="flex items-center space-x-2 text-sm text-neutral-600"
             >
               <img
                 src={active.user.avatar}
@@ -106,13 +109,13 @@ export default function SingleTask({
 
             <motion.p
               layoutId={`description-${active.description}-${active.id}`}
-              className="text-neutral-600 dark:text-neutral-300"
+              className="text-neutral-600"
             >
               {active.description}
             </motion.p>
 
             <div className="space-y-2">
-              <div className="flex justify-between items-center text-sm text-neutral-600 dark:text-neutral-300">
+              <div className="flex justify-between items-center text-sm text-neutral-600">
                 <span>Progress</span>
                 <span>{progress}%</span>
               </div>
@@ -124,7 +127,7 @@ export default function SingleTask({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-neutral-600 dark:text-neutral-300 text-sm max-h-40 overflow-y-auto"
+              className="text-neutral-600 text-sm max-h-40 overflow-y-auto"
             >
               {typeof active.content === "function"
                 ? active.content

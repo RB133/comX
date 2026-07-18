@@ -13,7 +13,6 @@ import { setUser } from "@/state/userDetails/userDetails";
 import { Button } from "@/components/ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
-
 export default function LoginPage() {
   return (
     <Background>
@@ -47,7 +46,7 @@ function LoginInForm() {
           username: data.data.username,
           id: data.data.id,
           avatar: data.data.avatar,
-        })
+        }),
       );
       toast.success("Logged in successfully!");
       navigate("/dashboard", { replace: true });
@@ -68,11 +67,11 @@ function LoginInForm() {
     submitForm({ emailOrUsername: email, password });
   };
   return (
-    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input border border-slate-300 bg-white dark:bg-black mt-32">
-      <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
+    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input border border-slate-300 bg-white mt-32">
+      <h2 className="font-bold text-xl text-neutral-800">
         Welcome Back to ComX
       </h2>
-      <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
+      <p className="text-neutral-600 text-sm max-w-sm mt-2">
         Sign in to continue to your workspace.
       </p>
 
@@ -98,18 +97,17 @@ function LoginInForm() {
           />
         </LabelInputContainer>
 
-
         {isPending ? (
           <Button
             disabled
-            className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset] flex justify-center items-center"
+            className="bg-gradient-to-br relative group/btn from-black to-neutral-600 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] flex justify-center items-center"
           >
             <ReloadIcon className="mr-2 animate-spin w-4 h-4 flex justify-center items-center" />
             Please wait
           </Button>
         ) : (
           <button
-            className={`bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]`}
+            className={`bg-gradient-to-br relative group/btn from-black to-neutral-600 block w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset]`}
             type="submit"
           >
             Next &rarr;

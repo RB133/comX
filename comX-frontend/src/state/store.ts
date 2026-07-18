@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import themeSlice from "./theme/themeSlice";
 import tabSlice from "./tab/tabSlice";
 import userSlice from "./userDetails/userDetails";
 import activeChannelSlice from "./sidebar/activeChannel";
@@ -9,7 +8,6 @@ import socketSlice from "./socket/socketIO"
 
 export const store = configureStore({
   reducer: {
-    theme: themeSlice,
     tab: tabSlice,
     userDetails: userSlice,
     activeChannel: activeChannelSlice,

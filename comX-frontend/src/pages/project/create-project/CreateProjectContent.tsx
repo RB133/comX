@@ -20,14 +20,16 @@ import CommunityMembersAPI from "@/api/community/CommunityMembersAPI";
 const CreateProjectComponent: React.FC = () => {
   const { ID } = useParams();
 
-  const {communityMembers,communityMembersLoading,communityMembersError} = CommunityMembersAPI();
+  const { communityMembers, communityMembersLoading, communityMembersError } =
+    CommunityMembersAPI();
 
-  const [availableMembers, setAvailableMembers] = useState<Member[]>(communityMembers);
+  const [availableMembers, setAvailableMembers] =
+    useState<Member[]>(communityMembers);
   const [projectMembers, setProjectMembers] = useState<Member[]>([]);
   const [deadline, setDeadline] = useState<Date>(new Date());
   const [milestones, setMilestones] = useState<Milestone[]>([]);
 
-  const {handleCreateProject,createProjectPending} = CreateProjectAPI();
+  const { handleCreateProject, createProjectPending } = CreateProjectAPI();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -60,7 +62,7 @@ const CreateProjectComponent: React.FC = () => {
           <h1 className="text-3xl font-bold">Create New Project</h1>
           <div className="relative">
             <AlertDialogCancel>
-              <span className="absolute top-0 right-0 p-2 bg-white dark:bg-neutral-800 rounded-full text-neutral-600 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors cursor-pointer">
+              <span className="absolute top-0 right-0 p-2 bg-white rounded-full text-neutral-600 hover:bg-neutral-100 transition-colors cursor-pointer">
                 <X size={20} />
               </span>
             </AlertDialogCancel>
