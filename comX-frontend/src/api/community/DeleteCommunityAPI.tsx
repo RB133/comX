@@ -15,20 +15,15 @@ export default function DeleteCommunityAPI() {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async () => {
-      const response = await api.delete(
-        `/community/delete-community`,
-        {
-          data: {
-            communityId: parseInt(ID!, 10),
-            userId: user.user?.id,
-          },
-          withCredentials: true,
-        }
-      );
+      const response = await api.delete(`/community/delete-community`, {
+        data: {
+          communityId: parseInt(ID!, 10),
+          userId: user.user?.id,
+        },
+      });
       return response.data;
     },
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["communityList"] });
       queryClient.invalidateQueries({ queryKey: [`communityList${user.user?.id}`] });
       queryClient.removeQueries({ queryKey: [`communityDetails/${ID}`] });
       toast.success("Community deleted successfully");

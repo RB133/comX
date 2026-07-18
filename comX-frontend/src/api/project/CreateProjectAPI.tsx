@@ -20,13 +20,11 @@ export default function CreateProjectAPI() {
     }) => {
       const response = await api.post(
         `/project/create-project`,
-        data,
-        { withCredentials: true }
+        data
       );
       return response.data;
     },
-    onSuccess(data) {
-      console.log(data);
+    onSuccess() {
       toast.success("Project Created Successfully!");
       queryClient.invalidateQueries({ queryKey: [`project-list/${ID}`] });
     },

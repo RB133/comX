@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { scaleLinear } from "d3-scale";
 import { interpolateGreens } from "d3-scale-chromatic";
-import ErrorPage from "@/pages/genral/ErrorPage";
+import ErrorPage from "@/pages/general/ErrorPage";
 import ProfileAPI from "@/api/profile/ProfileAPI";
 
 interface ContributionData {
@@ -165,7 +165,7 @@ export default function ImprovedCodeHeatmap({
 }: HeatmapProps) {
   const { profile, profileLoading, profileError } = ProfileAPI();
 
-  if (profileLoading) return <div>Loading ...</div>;
+  if (profileLoading) return <div>Loading...</div>;
   if (profileError) return <ErrorPage />;
 
   const data = generateSampleData(365, profile.Task);

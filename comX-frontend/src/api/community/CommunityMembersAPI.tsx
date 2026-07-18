@@ -13,10 +13,7 @@ export default function CommunityMembersAPI() {
   } = useQuery<Member[], Error>({
     queryKey: [`Member-List/${ID}`],
     queryFn: async () => {
-      const response = await api.get(
-        `/member/get-community-members/${ID}`,
-        { withCredentials: true }
-      );
+      const response = await api.get(`/member/get-community-members/${ID}`);
       return response.data.data.members;
     },
     staleTime: Infinity,

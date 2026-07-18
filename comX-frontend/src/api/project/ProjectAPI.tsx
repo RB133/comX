@@ -9,10 +9,7 @@ export default function ProjectAPI() {
     queryKey: [`community${ID}/project/${projectId}`],
     queryFn: async () => {
       const response = await api.get(
-        `/project/get-project-details/${ID}/${projectId}`,
-        {
-          withCredentials: true,
-        }
+        `/project/get-project-details/${ID}/${projectId}`
       );
       return response.data.data;
     },

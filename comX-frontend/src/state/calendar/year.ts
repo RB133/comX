@@ -1,20 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DateTime } from "luxon";
+import { readPersisted, writePersisted } from "@/lib/persistedState";
 
-function checkLocalStorageForYear(): string {
-  const item = window.localStorage.getItem("calendar-year");
-  return typeof item === "string" ? item : DateTime.now().year.toString();
-}
+const YEAR_KEY = "calendar-year";
 
-const initialState: string = checkLocalStorageForYear();
+const initialState: string = readPersisted(YEAR_KEY, DateTime.now().year.toString(), (raw) => raw);
 
 const yearSlice = createSlice({
   name: "year",
   initialState,
   reducers: {
-    setYear(_state: string, payload) {
-      window.localStorage.setItem("calendar-year", payload.payload);
-      return payload.payload;
+    setYear(_state, action: PayloadAction<string>) {
+      writePersisted(YEAR_KEY, action.payload);
+      return action.payload;
     },
   },
 });

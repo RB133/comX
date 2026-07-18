@@ -10,7 +10,7 @@ import CreateProjectMemberManagement from "./CreateProjectMemberManagement";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useParams } from "react-router-dom";
 import { Member } from "@/types/UserProfile";
-import ErrorPage from "@/pages/genral/ErrorPage";
+import ErrorPage from "@/pages/general/ErrorPage";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertDialogCancel } from "@radix-ui/react-alert-dialog";
 import { X } from "lucide-react";
@@ -43,7 +43,7 @@ const CreateProjectComponent: React.FC = () => {
   };
 
   if (communityMembersLoading) {
-    return <div>Loading ...</div>;
+    return <div>Loading...</div>;
   }
 
   if (communityMembersError) {

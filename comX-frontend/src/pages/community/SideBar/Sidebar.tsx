@@ -7,7 +7,7 @@ import { RootState } from "@/state/store";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "@/lib/api-client";
 import { useQuery } from "@tanstack/react-query";
-import ErrorPage from "@/pages/genral/ErrorPage";
+import ErrorPage from "@/pages/general/ErrorPage";
 import ServerList from "./ServerList";
 import CalendarList from "./CalendarList";
 import SettingsList from "./SettingList";
@@ -47,10 +47,7 @@ const Sidebar = React.memo(function Sidebar() {
     queryFn: async () => {
       if (projects.length !== 0) {
         const response = await api.get(
-          `/task/get-all-tasks-in-project/${ID}/${projects[0].id}`,
-          {
-            withCredentials: true,
-          }
+          `/task/get-all-tasks-in-project/${ID}/${projects[0].id}`
         );
         return response.data.data;
       } else return [];
@@ -79,7 +76,7 @@ const Sidebar = React.memo(function Sidebar() {
   }, [activeServer, dispatch, navigate, projects, taskList,projectsLoading]);
 
   if (projectsLoading) {
-    return <div>Loading ...</div>;
+    return <div>Loading...</div>;
   }
 
   if (projectsError || taskError) {

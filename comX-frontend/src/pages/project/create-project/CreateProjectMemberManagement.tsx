@@ -21,7 +21,7 @@ import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useDebounce } from "@/hooks/useDebounce";
-import ErrorPage from "@/pages/genral/ErrorPage";
+import ErrorPage from "@/pages/general/ErrorPage";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
@@ -79,28 +79,15 @@ export default function CreateProjectMemberManagement({
     const { active, over } = event;
     setActiveMember(null); // Reset the dragged item
 
-    if (!over) return;
+    if (!over || over.id === active.id) return;
 
-    const activeIndexInAvailable = availableMembers.findIndex(
-      (m) => m.id === active.id
-    );
-    const activeIndexInProject = projectMembers.findIndex(
-      (m) => m.id === active.id
-    );
+    const draggedFromAvailable = availableMembers.find((m) => m.id === active.id);
+    const draggedFromProject = projectMembers.find((m) => m.id === active.id);
 
-    if (activeIndexInAvailable !== -1 && over.id !== active.id) {
-      // Move from available to project
-      const [draggedMember] = availableMembers.splice(
-        activeIndexInAvailable,
-        1
-      );
-      setProjectMembers((current) => [...current, draggedMember]);
-      setAvailableMembers([...availableMembers]);
-    } else if (activeIndexInProject !== -1 && over.id !== active.id) {
-      // Move from project to available
-      const [draggedMember] = projectMembers.splice(activeIndexInProject, 1);
-      setAvailableMembers((current) => [...current, draggedMember]);
-      setProjectMembers([...projectMembers]);
+    if (draggedFromAvailable) {
+      moveToProject(draggedFromAvailable);
+    } else if (draggedFromProject) {
+      moveToAvailable(draggedFromProject);
     }
   };
 
@@ -117,7 +104,7 @@ export default function CreateProjectMemberManagement({
   };
 
   if (communityMembersLoading) {
-    return <div>Loading ...</div>;
+    return <div>Loading...</div>;
   }
 
   if (communityMembersError) {

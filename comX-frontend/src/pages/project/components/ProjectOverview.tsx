@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import ErrorPage from "@/pages/genral/ErrorPage";
+import ErrorPage from "@/pages/general/ErrorPage";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Calendar } from "lucide-react";
 import ProjectOverviewSettings from "./project-settings/ProjectOverviewSettings";
@@ -22,7 +22,7 @@ export default function ProjectOverview() {
   
 
   if (projectLoading) {
-    return <div>Loading ...</div>;
+    return <div>Loading...</div>;
   }
 
   if (projectError) {

@@ -1,10 +1,10 @@
-import ErrorPage from "@/pages/genral/ErrorPage";
+import ErrorPage from "@/pages/general/ErrorPage";
 import CreateProject from "@/pages/project/create-project/CreateProject";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { FolderGit2 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserControlBox from "./UserControlBox";
-import CommunityHeader from "./ComunityHeader";
+import CommunityHeader from "./CommunityHeader";
 import AllProjectAPI from "@/api/project/AllProjectsAPI";
 
 export default function ProjectList() {
@@ -16,7 +16,7 @@ export default function ProjectList() {
   const { projects, projectsLoading, projectsError } = AllProjectAPI();
 
   if (projectsLoading) {
-    return <div>Loading ...</div>;
+    return <div>Loading...</div>;
   }
 
   if (projectsError) {

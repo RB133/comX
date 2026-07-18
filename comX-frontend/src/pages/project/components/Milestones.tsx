@@ -9,7 +9,7 @@ import { Progress } from "@radix-ui/react-progress";
 import { CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
-import ErrorPage from "@/pages/genral/ErrorPage";
+import ErrorPage from "@/pages/general/ErrorPage";
 import MilestonesSettings from "./project-settings/MilestoneSettings";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
@@ -25,7 +25,7 @@ export default function Milestones() {
   const {tasks,tasksLoading,tasksError} = TasksAPI();
 
   if (projectLoading || tasksLoading) {
-    return <div>Loading ...</div>;
+    return <div>Loading...</div>;
   }
 
   if (projectError || tasksError) {

@@ -1,4 +1,5 @@
 import { Community } from "@/types/Community";
+import { DEFAULT_AVATAR_URL } from "@/lib/constants";
 import { motion } from "framer-motion";
 import { Calendar, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -13,8 +14,6 @@ export default function CommunityCard({
   id
 }: Community) {
 
-  const tags = ["Maps", "Tech", "New"];
-  
   function timeDifferenceFromNow(dateString: string): string {
     const now = new Date();
     const targetDate = new Date(dateString);
@@ -43,8 +42,8 @@ export default function CommunityCard({
 
   const navigate = useNavigate();
   const ownerName = owner?.name ?? "Unknown owner";
-  const ownerAvatar = owner?.avatar || "https://github.com/shadcn.png";
-  const coverBackground = coverImage && coverImage !== "coverImage"
+  const ownerAvatar = owner?.avatar || DEFAULT_AVATAR_URL;
+  const coverBackground = coverImage
     ? { backgroundImage: `url(${coverImage})` }
     : { background: "linear-gradient(135deg, #0f172a, #2563eb)" };
 
@@ -75,16 +74,6 @@ export default function CommunityCard({
             className="rounded-full mr-2"
           />
           <span className="text-sm text-gray-700">Founded by {ownerName}</span>
-        </div>
-        <div className="flex flex-wrap gap-2 mb-4">
-          {tags.map((tag: string) => (
-            <span
-              key={tag}
-              className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded"
-            >
-              {tag}
-            </span>
-          ))}
         </div>
         <div className="flex items-center justify-between text-sm text-gray-500">
           <div className="flex items-center">

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiMenu, FiX } from "react-icons/fi";
-// import DarkLightToggleButton from "./Dark-Light-Toggle-Button";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/state/store";
@@ -10,11 +9,7 @@ import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Button } from "./ui/button";
 import { setTab } from "@/state/tab/tabSlice";
 import LogoutAPI from "@/api/auth/LogoutAPI";
-
-function getDesignation(s: string) {
-  s;
-  return "Software Engineer";
-}
+import { DEFAULT_AVATAR_URL } from "@/lib/constants";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,8 +20,6 @@ export default function Navbar() {
 
   const menuItems = [
     { id: 1, name: "Home", link: "/" },
-    // { id: 2, name: "About", link: "/about" },
-    // { id: 3, name: "Services", link: "/services" },
     { id: 4, name: "Contact", link: "/contact" },
     { id: 5, name: "Dashboard", link: "/dashboard" },
   ];
@@ -99,7 +92,6 @@ export default function Navbar() {
             ))}
           </div>
           <div className="hidden md:flex gap-8">
-            {/* <DarkLightToggleButton /> */}
             {!loginDetails.user ? (
               <div className="flex gap-2">
                 <Link to="/Login">
@@ -128,18 +120,12 @@ export default function Navbar() {
                 <Link to={`/profile/${loginDetails.user.username}`}>
                   <div className="flex gap-2 justify-center items-center">
                     <Avatar>
-                      <AvatarImage
-                        src={
-                          loginDetails.user.avatar
-                            ? loginDetails.user.avatar
-                            : "https://github.com/shadcn.png"
-                        }
-                      />
+                      <AvatarImage src={loginDetails.user.avatar || DEFAULT_AVATAR_URL} />
                       <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                     <div className="text-white flex flex-col justify-center items-center">
                       <p className="font-bold">{loginDetails.user.name}</p>
-                      <p>{getDesignation(loginDetails.user.designation)}</p>
+                      <p>{loginDetails.user.designation}</p>
                     </div>
                   </div>
                 </Link>
@@ -160,6 +146,7 @@ export default function Navbar() {
               className="text-white focus:outline-none"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              aria-label={isOpen ? "Close menu" : "Open menu"}
             >
               {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
             </motion.button>

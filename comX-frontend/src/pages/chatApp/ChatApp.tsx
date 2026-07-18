@@ -7,11 +7,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import useSocket from "@/hooks/useSocket";
 import { useParams } from "react-router-dom";
-import { useDebugger } from "@/hooks/useDebugger";
 import ProjectAPI from "@/api/project/ProjectAPI";
-import ErrorPage from "../genral/ErrorPage";
+import ErrorPage from "../general/ErrorPage";
 import { Avatar } from "@/components/ui/avatar";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { DEFAULT_AVATAR_URL } from "@/lib/constants";
 
 export default function ChatApp() {
   const { projectId } = useParams();
@@ -34,7 +34,6 @@ export default function ChatApp() {
       !initialFetchDone &&
       !fetchedProjectIds.current.has(id)
     ) {
-      console.log("Fetching messages for project:", projectId);
       fetchMessages(0);
       fetchedProjectIds.current.add(id); // Mark projectId as fetched
       setInitialFetchDone(true);
@@ -69,14 +68,11 @@ export default function ChatApp() {
 
   const { project, projectLoading, projectError } = ProjectAPI();
 
-  useDebugger(messages);
-
-  if (projectLoading) return <div>Loading ...</div>;
+  if (projectLoading) return <div>Loading...</div>;
   if (projectError) return <ErrorPage />;
 
-  const members = project.projectMembers;
-
-  console.log(members);
+  const members: { id: number; name: string; avatar: string }[] = project.projectMembers;
+  const currentUserId = user.user?.id;
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-br w-full">
@@ -89,61 +85,37 @@ export default function ChatApp() {
         <AnimatePresence initial={false}>
           {messages
             .filter((message) => message.projectId === parseInt(projectId!, 10))
-            .map((message) => (
-              <>
-                <motion.div className={`flex flex-col w-full`}>
+            .map((message) => {
+              const isOwnMessage = message.senderId === currentUserId;
+              const sender = members.find((item) => item.id === message.senderId);
+
+              return (
+                <motion.div key={message.id} className="flex flex-col w-full">
                   <motion.div
-                    key={message.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.3 }}
-                    className={`flex ${
-                      message.senderId === user.user!.id
-                        ? "justify-end"
-                        : "justify-start"
-                    } mb-4`}
+                    className={`flex ${isOwnMessage ? "justify-end" : "justify-start"} mb-4`}
                   >
-                    <motion.div
-                      className={`flex gap-2 ${
-                        message.senderId === user.user!.id && "flex-row-reverse"
-                      }`}
-                    >
+                    <motion.div className={`flex gap-2 ${isOwnMessage && "flex-row-reverse"}`}>
                       <Avatar className="mt-2">
-                        <AvatarImage
-                          src={
-                            members.find(
-                              (item: { id: number }) =>
-                                item.id === message.senderId
-                            ).avatar
-                          }
-                        />
+                        <AvatarImage src={sender?.avatar || DEFAULT_AVATAR_URL} />
                         <AvatarFallback>CN</AvatarFallback>
                       </Avatar>
                       <div
                         className={`max-w-xs px-4 py-2 rounded-lg ${
-                          message.senderId === user.user!.id
-                            ? "bg-blue-500 text-gray-200"
-                            : "bg-gray-200 text-gray-800"
+                          isOwnMessage ? "bg-blue-500 text-gray-200" : "bg-gray-200 text-gray-800"
                         }`}
                       >
-                        <p className="font-semibold">
-                          {
-                            members.find(
-                              (item: { id: number }) =>
-                                item.id === message.senderId
-                            ).name
-                          }
-                        </p>
+                        <p className="font-semibold">{sender?.name ?? "Unknown member"}</p>
                         <p>{message.content}</p>
                       </div>
                     </motion.div>
                   </motion.div>
                   <div
                     className={`w-full text-xs relative bottom-3 ${
-                      message.senderId === user.user!.id
-                        ? "flex justify-end right-14"
-                        : "left-14"
+                      isOwnMessage ? "flex justify-end right-14" : "left-14"
                     }`}
                   >
                     {new Date(message.createdAt).toLocaleTimeString("en-GB", {
@@ -152,8 +124,8 @@ export default function ChatApp() {
                     })}
                   </div>
                 </motion.div>
-              </>
-            ))}
+              );
+            })}
         </AnimatePresence>
         <div ref={messagesEndRef} />
       </motion.div>

@@ -9,10 +9,7 @@ export default function AllProjectAPI() {
     queryKey: [`project-list/${ID}`],
     queryFn: async () => {
       const response = await api.get(
-        `/project/get-all-projects/${ID}`,
-        {
-          withCredentials: true,
-        }
+        `/project/get-all-projects/${ID}`
       );
       return response.data.data;
     },

@@ -10,20 +10,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  CalendarIcon,
-  CheckCircleIcon,
-  ClockIcon,
-  AlertCircleIcon,
-  CircleIcon,
-  LucideProps,
-} from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import { useParams } from "react-router-dom";
 import ProjectAPI from "@/api/project/ProjectAPI";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import TaskFxn from "@/api/tasks/TasksFxnAPI";
-import ErrorPage from "../genral/ErrorPage";
+import ErrorPage from "../general/ErrorPage";
+import { formatDate } from "@/lib/date";
+import { getStatusInfo } from "@/lib/taskStatus";
 
 export default function TasksList({
   cards,
@@ -32,25 +27,6 @@ export default function TasksList({
   cards: TaskGet[];
   setActive: React.Dispatch<React.SetStateAction<TaskGet | null>>;
 }) {
-  const getStatusInfo = (status: string) => {
-    switch (status) {
-      case "INPROGRESS":
-        return { color: "bg-blue-500", icon: ClockIcon, label: "In Progress" };
-      case "PENDING":
-        return { color: "bg-yellow-500", icon: CircleIcon, label: "Pending" };
-      case "OVERDUE":
-        return { color: "bg-red-500", icon: AlertCircleIcon, label: "Overdue" };
-      case "COMPLETED":
-        return {
-          color: "bg-green-500",
-          icon: CheckCircleIcon,
-          label: "Completed",
-        };
-      default:
-        return { color: "bg-gray-500", icon: CircleIcon, label: "Unknown" };
-    }
-  };
-
   return (
     <Card className="w-full border-none shadow-none">
       <CardContent>
@@ -68,7 +44,6 @@ export default function TasksList({
                   key={`card-${card.title}-${card.id}`}
                   card={card}
                   setActive={setActive}
-                  getStatusInfo={getStatusInfo}
                 />
               ))}
             </div>
@@ -82,34 +57,15 @@ export default function TasksList({
 function TaskItem({
   card,
   setActive,
-  getStatusInfo,
 }: {
   card: TaskGet;
   setActive: (card: TaskGet) => void;
-  getStatusInfo: (status: string) => {
-    color: string;
-    icon: React.ForwardRefExoticComponent<
-      Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
-    >;
-    label: string;
-  };
 }) {
   const user = useSelector((state: RootState) => state.userDetails);
 
   const { color, icon: StatusIcon, label } = getStatusInfo(card.status);
 
   const { projectId, ID } = useParams();
-
-  function convertDate(dateStr: string): string {
-    const date = new Date(dateStr);
-
-    const adjustedYear = date.getUTCFullYear() - 1;
-
-    const day = date.getUTCDate();
-    const month = date.toLocaleString("en-US", { month: "long" });
-
-    return `${day} ${month} ${adjustedYear}`;
-  }
 
   const { project, projectLoading, projectError } = ProjectAPI();
 
@@ -125,7 +81,7 @@ function TaskItem({
     });
   };
 
-  if (projectLoading) return <div>Loading ...</div>;
+  if (projectLoading) return <div>Loading...</div>;
   if (projectError) return <ErrorPage />;
 
   const isAdmin = user.user?.id === project.ownerId;
@@ -201,7 +157,7 @@ function TaskItem({
             <div className="flex justify-center">
               <Badge
                 variant="secondary"
-                className={`${color} text-primary-foreground w-32 h-10 flex justify-center items-center hover:bg-${color}`}
+                className={`${color} text-primary-foreground w-32 h-10 flex justify-center items-center`}
               >
                 <StatusIcon className="w-4 h-4 mr-1" />
                 {label}
@@ -210,7 +166,7 @@ function TaskItem({
 
             <div className="flex justify-center items-center space-x-2 text-muted-foreground">
               <CalendarIcon className="w-4 h-4" />
-              <span>{convertDate(card.deadline)}</span>
+              <span>{formatDate(card.deadline)}</span>
             </div>
           </motion.div>
         </TooltipTrigger>
@@ -230,7 +186,7 @@ function PersonInfo({
   return (
     <div className="flex items-center space-x-2">
       <Avatar className="h-8 w-8">
-        <AvatarImage src={person.avatar} alt={"person.name"} />
+        <AvatarImage src={person.avatar} alt={person.name} />
         <AvatarFallback>{person.name.charAt(0)}</AvatarFallback>
       </Avatar>
       <div className="text-sm">

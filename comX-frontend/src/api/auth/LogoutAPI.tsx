@@ -14,9 +14,7 @@ export default function LogoutAPI() {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async () => {
-      const response = await api.get(`/auth/logout`, {
-        withCredentials: true,
-      });
+      const response = await api.get(`/auth/logout`);
       return response.data;
     },
     onSuccess() {

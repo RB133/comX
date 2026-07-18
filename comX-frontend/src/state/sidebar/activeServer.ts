@@ -1,19 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { readPersisted, writePersisted } from "@/lib/persistedState";
 
-function checkLocalStorageForActiveServer(): number {
-  const item = window.localStorage.getItem("active-server");
-  return item ? parseInt(item,10) : 2;
-}
+const ACTIVE_SERVER_KEY = "active-server";
 
-const initialState: number = checkLocalStorageForActiveServer();
+const initialState: number = readPersisted(ACTIVE_SERVER_KEY, 2, (raw) => parseInt(raw, 10));
 
 const activeServerSlice = createSlice({
   name: "active-Server",
   initialState,
   reducers: {
-    setActiveServer(_state: number, payload) {
-      window.localStorage.setItem("active-server", payload.payload);
-      return payload.payload;
+    setActiveServer(_state, action: PayloadAction<number>) {
+      writePersisted(ACTIVE_SERVER_KEY, action.payload);
+      return action.payload;
     },
   },
 });

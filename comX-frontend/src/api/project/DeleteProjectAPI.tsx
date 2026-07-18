@@ -17,7 +17,6 @@ export default function DeleteProjectAPI() {
           communityId: parseInt(ID!, 10),
           projectId: parseInt(projectId!, 10),
         },
-        withCredentials: true,
       });
       return response.data;
     },

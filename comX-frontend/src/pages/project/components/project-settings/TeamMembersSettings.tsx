@@ -49,12 +49,12 @@ export default function TeamMembersSettings({
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger>
+      <AlertDialogTrigger aria-label="Edit team members">
         <div className="absolute right-12 top-96 p-2 rounded-full hover:bg-gray-100">
           <Settings />
         </div>
       </AlertDialogTrigger>
-      <AlertDialogContent className="min-w-[1000px] *:">
+      <AlertDialogContent className="min-w-[1000px]">
         <AlertDialogHeader>
           <AlertDialogTitle>Edit Members</AlertDialogTitle>
           <AlertDialogDescription />

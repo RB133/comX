@@ -15,10 +15,28 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import ProfileAPI from "@/api/profile/ProfileAPI";
-import ErrorPage from "@/pages/genral/ErrorPage";
+import ErrorPage from "@/pages/general/ErrorPage";
+import { PRIORITY_LEVELS } from "@/lib/priority";
 
 const RADIAN = Math.PI / 180;
-const renderActiveShape = (props: any) => {
+
+type ActiveShapeProps = {
+  cx: number;
+  cy: number;
+  midAngle: number;
+  innerRadius: number;
+  outerRadius: number;
+  startAngle: number;
+  endAngle: number;
+  fill: string;
+  payload: { name: string };
+  percent: number;
+  value: number;
+};
+
+// recharts' ActiveShape type only guarantees `unknown`; narrow it ourselves
+// to the fields Pie actually passes through at runtime.
+const renderActiveShape = (rawProps: unknown) => {
   const {
     cx,
     cy,
@@ -31,7 +49,7 @@ const renderActiveShape = (props: any) => {
     payload,
     percent,
     value,
-  } = props;
+  } = rawProps as ActiveShapeProps;
   const sin = Math.sin(-RADIAN * midAngle);
   const cos = Math.cos(-RADIAN * midAngle);
   const sx = cx + (outerRadius + 10) * cos;
@@ -92,49 +110,16 @@ export default function PieChartTask() {
 
   const { profile, profileLoading, profileError } = ProfileAPI();
 
-  if (profileLoading) return <div>Loading ...</div>;
+  if (profileLoading) return <div>Loading...</div>;
   if (profileError) return <ErrorPage />;
 
-  console.log(profile);
+  const data = PRIORITY_LEVELS.map(({ key, label, color }) => ({
+    name: label,
+    value: profile.Task.filter((item: { priority: string }) => item.priority === key).length,
+    color,
+  }));
 
-  const data = [
-    {
-      name: "Low",
-      value: profile.Task.filter(
-        (item: { priority: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL" }) =>
-          item.priority === "LOW"
-      ).length,
-      color: "hsl(120, 60%, 50%)",
-    },
-    {
-      name: "Medium",
-      value: profile.Task.filter(
-        (item: { priority: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL" }) =>
-          item.priority === "MEDIUM"
-      ).length,
-      color: "hsl(45, 90%, 55%)",
-    },
-    {
-      name: "High",
-      value: profile.Task.filter(
-        (item: { priority: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL" }) =>
-          item.priority === "HIGH"
-      ).length,
-      color: "hsl(15, 80%, 50%)",
-    },
-    {
-      name: "Critical",
-      value: profile.Task.filter(
-        (item: { priority: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL" }) =>
-          item.priority === "CRITICAL"
-      ).length,
-      color: "hsl(0, 70%, 50%)",
-    },
-  ];
-
-  console.log(data);
-
-  const onPieEnter = (_: any, index: number) => {
+  const onPieEnter = (_: unknown, index: number) => {
     setActiveIndex(index);
   };
 
@@ -148,24 +133,12 @@ export default function PieChartTask() {
       </CardHeader>
       <CardContent className="flex flex-col">
         <ChartContainer
-          config={{
-            low: {
-              label: "low",
-              color: "hsl(120, 60%, 50%)",
-            },
-            medium: {
-              label: "Medium",
-              color: "hsl(45, 90%, 55%)",
-            },
-            high: {
-              label: "high",
-              color: "hsl(15, 80%, 50%)",
-            },
-            critical: {
-              label: "low",
-              color: "hsl(0, 70%, 50%)",
-            },
-          }}
+          config={Object.fromEntries(
+            PRIORITY_LEVELS.map(({ key, label, color }) => [
+              key.toLowerCase(),
+              { label, color },
+            ])
+          )}
           className="h-[182px]"
         >
           <ResponsiveContainer width="100%" height="100%">

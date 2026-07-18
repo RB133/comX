@@ -15,15 +15,11 @@ export default function TaskFxn() {
       projectId: number;
       taskId: number;
     }) => {
-      const response = await api.put(
-        `/task/complete-task`,
-        data,
-        { withCredentials: true }
-      );
+      const response = await api.put(`/task/complete-task`, data);
       return response.data;
     },
     onSuccess(data) {
-      toast.success(`${data.data}`);
+      toast.success(data.data);
       queryClient.invalidateQueries({
         queryKey: [`community${ID}/project/${projectId}/task`],
       });
@@ -48,11 +44,7 @@ export default function TaskFxn() {
         communityId: number;
         projectId: number;
       }) => {
-        const response = await api.put(
-          `/task/task-verdict`,
-          data,
-          { withCredentials: true }
-        );
+        const response = await api.put(`/task/task-verdict`, data);
         return response.data;
       },
       onSuccess() {

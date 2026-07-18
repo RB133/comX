@@ -5,7 +5,7 @@ import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Textarea } from "@/components/ui/textarea";
-import { AxiosError } from "axios";
+import axios from "axios";
 import { api } from "@/lib/api-client";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -25,37 +25,29 @@ export default function CreateCommunity() {
   const queryClient = useQueryClient();
 
   const { mutateAsync: createCommunity, isPending } = useMutation({
-    mutationFn: (data: {
-      name: string;
-      description: string;
-      scope: string;
-      userId: number;
-      coverImage: string;
-    }) => {
-      return api.post(`/community/create-community`, data, {
-        withCredentials: true,
-      });
+    mutationFn: (data: { name: string; description: string; scope: string }) => {
+      return api.post(`/community/create-community`, data);
     },
-    onSuccess(data) {
-      console.log(data);
+    onSuccess() {
       queryClient.invalidateQueries({ queryKey: [`communityList${user?.id}`] });
+      toast.success("Community created successfully!");
     },
-    onError(error: AxiosError) {
-      console.log(error);
-      toast.error("Invalid");
+    onError(error: unknown) {
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.message ?? "Unable to create community."
+        : "Unable to create community.";
+      toast.error(message);
     },
   });
 
   const handleCreateCommunity = (e: React.FormEvent) => {
     e.preventDefault();
-    const data = {
+    if (!newCommunity.trim()) return;
+    createCommunity({
       name: newCommunity,
       description: communityDescription,
       scope: selectedOption,
-      userId: user!.id,
-      coverImage: "coverImage",
-    };
-    createCommunity(data);
+    });
     setNewCommunity("");
     setCommunityDescription("");
   };
@@ -123,13 +115,14 @@ export default function CreateCommunity() {
         </div>
         <motion.button
           type="submit"
+          disabled={isPending}
           className={`w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors duration-300 ${
             isPending && "hover:bg-blue-900 bg-blue-900 cursor-not-allowed"
           }`}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          Create Community
+          {isPending ? "Creating..." : "Create Community"}
         </motion.button>
       </form>
     </motion.div>

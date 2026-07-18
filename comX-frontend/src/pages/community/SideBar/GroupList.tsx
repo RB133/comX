@@ -1,4 +1,4 @@
-import { Groups } from "@/lib/DummyData";
+import { Groups } from "@/lib/sidebarNavigation";
 import { cn } from "@/lib/utils";
 import { setActiveChannel } from "@/state/sidebar/activeChannel";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
@@ -6,10 +6,10 @@ import { ChevronDown } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import CommunityHeader from "./ComunityHeader";
+import CommunityHeader from "./CommunityHeader";
 import UserControlBox from "./UserControlBox";
 import AllProjectAPI from "@/api/project/AllProjectsAPI";
-import ErrorPage from "@/pages/genral/ErrorPage";
+import ErrorPage from "@/pages/general/ErrorPage";
 
 const GroupList = React.memo(function GroupList() {
   const groups = Groups;
@@ -37,7 +37,7 @@ const GroupList = React.memo(function GroupList() {
   }, [dispatch]);
 
   if (projectsLoading) {
-    return <div>Loading . . .</div>;
+    return <div>Loading...</div>;
   }
 
   if (projectsError) {

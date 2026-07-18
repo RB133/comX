@@ -2,6 +2,7 @@
 
 import { ReactNode, useState } from "react";
 import { motion } from "framer-motion";
+import toast, { Toaster } from "react-hot-toast";
 import {
   Users,
   Shield,
@@ -31,7 +32,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-interface PROPS {
+interface SettingCardProps {
   title: string;
   description: string;
   icon: React.ForwardRefExoticComponent<
@@ -192,7 +193,7 @@ export default function Permissions() {
             <CardFooter>
               <Button
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                onClick={() => alert("Report system configured")}
+                onClick={() => toast.success("Report system configured")}
               >
                 Save Configuration
               </Button>
@@ -200,11 +201,12 @@ export default function Permissions() {
           </Card>
         </motion.div>
       </motion.div>
+      <Toaster />
     </div>
   );
 }
 
-const SettingCard = ({ title, description, icon: Icon, children }: PROPS) => (
+const SettingCard = ({ title, description, icon: Icon, children }: SettingCardProps) => (
   <motion.div variants={itemAnimation} className="h-full">
     <Card className="h-full bg-white border shadow-sm transition hover:shadow-lg">
       <CardHeader>

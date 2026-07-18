@@ -3,6 +3,7 @@ import { RootState } from "@/state/store";
 import { Label } from "@radix-ui/react-label";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api-client";
+import axios from "axios";
 import { motion } from "framer-motion";
 import { LogIn } from "lucide-react";
 import { useState } from "react";
@@ -16,15 +17,9 @@ export default function JoinCommunity() {
 
   const queryClient = useQueryClient();
 
-  const { mutateAsync: joinCommunity,isPending } = useMutation({
+  const { mutateAsync: joinCommunity, isPending } = useMutation({
     mutationFn: async (joinCode: string) => {
-      const response = await api.post(
-        `/member/join-community`,
-        { joinCode },
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await api.post(`/member/join-community`, { joinCode });
       return response.data;
     },
     onSuccess: () => {
@@ -32,8 +27,11 @@ export default function JoinCommunity() {
       queryClient.invalidateQueries({ queryKey: [`communityList${user.user?.id}`] });
       setJoinCode("");
     },
-    onError(error:any) {
-      toast.error(error.response.data.message);
+    onError(error: unknown) {
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.message ?? "Unable to join community."
+        : "Unable to join community.";
+      toast.error(message);
     },
   });
 
@@ -73,11 +71,12 @@ export default function JoinCommunity() {
         </div>
         <motion.button
           type="submit"
+          disabled={isPending}
           className={`w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors duration-300 ${isPending && "bg-green-900 hover:bg-green-900 cursor-not-allowed"}`}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          Join Community
+          {isPending ? "Joining..." : "Join Community"}
         </motion.button>
       </form>
       <Toaster />

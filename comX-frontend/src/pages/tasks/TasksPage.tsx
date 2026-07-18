@@ -7,7 +7,7 @@ import TasksList from "./TasksList";
 import { TaskGet } from "@/types/tasks";
 import SingleTask from "./SingelTask";
 import { useParams } from "react-router-dom";
-import ErrorPage from "../genral/ErrorPage";
+import ErrorPage from "../general/ErrorPage";
 import { Toaster } from "react-hot-toast";
 import TasksAPI from "@/api/tasks/TasksAPI";
 
@@ -43,7 +43,7 @@ export default function TaskPage() {
   if (projectId === undefined) return <div>Hello World</div>;
 
   if (tasksLoading) {
-    return <div>Loading ...</div>;
+    return <div>Loading...</div>;
   }
 
   if (tasksError) {

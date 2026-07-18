@@ -20,7 +20,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
-import ErrorPage from "@/pages/genral/ErrorPage";
+import ErrorPage from "@/pages/general/ErrorPage";
 import ProfileAPI from "@/api/profile/ProfileAPI";
 import LogoutAPI from "@/api/auth/LogoutAPI";
 import PersonalInfoSettings from "./Settings/PersonalInfoSettings";
@@ -32,7 +32,7 @@ export default function PersonalInfo() {
   const { handleLogout, logoutPending } = LogoutAPI();
   const user = useSelector((state: RootState) => state.userDetails);
 
-  if (profileLoading) return <div>Loading ...</div>;
+  if (profileLoading) return <div>Loading...</div>;
   if (profileError) return <ErrorPage />;
 
   const projects = profile.projects.length;

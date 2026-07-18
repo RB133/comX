@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Role } from "@/lib/roles";
 
 export type Designation = {
   value: string;
@@ -47,7 +48,7 @@ export type Member = {
   username: string;
   designation: string;
   email: string;
-  role: "MEMBER" | "ADMIN" | "BANNED" | "QUEUE" | "OWNER";
+  role: Role;
   joinedAt: string;
   avatar: string;
 };

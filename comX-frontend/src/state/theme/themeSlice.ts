@@ -1,26 +1,24 @@
 import { Theme } from "@/types/Theme";
 import { createSlice } from "@reduxjs/toolkit";
+import { readPersisted, writePersisted } from "@/lib/persistedState";
 
-function checkLocalStorageForTheme(): Theme {
-  const item = window.localStorage.getItem("theme");
-  return item === "light" || item === "dark" ? (item as Theme) : "light";
-}
+const THEME_KEY = "theme";
 
-const initialState: Theme = checkLocalStorageForTheme();
+const initialState: Theme = readPersisted(THEME_KEY, "light", (raw) =>
+  raw === "dark" ? "dark" : "light"
+);
 
 const themeSlice = createSlice({
   name: "theme",
   initialState,
   reducers: {
-    setDark: (state) => {
-      state;
-      window.localStorage.setItem("theme", "dark");
-      return "dark";  
+    setDark: (_state: Theme): Theme => {
+      writePersisted(THEME_KEY, "dark");
+      return "dark";
     },
-    setLight: (state) => {
-      state;
-      window.localStorage.setItem("theme", "light");
-      return "light";  
+    setLight: (_state: Theme): Theme => {
+      writePersisted(THEME_KEY, "light");
+      return "light";
     },
   },
 });

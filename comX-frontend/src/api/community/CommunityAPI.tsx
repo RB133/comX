@@ -8,10 +8,7 @@ export default function CommunityAPI() {
   const { data, isLoading, error } = useQuery({
     queryKey: [`communityDetails/${ID}`],
     queryFn: async () => {
-      const response = await api.get(
-        `/community/get-community-details/${ID}`,
-        { withCredentials: true }
-      );
+      const response = await api.get(`/community/get-community-details/${ID}`);
       return response.data.data;
     },
     staleTime: Infinity,

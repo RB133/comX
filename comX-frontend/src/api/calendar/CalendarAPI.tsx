@@ -10,10 +10,7 @@ export default function CalendarAPI() {
     queryKey: [`calendar/${ID}`],
     queryFn: async () => {
       const response = await api.get(
-        `/calendar/get-calendar-task/${ID}`,
-        {
-          withCredentials: true,
-        }
+        `/calendar/get-calendar-task/${ID}`
       );
       return response.data.data;
     },

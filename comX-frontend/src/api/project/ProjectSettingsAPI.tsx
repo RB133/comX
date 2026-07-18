@@ -30,16 +30,13 @@ export function EditBasicInfo({
         deadline,
         projectId: parseInt(projectId!, 10),
       };
-      console.log(data);
       const response = await api.patch(
         `/project/edit-basic-info`,
         data,
-        { withCredentials: true }
       );
       return response.data;
     },
-    onSuccess(data) {
-      console.log(data);
+    onSuccess() {
       toast.success("Project Edited Successfully!");
       queryClient.invalidateQueries({ queryKey: [`project-list/${ID}`] });
     },
@@ -69,16 +66,13 @@ export function EditMilestone({ milestones }: { milestones: Milestone[] }) {
         milestones: milestones.map((item) => item.name),
         projectId: parseInt(projectId!, 10),
       };
-      console.log(data);
       const response = await api.patch(
         `/project/edit-milestone`,
         data,
-        { withCredentials: true }
       );
       return response.data;
     },
-    onSuccess(data) {
-      console.log(data);
+    onSuccess() {
       toast.success("Project Edited Successfully!");
       queryClient.invalidateQueries({
         queryKey: [`community${ID}/project/${projectId}`],
@@ -133,7 +127,6 @@ export function EditTeamMembers({
       const response = await api.patch(
         `/project/edit-member`,
         data,
-        { withCredentials: true }
       );
       return response.data;
     },

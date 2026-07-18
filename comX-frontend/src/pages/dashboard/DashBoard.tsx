@@ -7,7 +7,7 @@ import useAuthCheck from "@/hooks/useAuthCheck";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import { Toaster } from "react-hot-toast";
-import ErrorPage from "../genral/ErrorPage";
+import ErrorPage from "../general/ErrorPage";
 import CommunityCard from "./components/CommunityCard";
 import CreateCommunity from "./components/CreateCommunity";
 import JoinCommunity from "./components/JoinCommunity";
@@ -15,12 +15,7 @@ import LastTask from "./components/Last-Task";
 
 
 const fetchCommunityList = async () => {
-  const response = await api.get(
-    `/community/get-user-communities`,
-    {
-      withCredentials: true,
-    }
-  );
+  const response = await api.get(`/community/get-user-communities`);
   return response.data.data;
 };
 
@@ -36,7 +31,7 @@ export default function Dashboard() {
   });
 
   if(isPending){
-    return <div>Loading ...</div>
+    return <div>Loading...</div>
   }
 
   if(isError){
@@ -57,21 +52,27 @@ export default function Dashboard() {
             <h2 className="text-xl font-semibold mb-4 flex items-center">
               <Users className="mr-2" /> Your Communities
             </h2>
-            <div className="grid grid-cols-1 gap-6">
-              {communities.map((community: Community) => (
-                <CommunityCard
-                  key={community.id}
-                  coverImage={community.coverImage}
-                  createdAt={community.createdAt}
-                  description={community.description}
-                  memberCount={community.memberCount}
-                  name={community.name}
-                  owner={community.owner}
-                  id={community.id}
-                  joinCode={community.joinCode}
-                />
-              ))}
-            </div>
+            {communities.length === 0 ? (
+              <p className="text-sm text-gray-500">
+                You haven't joined or created any communities yet. Create one or join with a code to get started.
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 gap-6">
+                {communities.map((community: Community) => (
+                  <CommunityCard
+                    key={community.id}
+                    coverImage={community.coverImage}
+                    createdAt={community.createdAt}
+                    description={community.description}
+                    memberCount={community.memberCount}
+                    name={community.name}
+                    owner={community.owner}
+                    id={community.id}
+                    joinCode={community.joinCode}
+                  />
+                ))}
+              </div>
+            )}
           </motion.div>
 
           <div className="space-y-6">

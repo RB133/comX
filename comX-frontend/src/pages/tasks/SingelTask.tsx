@@ -11,6 +11,7 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import TaskFxn from "@/api/tasks/TasksFxnAPI";
+import { formatDate } from "@/lib/date";
 
 export default function SingleTask({
   active,
@@ -42,20 +43,9 @@ export default function SingleTask({
     return null;
   }
 
-  function convertDate(dateStr: string): string {
-    const date = new Date(dateStr);
-
-    const adjustedYear = date.getUTCFullYear() - 1;
-
-    const day = date.getUTCDate();
-    const month = date.toLocaleString("en-US", { month: "long" });
-
-    return `${day} ${month} ${adjustedYear}`;
-  }
-
-  const isDone = active.status === "COMPLETED" || active.status === "PENDING";
-  const progress =
-    (active.status === "COMPLETED" || active.status === "PENDING") ? 100 : 0;
+  const isCompleted = active.status === "COMPLETED";
+  const isPendingReview = active.status === "PENDING";
+  const progress = isCompleted ? 100 : isPendingReview ? 50 : 0;
 
   return (
     <AnimatePresence>
@@ -78,6 +68,7 @@ export default function SingleTask({
             <motion.button
               className="absolute top-4 right-4 p-2 bg-white dark:bg-neutral-800 rounded-full text-neutral-600 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
               onClick={() => setActive(null)}
+              aria-label="Close"
             >
               <X size={20} />
             </motion.button>
@@ -92,10 +83,10 @@ export default function SingleTask({
                 {active.title}
               </motion.h3>
               <Badge
-                variant={isDone ? "success" : "secondary"}
+                variant={isCompleted ? "success" : "secondary"}
                 className="text-sm mr-12"
               >
-                {isDone ? "Completed" : active.priority}
+                {isCompleted ? "Completed" : isPendingReview ? "Pending Review" : active.priority}
               </Badge>
             </div>
 
@@ -110,7 +101,7 @@ export default function SingleTask({
               />
               <span>{active.user.name}</span>
               <span>•</span>
-              <span>{convertDate(active.deadline)}</span>
+              <span>{formatDate(active.deadline)}</span>
             </motion.div>
 
             <motion.p
@@ -148,18 +139,26 @@ export default function SingleTask({
                   </Button>
                 ) : (
                   <Button
-                    variant={isDone ? "outline" : "default"}
+                    variant={isPendingReview ? "outline" : "default"}
+                    disabled={isCompleted}
                     className={`${
-                      isDone
-                        ? "bg-green-100 text-green-700"
-                        : "bg-blue-500 hover:bg-blue-600"
+                      isPendingReview
+                        ? "bg-yellow-100 text-yellow-700"
+                        : isCompleted
+                          ? "bg-green-100 text-green-700"
+                          : "bg-blue-500 hover:bg-blue-600"
                     } transition-colors`}
                     onClick={handleMarkAsDone}
                   >
-                    {isDone ? (
+                    {isCompleted ? (
                       <>
                         <CheckCircle size={18} className="mr-2" />
                         Completed
+                      </>
+                    ) : isPendingReview ? (
+                      <>
+                        <Circle size={18} className="mr-2" />
+                        Awaiting Review
                       </>
                     ) : (
                       <>

@@ -11,7 +11,7 @@ import {
 import { CheckCircle, Clock, Disc, PlayCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import ProfileAPI from "@/api/profile/ProfileAPI";
-import ErrorPage from "@/pages/genral/ErrorPage";
+import ErrorPage from "@/pages/general/ErrorPage";
 
 type Task = {
   id: number;
@@ -27,7 +27,7 @@ export default function TaskForProfile() {
 
   const { profile, profileLoading, profileError } = ProfileAPI();
 
-  if (profileLoading) return <div>Loading ...</div>;
+  if (profileLoading) return <div>Loading...</div>;
   if (profileError) return <ErrorPage />;
 
   const tasks: Task[] = profile.Task.map((task) => ({

@@ -13,10 +13,7 @@ export default function TasksAPI() {
     queryKey: [`community${ID}/project/${projectId}/task`],
     queryFn: async () => {
       const response = await api.get(
-        `/task/get-all-tasks-in-project/${ID}/${projectId}`,
-        {
-          withCredentials: true,
-        }
+        `/task/get-all-tasks-in-project/${ID}/${projectId}`
       );
       return response.data.data;
     },

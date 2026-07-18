@@ -10,10 +10,7 @@ export default function ProfileAPI() {
   const { data, isLoading, error } = useQuery<PublicProfile>({
     queryKey: [`user-info-${username}`],
     queryFn: async () => {
-      const response = await api.get(
-        `/user/get-user-info/${username}`,
-        { withCredentials: true }
-      );
+      const response = await api.get(`/user/get-user-info/${username}`);
 
       return response.data.data;
     },

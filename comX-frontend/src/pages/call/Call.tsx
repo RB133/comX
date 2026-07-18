@@ -21,16 +21,10 @@ export default function Call() {
       if (!community?.joinCode || !user?.id) return;
 
       try {
-        const res = await api.post(
-          `/community/livekit/get-token`,
-          {
-            roomName: community.joinCode,
-            identity: user.username,
-          },
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await api.post(`/community/livekit/get-token`, {
+          roomName: community.joinCode,
+          identity: user.username,
+        });
         setToken(res.data.token);
       } catch (err) {
         console.error("Error fetching token:", err);

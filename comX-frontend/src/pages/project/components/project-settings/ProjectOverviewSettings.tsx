@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { LabelInputContainer } from "@/pages/auth/components/SignUpExtraComponenets";
+import { LabelInputContainer } from "@/pages/auth/components/SignUpExtraComponents";
 import { CalendarIcon, Settings } from "lucide-react";
 import { useState } from "react";
 import {
@@ -48,7 +48,7 @@ export default function ProjectOverviewSettings({
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger>
+      <AlertDialogTrigger aria-label="Edit project settings">
         <div className="absolute right-12 top-12 p-2 rounded-full hover:bg-gray-100">
           <Settings />
         </div>
@@ -85,10 +85,11 @@ export default function ProjectOverviewSettings({
                 />
               </LabelInputContainer>
               <LabelInputContainer className="mb-4">
-                <Label htmlFor="Project Title">Deadline</Label>
+                <Label htmlFor="project-deadline">Deadline</Label>
                 <Popover>
                   <PopoverTrigger asChild className="flex items-center">
                     <Button
+                      id="project-deadline"
                       variant={"outline"}
                       className={cn(
                         "justify-start text-left font-normal bg-gray-50 h-11 w-[444px]",

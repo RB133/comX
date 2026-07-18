@@ -1,19 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { readPersisted, writePersisted } from "@/lib/persistedState";
 
-function checkLocalStorageForActiveChannel(): number {
-  const item = window.localStorage.getItem("active-channel");
-  return typeof item === "number" ? item : 17;
-}
+const ACTIVE_CHANNEL_KEY = "active-channel";
 
-const initialState: number = checkLocalStorageForActiveChannel();
+const initialState: number = readPersisted(ACTIVE_CHANNEL_KEY, 17, (raw) => parseInt(raw, 10));
 
 const activeChannelSlice = createSlice({
   name: "active-channel",
   initialState,
   reducers: {
-    setActiveChannel(_state: number, payload) {
-      window.localStorage.setItem("active-channel", payload.payload);
-      return payload.payload;
+    setActiveChannel(_state, action: PayloadAction<number>) {
+      writePersisted(ACTIVE_CHANNEL_KEY, action.payload);
+      return action.payload;
     },
   },
 });

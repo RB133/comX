@@ -1,7 +1,8 @@
 import { RootState } from "@/state/store";
-import PROPS from "@/types/MemberMangementProps";
+import { MemberManagementProps } from "@/types/MemberManagementProps";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api-client";
+import { isAdminRole } from "@/lib/roles";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -12,7 +13,7 @@ export default function MemberManagementAPI({
   setConfirmMessage,
   setShowConfirmDialog,
   filteredMembers,
-}: PROPS) {
+}: MemberManagementProps) {
   const user = useSelector((state: RootState) => state.userDetails);
   const { ID } = useParams();
 
@@ -22,9 +23,7 @@ export default function MemberManagementAPI({
   const isAdmin = useMemo(
     () =>
       filteredMembers.some(
-        (m) =>
-          (m.role === "ADMIN" || m.role === "OWNER") &&
-          m.id === user.user?.id
+        (m) => isAdminRole(m.role) && m.id === user.user?.id
       ),
     [filteredMembers, user.user?.id]
   );
@@ -35,81 +34,53 @@ export default function MemberManagementAPI({
     setShowConfirmDialog(true);
   };
 
-  // Function to handle invalidating queries
   const invalidateMembers = () => {
     queryClient.invalidateQueries({ queryKey: [`Member-List/${ID}`] });
+  };
+
+  const invalidateCommunityList = () => {
+    queryClient.invalidateQueries({ queryKey: [`communityList${user.user?.id}`] });
   };
 
   // Mutation handlers
   const mutations = {
     promote: useMutation({
-      mutationFn: async (details: {
-        communityId: number;
-        promoting_id: number;
-      }) => {
-        return api.post(`/member/promote-member`, details, {
-          withCredentials: true,
-        });
+      mutationFn: async (details: { communityId: number; promoting_id: number }) => {
+        return api.post(`/member/promote-member`, details);
       },
       onSuccess: invalidateMembers,
     }),
     demote: useMutation({
-      mutationFn: async (details: {
-        communityId: number;
-        demoting_id: number;
-      }) => {
-        return api.post(`/member/demote-member`, details, {
-          withCredentials: true,
-        });
+      mutationFn: async (details: { communityId: number; demoting_id: number }) => {
+        return api.post(`/member/demote-member`, details);
       },
       onSuccess: invalidateMembers,
     }),
     ban: useMutation({
-      mutationFn: async (details: {
-        communityId: number;
-        baning_id: number;
-      }) => {
-        return api.post(`/member/ban-member`, details, {
-          withCredentials: true,
-        });
+      mutationFn: async (details: { communityId: number; baning_id: number }) => {
+        return api.post(`/member/ban-member`, details);
       },
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [`Member-List/${ID}`] });
-        queryClient.invalidateQueries({
-          queryKey: [`communityList${user.user?.id}`],
-        });
+        invalidateMembers();
+        invalidateCommunityList();
       },
     }),
     remove: useMutation({
-      mutationFn: async (details: {
-        communityId: number;
-        removingId: number;
-      }) => {
-        return api.post(`/member/remove-member`, details, {
-          withCredentials: true,
-        });
+      mutationFn: async (details: { communityId: number; removingId: number }) => {
+        return api.post(`/member/remove-member`, details);
       },
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [`Member-List/${ID}`] });
-        queryClient.invalidateQueries({ queryKey: ["communityList"] });
+        invalidateMembers();
+        invalidateCommunityList();
       },
     }),
     accept: useMutation({
-      mutationFn: async (details: {
-        communityId: number;
-        memberId: number;
-      }) => {
-        return api.post(
-          `/member/accept-join-request`,
-          details,
-          {
-            withCredentials: true,
-          }
-        );
+      mutationFn: async (details: { communityId: number; memberId: number }) => {
+        return api.post(`/member/accept-join-request`, details);
       },
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [`Member-List/${ID}`] });
-        queryClient.invalidateQueries({ queryKey: ["communityList"] });
+        invalidateMembers();
+        invalidateCommunityList();
       },
     }),
   };

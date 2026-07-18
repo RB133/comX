@@ -1,14 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RootState } from "@/state/store";
-import PROPS from "@/types/MemberMangementProps";
+import { MemberManagementProps } from "@/types/MemberManagementProps";
 import { Calendar, Mail, Trash2, UserMinus } from "lucide-react";
 import { useSelector } from "react-redux";
+import { isAdminRole } from "@/lib/roles";
 import MemberManagementAPI from "../../../api/community/MemberManagementAPI";
 import { useParams } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export default function Admin_MemberManagement(props: PROPS) {
+export default function Admin_MemberManagement(props: MemberManagementProps) {
   const { ID } = useParams();
 
   const user = useSelector((state: RootState) => state.userDetails);
@@ -25,7 +26,7 @@ export default function Admin_MemberManagement(props: PROPS) {
       <CardContent className="p-0">
         <ul className="divide-y divide-gray-200">
           {props.filteredMembers
-            .filter((m) => m.role === "ADMIN" || m.role === "OWNER")
+            .filter((m) => isAdminRole(m.role))
             .map((admin) => (
               <li
                 key={admin.id}

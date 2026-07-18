@@ -8,11 +8,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { ItemPicker } from "@/components/Item-Picker";
-import { designation } from "@/lib/destignation";
+import { designation } from "@/lib/designation";
 import { Button } from "@/components/ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useNavigate } from "react-router-dom";
-import { BottomGradient, LabelInputContainer } from "./SignUpExtraComponenets";
+import { BottomGradient, LabelInputContainer } from "./SignUpExtraComponents";
 
 const defaultDesignation = "Student";
 
@@ -55,15 +55,11 @@ export default function SignUpFormPage1() {
   });
 
   const onSubmit: SubmitHandler<UserData> = async (data) => {
-    try {
-      const selectedDesignation =
-        designation.find((item) => item.id.toString() === post)?.value ?? defaultDesignation;
-      data.designation = selectedDesignation;
-      await submitForm(data);
-    } catch (e) {
-      console.error(e);
-      toast.error("An issue occurred during form submission.");
-    }
+    const selectedDesignation =
+      designation.find((item) => item.id.toString() === post)?.value ?? defaultDesignation;
+    data.designation = selectedDesignation;
+    // Errors are already surfaced by the mutation's onError toast.
+    await submitForm(data).catch(() => {});
   };
 
   return (
@@ -80,7 +76,7 @@ export default function SignUpFormPage1() {
           <Label htmlFor="name">Name</Label>
           <Input
             id="name"
-            placeholder="Saksham Aggarwal"
+            placeholder="Rishit Bansal"
             type="text"
             {...register("name", { required: true })}
           />
@@ -94,13 +90,13 @@ export default function SignUpFormPage1() {
           <Label htmlFor="username">Username</Label>
           <Input
             id="username"
-            placeholder="sakshamaggarwal"
+            placeholder="rishitbansal"
             type="text"
             {...register("username", { required: true })}
           />
-          {errors.name && (
+          {errors.username && (
             <span className="text-xs text-red-500 font-bold">
-              {errors.name.message}
+              {errors.username.message}
             </span>
           )}
         </LabelInputContainer>
@@ -108,7 +104,7 @@ export default function SignUpFormPage1() {
           <Label htmlFor="email">Email Address</Label>
           <Input
             id="email"
-            placeholder="saksham@example.com"
+            placeholder="rishitbansal231@gmail.com"
             type="email"
             {...register("email", { required: true })}
           />

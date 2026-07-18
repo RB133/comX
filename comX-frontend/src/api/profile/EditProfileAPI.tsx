@@ -45,7 +45,6 @@ export default function EditProfileAPI() {
         `/user/edit-user-info/${username}`,
         formData,
         {
-          withCredentials: true,
           headers: {
             "Content-Type": "multipart/form-data",
           },

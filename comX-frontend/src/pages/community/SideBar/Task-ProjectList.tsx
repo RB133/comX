@@ -1,4 +1,4 @@
-import ErrorPage from "@/pages/genral/ErrorPage";
+import ErrorPage from "@/pages/general/ErrorPage";
 import CreateProject from "@/pages/project/create-project/CreateProject";
 import { RootState } from "@/state/store";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
@@ -6,7 +6,7 @@ import { FolderGit2 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import UserControlBox from "./UserControlBox";
-import CommunityHeader from "./ComunityHeader";
+import CommunityHeader from "./CommunityHeader";
 import AllProjectAPI from "@/api/project/AllProjectsAPI";
 
 export default function ProjectListForTasks() {
@@ -20,7 +20,7 @@ export default function ProjectListForTasks() {
   const { projects, projectsLoading, projectsError } = AllProjectAPI();
 
   if (projectsLoading) {
-    return <div>Loading ...</div>;
+    return <div>Loading...</div>;
   }
 
   if (projectsError) {

@@ -1,19 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { readPersisted, writePersisted } from "@/lib/persistedState";
 
-function checkLocalStorageForTab(): string {
-  const item = window.localStorage.getItem("tab");
-  return typeof item === "string" ? item : "Home";
-}
+const TAB_KEY = "tab";
 
-const initialState: string = checkLocalStorageForTab();
+const initialState: string = readPersisted(TAB_KEY, "Home", (raw) => raw);
 
 const tabSlice = createSlice({
   name: "tab",
   initialState,
   reducers: {
-    setTab(_state , payload) {
-      window.localStorage.setItem("tab", payload.payload);
-      return payload.payload;
+    setTab(_state, action: PayloadAction<string>) {
+      writePersisted(TAB_KEY, action.payload);
+      return action.payload;
     },
   },
 });

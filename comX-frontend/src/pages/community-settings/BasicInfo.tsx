@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import ErrorPage from "@/pages/general/ErrorPage";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -62,12 +63,12 @@ export default function BasicInformation() {
 
   // Show loading state
   if (communityLoading) {
-    return <div>Loading . . .</div>;
+    return <div>Loading...</div>;
   }
 
   // Handle error state
   if (communityError) {
-    return <div>Error loading community details.</div>;
+    return <ErrorPage />;
   }
 
   // Community details do not currently include owner metadata.

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ErrorPage from "@/pages/general/ErrorPage";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { useDebounce } from "@/hooks/useDebounce";
-import Top_MemoryManagement from "./MemberManagement/Top-MemoryManagement";
+import Top_MemberManagement from "./MemberManagement/Top-MemberManagement";
 import Search_MemberManagement from "./MemberManagement/Search-MemberManagement";
 import { motion } from "framer-motion";
 import Members_MemberManagement from "./MemberManagement/Member-MemberManagement";
@@ -17,6 +18,7 @@ import Admin_MemberManagement from "./MemberManagement/Admin-MemberManagement";
 import Invite_MemberManagement from "./MemberManagement/Invite-MemberManagement";
 import Ban_MemberManagement from "./MemberManagement/Ban-MemberManagement";
 import CommunityMembersAPI from "@/api/community/CommunityMembersAPI";
+import { isAdminRole } from "@/lib/roles";
 
 const itemAnimation = {
   hidden: { opacity: 0, y: 20 },
@@ -39,9 +41,7 @@ export default function MemberManagement() {
 
   // Counting members based on their roles
   const memberCount = communityMembers.filter((m) => m.role === "MEMBER").length;
-  const adminCount = communityMembers.filter(
-    (m) => m.role === "ADMIN" || m.role === "OWNER"
-  ).length;
+  const adminCount = communityMembers.filter((m) => isAdminRole(m.role)).length;
   const bannedCount = communityMembers.filter((m) => m.role === "BANNED").length;
   const inviteCount = communityMembers.filter((m) => m.role === "QUEUE").length;
 
@@ -63,7 +63,7 @@ export default function MemberManagement() {
 
   // Handle error case
   if (communityMembersError) {
-    return <div>Error loading members: {communityMembersError.message}</div>;
+    return <ErrorPage />;
   }
 
   return (
@@ -77,7 +77,7 @@ export default function MemberManagement() {
           Customize and manage your community experience.
         </p>
       </motion.div>
-      <Top_MemoryManagement
+      <Top_MemberManagement
         memberCount={memberCount}
         adminCount={adminCount}
         bannedCount={bannedCount}

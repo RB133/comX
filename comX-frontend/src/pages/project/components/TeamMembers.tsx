@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import ErrorPage from "@/pages/genral/ErrorPage";
+import ErrorPage from "@/pages/general/ErrorPage";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import TeamMembersSettings from "./project-settings/TeamMembersSettings";
@@ -21,7 +21,7 @@ export default function TeamMembers() {
   
 
   if (projectLoading) {
-    return <div>Loading ...</div>;
+    return <div>Loading...</div>;
   }
 
   if (projectError) {

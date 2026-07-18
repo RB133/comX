@@ -1,13 +1,13 @@
-import ErrorPage from "@/pages/genral/ErrorPage";
+import ErrorPage from "@/pages/general/ErrorPage";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import CommunityHeader from "./ComunityHeader";
+import CommunityHeader from "./CommunityHeader";
 import AllProjectAPI from "@/api/project/AllProjectsAPI";
 
 export default function CallList() {
   const { projectsLoading, projectsError } = AllProjectAPI();
 
   if (projectsLoading) {
-    return <div>Loading ...</div>;
+    return <div>Loading...</div>;
   }
 
   if (projectsError) {

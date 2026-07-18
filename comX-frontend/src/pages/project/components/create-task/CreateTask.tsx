@@ -14,8 +14,8 @@ import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { LabelInputContainer } from "@/pages/auth/components/SignUpExtraComponenets";
-import ErrorPage from "@/pages/genral/ErrorPage";
+import { LabelInputContainer } from "@/pages/auth/components/SignUpExtraComponents";
+import ErrorPage from "@/pages/general/ErrorPage";
 import { Task } from "@/types/tasks";
 import { Member } from "@/types/UserProfile";
 import { ReloadIcon } from "@radix-ui/react-icons";
@@ -32,7 +32,6 @@ import { useParams } from "react-router-dom";
 export default function CreateTask({ milestone }: { milestone: string }) {
   const { ID, projectId } = useParams();
 
-  const [start, setStart] = useState<Date>(new Date(Date.now()));
   const [end, setEnd] = useState<Date>(new Date(Date.now()));
   const [assignee, setAssignee] = useState<string>("");
   const [priority, setPriority] = useState<
@@ -50,27 +49,19 @@ export default function CreateTask({ milestone }: { milestone: string }) {
       milestone: milestone,
       priority: priority,
       deadline: end,
-      createdAt: start,
       content: formData.get("task-content") as string,
       projectId: parseInt(projectId!, 10),
       assignId: parseInt(assignee, 10),
       referenceLinks: [formData.get("task-reference") as string],
-      status: "in-progress",
     });
   };
 
   const { mutateAsync: handleCreateTask, isPending } = useMutation({
     mutationFn: async (data: Task) => {
-      console.log(data);
-      const response = await api.post(
-        `/task/add-task`,
-        { ...data, communityId: parseInt(ID!, 10) },
-        { withCredentials: true }
-      );
+      const response = await api.post(`/task/add-task`, { ...data, communityId: parseInt(ID!, 10) });
       return response.data;
     },
-    onSuccess(data) {
-      console.log(data);
+    onSuccess() {
       toast.success("Task Created Successfully!");
       queryClient.invalidateQueries({
         queryKey: [`community${ID}/project/${projectId}/task`],
@@ -91,7 +82,7 @@ export default function CreateTask({ milestone }: { milestone: string }) {
   
 
   if (projectLoading) {
-    return <div>Loading ...</div>;
+    return <div>Loading...</div>;
   }
 
   if (projectError) {
@@ -150,11 +141,7 @@ export default function CreateTask({ milestone }: { milestone: string }) {
               />
             </LabelInputContainer>
             <LabelInputContainer className="mb-4">
-              <Label htmlFor="task-start-date">Start Date</Label>
-              <DatePicker date={start} setDate={setStart} />
-            </LabelInputContainer>
-            <LabelInputContainer className="mb-4">
-              <Label htmlFor="task-end-date">End Date</Label>
+              <Label htmlFor="task-deadline">Deadline</Label>
               <DatePicker date={end} setDate={setEnd} />
             </LabelInputContainer>
             <LabelInputContainer className="mb-4">
