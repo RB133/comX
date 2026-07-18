@@ -5,13 +5,13 @@ import { PlusCircle } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Textarea } from "@/components/ui/textarea";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
+import { api } from "@/lib/api-client";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { RootState } from "@/state/store";
 import { useSelector } from "react-redux";
 
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export default function CreateCommunity() {
   const [selectedOption, setSelectedOption] = useState<"PUBLIC" | "PRIVATE">(
@@ -32,7 +32,7 @@ export default function CreateCommunity() {
       userId: number;
       coverImage: string;
     }) => {
-      return axios.post(`${backend_url}/community/create-community`, data, {
+      return api.post(`/community/create-community`, data, {
         withCredentials: true,
       });
     },

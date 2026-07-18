@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Users } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { api } from "@/lib/api-client";
 import { Community } from "@/types/Community";
 import useAuthCheck from "@/hooks/useAuthCheck";
 import { useSelector } from "react-redux";
@@ -13,11 +13,10 @@ import CreateCommunity from "./components/CreateCommunity";
 import JoinCommunity from "./components/JoinCommunity";
 import LastTask from "./components/Last-Task";
 
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 const fetchCommunityList = async () => {
-  const response = await axios.get(
-    `${backend_url}/community/get-user-communities`,
+  const response = await api.get(
+    `/community/get-user-communities`,
     {
       withCredentials: true,
     }

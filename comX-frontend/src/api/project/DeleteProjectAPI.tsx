@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { api } from "@/lib/api-client";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export default function DeleteProjectAPI() {
   const { ID, projectId } = useParams();
@@ -12,7 +12,7 @@ export default function DeleteProjectAPI() {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async () => {
-      const response = await axios.delete(`${backend_url}/project/delete-project`, {
+      const response = await api.delete(`/project/delete-project`, {
         data: {
           communityId: parseInt(ID!, 10),
           projectId: parseInt(projectId!, 10),

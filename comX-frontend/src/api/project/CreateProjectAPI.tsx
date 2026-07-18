@@ -1,9 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { api } from "@/lib/api-client";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export default function CreateProjectAPI() {
   const { ID } = useParams();
@@ -19,8 +18,8 @@ export default function CreateProjectAPI() {
       milestones: string[];
       deadline: Date;
     }) => {
-      const response = await axios.post(
-        `${backend_url}/project/create-project`,
+      const response = await api.post(
+        `/project/create-project`,
         data,
         { withCredentials: true }
       );

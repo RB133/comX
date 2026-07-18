@@ -2,14 +2,13 @@ import { Input } from "@/components/ui/input";
 import { RootState } from "@/state/store";
 import { Label } from "@radix-ui/react-label";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import { api } from "@/lib/api-client";
 import { motion } from "framer-motion";
 import { LogIn } from "lucide-react";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export default function JoinCommunity() {
   const [joinCode, setJoinCode] = useState("");
@@ -19,8 +18,8 @@ export default function JoinCommunity() {
 
   const { mutateAsync: joinCommunity,isPending } = useMutation({
     mutationFn: async (joinCode: string) => {
-      const response = await axios.post(
-        `${backend_url}/member/join-community`,
+      const response = await api.post(
+        `/member/join-community`,
         { joinCode },
         {
           withCredentials: true,

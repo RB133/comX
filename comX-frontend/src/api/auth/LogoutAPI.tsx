@@ -1,11 +1,11 @@
 import { clearUser } from "@/state/userDetails/userDetails";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { api } from "@/lib/api-client";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export default function LogoutAPI() {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ export default function LogoutAPI() {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async () => {
-      const response = await axios.get(`${backend_url}/auth/logout`, {
+      const response = await api.get(`/auth/logout`, {
         withCredentials: true,
       });
       return response.data;

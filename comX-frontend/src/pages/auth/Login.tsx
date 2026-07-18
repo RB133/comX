@@ -7,12 +7,12 @@ import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { api } from "@/lib/api-client";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/state/userDetails/userDetails";
 import { Button } from "@/components/ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
 
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export default function LoginPage() {
   return (
@@ -34,8 +34,8 @@ function LoginInForm() {
       emailOrUsername: string;
       password: string;
     }) => {
-      const response = await axios.post(
-        `${backend_url}/auth/login`,
+      const response = await api.post(
+        `/auth/login`,
         loginData,
         {
           withCredentials: true,

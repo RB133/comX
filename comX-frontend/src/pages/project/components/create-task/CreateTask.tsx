@@ -22,12 +22,12 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import { Label } from "@radix-ui/react-label";
 import { useMutation , useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { api } from "@/lib/api-client";
 import { X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export default function CreateTask({ milestone }: { milestone: string }) {
   const { ID, projectId } = useParams();
@@ -62,8 +62,8 @@ export default function CreateTask({ milestone }: { milestone: string }) {
   const { mutateAsync: handleCreateTask, isPending } = useMutation({
     mutationFn: async (data: Task) => {
       console.log(data);
-      const response = await axios.post(
-        `${backend_url}/task/add-task`,
+      const response = await api.post(
+        `/task/add-task`,
         { ...data, communityId: parseInt(ID!, 10) },
         { withCredentials: true }
       );

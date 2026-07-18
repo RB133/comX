@@ -1,9 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import { api } from "@/lib/api-client";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export function CommunitySettingsAPI() {
   const { ID } = useParams();
@@ -19,8 +17,8 @@ export function CommunitySettingsAPI() {
       file: File | undefined;
     }) => {
       console.log(typeof details.communityId);
-      const response = await axios.put(
-        `${backend_url}/community/update-community`,
+      const response = await api.put(
+        `/community/update-community`,
         details,
         {
           withCredentials: true,

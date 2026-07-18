@@ -3,11 +3,10 @@ import { Milestone } from "@/types/Project";
 import { Member } from "@/types/UserProfile";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { api } from "@/lib/api-client";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export function EditBasicInfo({
   name,
@@ -32,8 +31,8 @@ export function EditBasicInfo({
         projectId: parseInt(projectId!, 10),
       };
       console.log(data);
-      const response = await axios.patch(
-        `${backend_url}/project/edit-basic-info`,
+      const response = await api.patch(
+        `/project/edit-basic-info`,
         data,
         { withCredentials: true }
       );
@@ -71,8 +70,8 @@ export function EditMilestone({ milestones }: { milestones: Milestone[] }) {
         projectId: parseInt(projectId!, 10),
       };
       console.log(data);
-      const response = await axios.patch(
-        `${backend_url}/project/edit-milestone`,
+      const response = await api.patch(
+        `/project/edit-milestone`,
         data,
         { withCredentials: true }
       );
@@ -131,8 +130,8 @@ export function EditTeamMembers({
           .map((item) => item.id),
         projectId: parseInt(projectId!, 10),
       };
-      const response = await axios.patch(
-        `${backend_url}/project/edit-member`,
+      const response = await api.patch(
+        `/project/edit-member`,
         data,
         { withCredentials: true }
       );

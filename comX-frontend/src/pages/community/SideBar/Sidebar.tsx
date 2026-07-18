@@ -5,7 +5,7 @@ import { Menu } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import { api } from "@/lib/api-client";
 import { useQuery } from "@tanstack/react-query";
 import ErrorPage from "@/pages/genral/ErrorPage";
 import ServerList from "./ServerList";
@@ -17,7 +17,6 @@ import ProjectListForTasks from "./Task-ProjectList";
 import AllProjectAPI from "@/api/project/AllProjectsAPI";
 import CallList from "./CallList";
 
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 const Sidebar = React.memo(function Sidebar() {
   const { ID } = useParams();
@@ -47,8 +46,8 @@ const Sidebar = React.memo(function Sidebar() {
     queryKey: [`community${ID}/project/${-1}/task`],
     queryFn: async () => {
       if (projects.length !== 0) {
-        const response = await axios.get(
-          `${backend_url}/task/get-all-tasks-in-project/${ID}/${projects[0].id}`,
+        const response = await api.get(
+          `/task/get-all-tasks-in-project/${ID}/${projects[0].id}`,
           {
             withCredentials: true,
           }

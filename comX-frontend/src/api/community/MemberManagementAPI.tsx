@@ -1,12 +1,11 @@
 import { RootState } from "@/state/store";
 import PROPS from "@/types/MemberMangementProps";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import { api } from "@/lib/api-client";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export default function MemberManagementAPI({
   setConfirmAction,
@@ -48,7 +47,7 @@ export default function MemberManagementAPI({
         communityId: number;
         promoting_id: number;
       }) => {
-        return axios.post(`${backend_url}/member/promote-member`, details, {
+        return api.post(`/member/promote-member`, details, {
           withCredentials: true,
         });
       },
@@ -59,7 +58,7 @@ export default function MemberManagementAPI({
         communityId: number;
         demoting_id: number;
       }) => {
-        return axios.post(`${backend_url}/member/demote-member`, details, {
+        return api.post(`/member/demote-member`, details, {
           withCredentials: true,
         });
       },
@@ -70,7 +69,7 @@ export default function MemberManagementAPI({
         communityId: number;
         baning_id: number;
       }) => {
-        return axios.post(`${backend_url}/member/ban-member`, details, {
+        return api.post(`/member/ban-member`, details, {
           withCredentials: true,
         });
       },
@@ -86,7 +85,7 @@ export default function MemberManagementAPI({
         communityId: number;
         removingId: number;
       }) => {
-        return axios.post(`${backend_url}/member/remove-member`, details, {
+        return api.post(`/member/remove-member`, details, {
           withCredentials: true,
         });
       },
@@ -100,8 +99,8 @@ export default function MemberManagementAPI({
         communityId: number;
         memberId: number;
       }) => {
-        return axios.post(
-          `${backend_url}/member/accept-join-request`,
+        return api.post(
+          `/member/accept-join-request`,
           details,
           {
             withCredentials: true,

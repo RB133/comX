@@ -1,11 +1,11 @@
 import { RootState } from "@/state/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { api } from "@/lib/api-client";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export default function DeleteCommunityAPI() {
   const { ID } = useParams();
@@ -15,8 +15,8 @@ export default function DeleteCommunityAPI() {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async () => {
-      const response = await axios.delete(
-        `${backend_url}/community/delete-community`,
+      const response = await api.delete(
+        `/community/delete-community`,
         {
           data: {
             communityId: parseInt(ID!, 10),

@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { api } from "@/lib/api-client";
 import { useParams } from "react-router-dom";
 
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export default function CalendarAPI() {
   const { ID } = useParams();
@@ -10,8 +9,8 @@ export default function CalendarAPI() {
   const { data, isLoading, error } = useQuery({
     queryKey: [`calendar/${ID}`],
     queryFn: async () => {
-      const response = await axios.get(
-        `${backend_url}/calendar/get-calendar-task/${ID}`,
+      const response = await api.get(
+        `/calendar/get-calendar-task/${ID}`,
         {
           withCredentials: true,
         }

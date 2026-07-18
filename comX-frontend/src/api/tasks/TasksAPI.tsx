@@ -1,8 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { api } from "@/lib/api-client";
 import { useParams } from "react-router-dom";
-
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export default function TasksAPI() {
   const { ID, projectId } = useParams();
@@ -14,8 +12,8 @@ export default function TasksAPI() {
   } = useQuery({
     queryKey: [`community${ID}/project/${projectId}/task`],
     queryFn: async () => {
-      const response = await axios.get(
-        `${backend_url}/task/get-all-tasks-in-project/${ID}/${projectId}`,
+      const response = await api.get(
+        `/task/get-all-tasks-in-project/${ID}/${projectId}`,
         {
           withCredentials: true,
         }

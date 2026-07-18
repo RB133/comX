@@ -1,9 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { api } from "@/lib/api-client";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 export default function TaskFxn() {
   const { ID, projectId } = useParams();
@@ -16,8 +15,8 @@ export default function TaskFxn() {
       projectId: number;
       taskId: number;
     }) => {
-      const response = await axios.put(
-        `${backend_url}/task/complete-task`,
+      const response = await api.put(
+        `/task/complete-task`,
         data,
         { withCredentials: true }
       );
@@ -49,8 +48,8 @@ export default function TaskFxn() {
         communityId: number;
         projectId: number;
       }) => {
-        const response = await axios.put(
-          `${backend_url}/task/task-verdict`,
+        const response = await api.put(
+          `/task/task-verdict`,
           data,
           { withCredentials: true }
         );

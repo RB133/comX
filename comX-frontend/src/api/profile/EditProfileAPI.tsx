@@ -2,11 +2,11 @@ import { setUser } from "@/state/userDetails/userDetails";
 import { RootState } from "@/state/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { api } from "@/lib/api-client";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 type EditProfileDetails = {
   designation: string;
@@ -41,8 +41,8 @@ export default function EditProfileAPI() {
         formData.append("file", details.file);
       }
 
-      const response = await axios.put(
-        `${backend_url}/user/edit-user-info/${username}`,
+      const response = await api.put(
+        `/user/edit-user-info/${username}`,
         formData,
         {
           withCredentials: true,
