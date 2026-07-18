@@ -12,14 +12,14 @@ export default function Ban_MemberManagement(props: MemberManagementProps) {
   const { mutations,isAdmin,handleAction } = MemberManagementAPI(props);
 
   return (
-    <Card className="bg-white shadow-lg transition-all duration-300 hover:shadow-xl overflow-hidden">
+    <Card className="bg-card shadow-lg transition-all duration-300 hover:shadow-xl overflow-hidden">
       <CardHeader className="bg-gradient-to-r from-red-500 to-pink-600">
         <CardTitle className="text-2xl font-semibold text-white">
           Banned Members
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <ul className="divide-y divide-gray-200">
+        <ul className="divide-y divide-border">
           {props.filteredMembers
             .filter((m) => m.role === "BANNED")
             .map((banned) => (
@@ -33,14 +33,14 @@ export default function Ban_MemberManagement(props: MemberManagementProps) {
                     <AvatarFallback>{banned.name.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <span className="font-medium text-gray-700 text-lg block">
+                    <span className="font-medium text-foreground/80 text-lg block">
                       {banned.name}
                     </span>
-                    <span className="text-sm text-gray-500 flex items-center">
+                    <span className="text-sm text-muted-foreground flex items-center">
                       <Mail className="h-4 w-4 mr-1" />
                       {banned.email}
                     </span>
-                    <span className="text-xs text-gray-400 flex items-center mt-1">
+                    <span className="text-xs text-muted-foreground flex items-center mt-1">
                       <Calendar className="h-3 w-3 mr-1" />
                       Banned since: {banned.joinedAt.slice(0, 10)}
                     </span>

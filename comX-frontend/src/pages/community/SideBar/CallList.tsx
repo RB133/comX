@@ -16,7 +16,7 @@ export default function CallList() {
 
   return (
     <>
-      <div className="w-60 bg-white flex flex-col border-r">
+      <div className="w-60 bg-card flex flex-col border-r">
         <CommunityHeader />
         <ScrollArea className="flex-grow">
 

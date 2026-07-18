@@ -5,7 +5,7 @@ function CommunityLayout() {
   return (
     <div className="flex">
       <Sidebar />
-      <div className="bg-white w-full h-screen overflow-y-auto">
+      <div className="bg-card w-full h-screen overflow-y-auto">
         <Outlet />
       </div>
     </div>

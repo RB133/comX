@@ -60,7 +60,7 @@ export default function Permissions() {
   const [reportDescription, setReportDescription] = useState("");
 
   return (
-    <div className="p-8 w-full h-full bg-white overflow-y-scroll no-scrollbar">
+    <div className="p-8 w-full h-full bg-card overflow-y-scroll no-scrollbar">
       <motion.div
         initial="hidden"
         animate="show"
@@ -72,7 +72,7 @@ export default function Permissions() {
           <h1 className="text-4xl font-extrabold text-blue-600 leading-snug">
             Community Settings
           </h1>
-          <p className="mt-2 text-lg text-gray-500">
+          <p className="mt-2 text-lg text-muted-foreground">
             Customize and manage your community experience.
           </p>
         </motion.div>
@@ -125,7 +125,7 @@ export default function Permissions() {
             <div className="mt-4 flex items-center justify-between">
               <div className="space-y-1">
                 <Label htmlFor="content-moderation">Content Moderation</Label>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground">
                   Enable review of posts before publishing.
                 </p>
               </div>
@@ -157,8 +157,8 @@ export default function Permissions() {
         {/* Reporting System Card */}
         <motion.div variants={itemAnimation}>
           <Card className="border shadow-md">
-            <CardHeader className="bg-gray-50">
-              <CardTitle className="flex items-center gap-2 text-gray-700">
+            <CardHeader className="bg-muted/50">
+              <CardTitle className="flex items-center gap-2 text-foreground/80">
                 <AlertTriangle className="h-5 w-5 text-yellow-500" />
                 Reporting System
               </CardTitle>
@@ -208,9 +208,9 @@ export default function Permissions() {
 
 const SettingCard = ({ title, description, icon: Icon, children }: SettingCardProps) => (
   <motion.div variants={itemAnimation} className="h-full">
-    <Card className="h-full bg-white border shadow-sm transition hover:shadow-lg">
+    <Card className="h-full bg-card border shadow-sm transition hover:shadow-lg">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-gray-700">
+        <CardTitle className="flex items-center gap-2 text-foreground/80">
           <Icon className="h-5 w-5 text-blue-600" />
           <span className="text-lg font-semibold">{title}</span>
         </CardTitle>
@@ -235,13 +235,13 @@ const SelectField = ({
   onChange?: (value: string) => void;
 }) => (
   <div className="space-y-2">
-    <Label htmlFor={id} className="text-gray-700 font-medium">
+    <Label htmlFor={id} className="text-foreground/80 font-medium">
       {label}
     </Label>
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger
         id={id}
-        className="border border-gray-300 focus:ring-2 focus:ring-blue-500"
+        className="border border-border focus:ring-2 focus:ring-blue-500"
       >
         <SelectValue placeholder={`Select ${label.toLowerCase()}`} />
       </SelectTrigger>

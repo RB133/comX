@@ -14,7 +14,7 @@ export default function Top_MemberManagement({
 }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <Card className="bg-white shadow-lg transition-all duration-300 hover:shadow-xl h-48 flex justify-center flex-col">
+      <Card className="bg-card shadow-lg transition-all duration-300 hover:shadow-xl h-48 flex justify-center flex-col">
         <CardHeader className="pb-2">
           <CardTitle className="text-lg font-medium text-blue-600">
             Members
@@ -31,7 +31,7 @@ export default function Top_MemberManagement({
         </CardContent>
       </Card>
 
-      <Card className="bg-white shadow-lg transition-all duration-300 hover:shadow-xl h-48 flex justify-center flex-col">
+      <Card className="bg-card shadow-lg transition-all duration-300 hover:shadow-xl h-48 flex justify-center flex-col">
         <CardHeader className="pb-2">
           <CardTitle className="text-lg font-medium text-green-600">
             Admins
@@ -48,7 +48,7 @@ export default function Top_MemberManagement({
         </CardContent>
       </Card>
 
-      <Card className="bg-white shadow-lg transition-all duration-300 hover:shadow-xl h-48 flex justify-center flex-col">
+      <Card className="bg-card shadow-lg transition-all duration-300 hover:shadow-xl h-48 flex justify-center flex-col">
         <CardHeader className="pb-2">
           <CardTitle className="text-lg font-medium text-yellow-400">
             Requests
@@ -65,7 +65,7 @@ export default function Top_MemberManagement({
         </CardContent>
       </Card>
 
-      <Card className="bg-white shadow-lg transition-all duration-300 hover:shadow-xl h-48 flex justify-center flex-col">
+      <Card className="bg-card shadow-lg transition-all duration-300 hover:shadow-xl h-48 flex justify-center flex-col">
         <CardHeader className="pb-2">
           <CardTitle className="text-lg font-medium text-red-600">
             Banned

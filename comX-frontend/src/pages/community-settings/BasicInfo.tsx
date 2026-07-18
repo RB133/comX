@@ -82,7 +82,7 @@ export default function BasicInformation() {
           <h1 className="text-4xl font-extrabold text-blue-600 leading-snug">
             Basic Information
           </h1>
-          <p className="mt-2 text-lg text-gray-500">
+          <p className="mt-2 text-lg text-muted-foreground">
             Customize and manage your community experience.
           </p>
         </motion.div>
@@ -159,7 +159,7 @@ export default function BasicInformation() {
                 id="scope"
                 value={community.scope}
                 readOnly
-                className="w-full bg-gray-100 text-gray-500 cursor-not-allowed"
+                className="w-full bg-muted text-muted-foreground cursor-not-allowed"
               />
             </div>
 
@@ -175,7 +175,7 @@ export default function BasicInformation() {
                 id="joinCode"
                 value={community.joinCode}
                 readOnly
-                className="w-full bg-gray-100 text-gray-500 cursor-not-allowed"
+                className="w-full bg-muted text-muted-foreground cursor-not-allowed"
               />
             </div>
 
@@ -192,7 +192,7 @@ export default function BasicInformation() {
                 type="string"
                 value={community.createdAt.slice(0, 10)}
                 readOnly
-                className="w-full bg-gray-100 text-gray-500 cursor-not-allowed"
+                className="w-full bg-muted text-muted-foreground cursor-not-allowed"
               />
             </div>
 

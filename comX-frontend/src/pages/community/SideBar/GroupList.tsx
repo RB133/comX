@@ -46,7 +46,7 @@ const GroupList = React.memo(function GroupList() {
 
   return (
     <>
-      <div className="w-60 bg-white flex flex-col border-r">
+      <div className="w-60 bg-card flex flex-col border-r">
         <CommunityHeader />
         <ScrollArea className="flex-grow">
           {groups.map((category) => (
@@ -57,13 +57,13 @@ const GroupList = React.memo(function GroupList() {
               >
                 <ChevronDown
                   className={cn(
-                    "w-3 h-3 mr-1 transition-transform duration-200 text-gray-500",
+                    "w-3 h-3 mr-1 transition-transform duration-200 text-muted-foreground",
                     expandedCategories.includes(category.id)
                       ? "rotate-0"
                       : "-rotate-90"
                   )}
                 />
-                <span className="uppercase text-xs font-semibold text-gray-500 group-hover:text-gray-700">
+                <span className="uppercase text-xs font-semibold text-muted-foreground group-hover:text-foreground/80">
                   {category.name}
                 </span>
               </button>
@@ -73,7 +73,7 @@ const GroupList = React.memo(function GroupList() {
                     <button
                       key={project.id}
                       className={cn(
-                        "flex items-center px-2 py-1 w-full rounded group hover:bg-gray-100",
+                        "flex items-center px-2 py-1 w-full rounded group hover:bg-muted",
                         parseInt(currentUrl.at(-1)!, 10) === project.id &&
                           "bg-primary hover:bg-primary"
                       )}
@@ -83,7 +83,7 @@ const GroupList = React.memo(function GroupList() {
                     >
                       {category.link}
                       <span
-                        className={`text-sm text-gray-600 group-hover:text-gray-800 ${
+                        className={`text-sm text-muted-foreground group-hover:text-foreground ${
                           parseInt(currentUrl.at(-1)!, 10) === project.id &&
                           "text-white group-hover:text-white"
                         }`}

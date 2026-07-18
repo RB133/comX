@@ -96,7 +96,7 @@ const Sidebar = React.memo(function Sidebar() {
   );
 
   return (
-    <div className="h-screen bg-gray-100 text-gray-800">
+    <div className="h-screen bg-muted text-foreground">
       {isMobile ? (
         <>
           <Sheet open={isOpen} onOpenChange={setIsOpen}>

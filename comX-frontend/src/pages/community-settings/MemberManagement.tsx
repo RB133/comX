@@ -73,7 +73,7 @@ export default function MemberManagement() {
         <h1 className="text-4xl font-extrabold text-blue-600 leading-snug">
           Member Management
         </h1>
-        <p className="mt-2 text-lg text-gray-500">
+        <p className="mt-2 text-lg text-muted-foreground">
           Customize and manage your community experience.
         </p>
       </motion.div>

@@ -29,7 +29,7 @@ export default function ProjectListForTasks() {
 
   return (
     <>
-      <div className="w-60 bg-white flex flex-col border-r">
+      <div className="w-60 bg-card flex flex-col border-r">
         <CommunityHeader />
         <ScrollArea className="flex-grow">
           {projects.map((category: { id: number; name: string }) => (
@@ -38,7 +38,7 @@ export default function ProjectListForTasks() {
                 className={`flex items-center w-full px-2 py-2 mb-2 text-sm font-medium text-left rounded-lg transition-all duration-300 ease-in-out transform gap-2 ${
                   parseInt(currentUrl.at(-1)!, 10) === category.id
                     ? "bg-gradient-to-r from-blue-500 to-blue-700 text-white scale-105"
-                    : "bg-white text-gray-600 hover:bg-gray-100 hover:text-gray-800 hover:shadow-md"
+                    : "bg-card text-muted-foreground hover:bg-muted hover:text-foreground hover:shadow-md"
                 }`}
                 onClick={() => {
                   navigate(`task/${category.id}`);

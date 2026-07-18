@@ -44,13 +44,13 @@ export default function NotificationSettings() {
             <h1 className="text-4xl font-extrabold text-blue-600 leading-snug">
               Notification Preferences
             </h1>
-            <p className="mt-2 text-lg text-gray-500">
+            <p className="mt-2 text-lg text-muted-foreground">
               Customize and manage your community experience.
             </p>
           </motion.div>
 
           <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-card rounded-lg shadow-md p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-4">
                   <Mail className="text-blue-600 w-5 h-5" />
@@ -67,14 +67,14 @@ export default function NotificationSettings() {
                   onCheckedChange={setEmailNotifications}
                 />
               </div>
-              <p className="text-sm text-gray-600 ml-9">
+              <p className="text-sm text-muted-foreground ml-9">
                 Receive important updates and announcements via email. This
                 includes account notifications, security alerts, and community
                 highlights.
               </p>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-card rounded-lg shadow-md p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-4">
                   <Bell className="text-blue-600 w-5 h-5" />
@@ -91,13 +91,13 @@ export default function NotificationSettings() {
                   onCheckedChange={setPushNotifications}
                 />
               </div>
-              <p className="text-sm text-gray-600 ml-9">
+              <p className="text-sm text-muted-foreground ml-9">
                 Get real-time alerts on your device for immediate updates,
                 messages, and time-sensitive information.
               </p>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-card rounded-lg shadow-md p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-4">
                   <Mail className="text-blue-600 w-5 h-5" />
@@ -119,14 +119,14 @@ export default function NotificationSettings() {
                   </SelectContent>
                 </Select>
               </div>
-              <p className="text-sm text-gray-600 ml-9">
+              <p className="text-sm text-muted-foreground ml-9">
                 Receive a summary of activities and updates at your preferred
                 frequency. Great for staying informed without overwhelming your
                 inbox.
               </p>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-card rounded-lg shadow-md p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-4">
                   {doNotDisturb ? (
@@ -147,7 +147,7 @@ export default function NotificationSettings() {
                   onCheckedChange={setDoNotDisturb}
                 />
               </div>
-              <p className="text-sm text-gray-600 ml-9">
+              <p className="text-sm text-muted-foreground ml-9">
                 Temporarily pause all notifications. Ideal for focused work
                 sessions or during off-hours. You can customize the duration in
                 the settings.
