@@ -121,7 +121,7 @@ export default function MainCalendar() {
             >
               <div
                 className={`text-center ${
-                  isSameDay(day, new Date()) ? "font-bold text-blue-500" : ""
+                  isSameDay(day, new Date()) ? "font-bold text-primary" : ""
                 }`}
               >
                 {day.getDate()}

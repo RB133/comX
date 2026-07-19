@@ -96,7 +96,7 @@ export default function BasicInformation() {
     <>
       <div className="w-full">
         <motion.div variants={itemAnimation} className="text-center mb-12">
-          <h1 className="text-4xl font-extrabold text-blue-600 leading-snug">
+          <h1 className="text-4xl font-extrabold text-primary leading-snug">
             Basic Information
           </h1>
           <p className="mt-2 text-lg text-muted-foreground">
@@ -116,7 +116,7 @@ export default function BasicInformation() {
               <Input
                 id="communityName"
                 placeholder={community.name}
-                className="w-full transition-all duration-300 focus:ring-2 focus:ring-blue-500"
+                className="w-full transition-all duration-300 focus:ring-2 focus:ring-ring"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -135,7 +135,7 @@ export default function BasicInformation() {
                 placeholder={community.description}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full min-h-[100px] transition-all duration-300 focus:ring-2 focus:ring-blue-500"
+                className="w-full min-h-[100px] transition-all duration-300 focus:ring-2 focus:ring-ring"
                 style={{
                   height: `${Math.max(
                     100,
@@ -216,7 +216,7 @@ export default function BasicInformation() {
             {editCommunityBasicInfoPending ? (
               <Button
                 disabled
-                className="w-full bg-blue-800 hover:bg-blue-900 text-white transition-colors duration-300"
+                className="w-full bg-primary/90 hover:bg-primary text-primary-foreground transition-colors duration-300"
               >
                 <ReloadIcon className="mr-2 animate-spin w-4 h-4 flex justify-center items-center" />
                 Please wait
@@ -224,7 +224,7 @@ export default function BasicInformation() {
             ) : (
               <div className="space-y-4">
                 <Button
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white transition-colors duration-300"
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-300"
                   onClick={handleUpdateCommunity}
                 >
                   Save Changes

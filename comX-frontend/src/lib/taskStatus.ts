@@ -18,7 +18,7 @@ export type TaskStatusInfo = {
 export function getStatusInfo(status: string): TaskStatusInfo {
   switch (status) {
     case "INPROGRESS":
-      return { color: "bg-blue-500", icon: ClockIcon, label: "In Progress" };
+      return { color: "bg-violet-500", icon: ClockIcon, label: "In Progress" };
     case "PENDING":
       return { color: "bg-yellow-500", icon: CircleIcon, label: "Pending Review" };
     case "OVERDUE":

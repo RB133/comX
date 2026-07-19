@@ -149,7 +149,7 @@ export default function SingleTask({
                         ? "bg-yellow-100 text-yellow-700"
                         : isCompleted
                           ? "bg-green-100 text-green-700"
-                          : "bg-blue-500 hover:bg-blue-600"
+                          : ""
                     } transition-colors`}
                     onClick={handleMarkAsDone}
                   >

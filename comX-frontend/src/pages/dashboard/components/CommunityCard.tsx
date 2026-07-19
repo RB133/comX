@@ -45,7 +45,7 @@ export default function CommunityCard({
   const ownerAvatar = owner?.avatar || DEFAULT_AVATAR_URL;
   const coverBackground = coverImage
     ? { backgroundImage: `url(${coverImage})` }
-    : { background: "linear-gradient(135deg, #0f172a, #2563eb)" };
+    : { background: "linear-gradient(135deg, #0f172a, #334155)" };
 
   function redirectToCommunity() {
     navigate(`/community/${id.toString()}`);

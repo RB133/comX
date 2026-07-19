@@ -88,7 +88,7 @@ export default function TaskForProfile({ profile }: { profile: PublicProfile }) 
                         <Clock className="mr-2 h-4 w-4 text-yellow-500" />
                       )}
                       {task.status === "INPROGRESS" && (
-                        <PlayCircle className="mr-2 h-4 w-4 text-blue-500" />
+                        <PlayCircle className="mr-2 h-4 w-4 text-violet-500" />
                       )}
                       {task.status === "COMPLETED" && "Completed"}
                       {task.status === "PENDING" && "Pending"}

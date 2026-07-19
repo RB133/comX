@@ -16,7 +16,7 @@ export default function Search_MemberManagement({
         placeholder="Search members..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="pl-10 pr-4 py-2 border border-border rounded-lg shadow-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+        className="pl-10 pr-4 py-2 border border-border rounded-lg shadow-2xl focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition duration-200"
       />
     </div>
   );

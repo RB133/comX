@@ -13,7 +13,7 @@ export default function Members_MemberManagement(props: MemberManagementProps) {
 
   return (
     <Card className="bg-card shadow-lg transition-all duration-300 hover:shadow-xl overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-blue-500 to-indigo-600">
+      <CardHeader className="bg-primary">
         <CardTitle className="text-2xl font-semibold text-white">
           Member List
         </CardTitle>
@@ -25,7 +25,7 @@ export default function Members_MemberManagement(props: MemberManagementProps) {
             .map((member) => (
               <li
                 key={member.id}
-                className="flex flex-col md:flex-row md:items-center justify-between py-4 transition-all duration-300 hover:bg-blue-50"
+                className="flex flex-col md:flex-row md:items-center justify-between py-4 transition-all duration-300 hover:bg-muted"
               >
                 <div className="flex items-center mb-2 md:mb-0 ml-4">
                   <Avatar className="h-10 w-10 mr-3">

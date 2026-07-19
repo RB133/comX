@@ -89,7 +89,7 @@ export default function MemberManagement() {
     <div className="h-full overflow-scroll w-full no-scrollbar p-4 md:p-8">
       {/* Page Header */}
       <motion.div variants={itemAnimation} className="text-center mb-12">
-        <h1 className="text-4xl font-extrabold text-blue-600 leading-snug">
+        <h1 className="text-4xl font-extrabold text-primary leading-snug">
           Member Management
         </h1>
         <p className="mt-2 text-lg text-muted-foreground">

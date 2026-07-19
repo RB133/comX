@@ -17,7 +17,7 @@ const ConnectionCard = ({ user }: { user: ConnectionSummary }) => (
         </Avatar>
         <div>
           <h3 className="font-semibold text-lg">{user.name}</h3>
-          <p className="text-blue-500 text-sm">@{user.username}</p>
+          <p className="text-primary text-sm">@{user.username}</p>
         </div>
       </div>
     </div>
@@ -41,7 +41,7 @@ export default function FollowerList({ profile }: { profile: PublicProfile }) {
         <button
           className={`py-2 px-4 font-semibold transition-colors ${
             activeTab === "following"
-              ? "text-blue-600 border-b-2 border-blue-600"
+              ? "text-primary border-b-2 border-primary"
               : "text-muted-foreground"
           }`}
           onClick={() => setActiveTab("following")}
@@ -51,7 +51,7 @@ export default function FollowerList({ profile }: { profile: PublicProfile }) {
         <button
           className={`py-2 px-4 font-semibold transition-colors ${
             activeTab === "followers"
-              ? "text-blue-600 border-b-2 border-blue-600"
+              ? "text-primary border-b-2 border-primary"
               : "text-muted-foreground"
           }`}
           onClick={() => setActiveTab("followers")}

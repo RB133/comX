@@ -69,7 +69,7 @@ export default function Permissions() {
       >
         {/* Page Header */}
         <motion.div variants={itemAnimation} className="text-center">
-          <h1 className="text-4xl font-extrabold text-blue-600 leading-snug">
+          <h1 className="text-4xl font-extrabold text-primary leading-snug">
             Community Settings
           </h1>
           <p className="mt-2 text-lg text-muted-foreground">
@@ -192,7 +192,7 @@ export default function Permissions() {
             </CardContent>
             <CardFooter>
               <Button
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                 onClick={() => toast.success("Report system configured")}
               >
                 Save Configuration
@@ -210,7 +210,7 @@ const SettingCard = ({ title, description, icon: Icon, children }: SettingCardPr
     <Card className="h-full bg-card border shadow-sm transition hover:shadow-lg">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-foreground/80">
-          <Icon className="h-5 w-5 text-blue-600" />
+          <Icon className="h-5 w-5 text-primary" />
           <span className="text-lg font-semibold">{title}</span>
         </CardTitle>
         <CardDescription>{description}</CardDescription>
@@ -240,7 +240,7 @@ const SelectField = ({
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger
         id={id}
-        className="border border-border focus:ring-2 focus:ring-blue-500"
+        className="border border-border focus:ring-2 focus:ring-ring"
       >
         <SelectValue placeholder={`Select ${label.toLowerCase()}`} />
       </SelectTrigger>

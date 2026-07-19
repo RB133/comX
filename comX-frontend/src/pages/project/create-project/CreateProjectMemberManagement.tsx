@@ -143,7 +143,7 @@ export default function CreateProjectMemberManagement({
                   <Input
                     type="text"
                     placeholder="Search Member"
-                    className="pl-10 py-2 rounded-md border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm bg-white text-gray-700 placeholder-gray-400"
+                    className="pl-10 py-2 rounded-md border border-gray-300 focus:border-ring focus:ring-1 focus:ring-ring shadow-sm bg-white text-gray-700 placeholder-gray-400"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                   />
@@ -161,7 +161,7 @@ export default function CreateProjectMemberManagement({
                           <button
                             type="button"
                             onClick={() => moveToProject(member)}
-                            className="h-8 absolute mt-2 right-6 bg-blue-500 text-white p-2 rounded-md shadow hover:bg-blue-600 flex justify-center items-center"
+                            className="h-8 absolute mt-2 right-6 bg-primary text-primary-foreground p-2 rounded-md shadow hover:bg-primary/90 flex justify-center items-center"
                           >
                             Add to Project
                           </button>

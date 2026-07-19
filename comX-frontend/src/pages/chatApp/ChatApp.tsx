@@ -117,7 +117,7 @@ export default function ChatApp() {
                       </Avatar>
                       <div
                         className={`max-w-xs px-4 py-2 rounded-lg ${
-                          isOwnMessage ? "bg-blue-500 text-gray-200" : "bg-gray-200 text-gray-800"
+                          isOwnMessage ? "bg-primary text-primary-foreground" : "bg-muted text-foreground"
                         }`}
                       >
                         <p className="font-semibold">{sender?.name ?? "Unknown member"}</p>
@@ -160,7 +160,7 @@ export default function ChatApp() {
           <Button
             type="submit"
             size="icon"
-            className="bg-blue-500 hover:bg-blue-600 w-10 h-10"
+            className="bg-primary hover:bg-primary/90 w-10 h-10"
           >
             <Send className="h-6 w-6" />
             <span className="sr-only">Send</span>

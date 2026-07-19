@@ -16,16 +16,16 @@ export default function Top_MemberManagement({
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       <Card className="bg-card shadow-lg transition-all duration-300 hover:shadow-xl h-48 flex justify-center flex-col">
         <CardHeader className="pb-2">
-          <CardTitle className="text-lg font-medium text-blue-600">
+          <CardTitle className="text-lg font-medium text-primary">
             Members
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex items-center">
-            <Users className="h-12 w-12 text-blue-500 mr-4" />
+            <Users className="h-12 w-12 text-primary mr-4" />
             <div>
-              <p className="text-4xl font-bold text-blue-800">{memberCount}</p>
-              <p className="text-sm text-blue-600">Active users</p>
+              <p className="text-4xl font-bold text-primary">{memberCount}</p>
+              <p className="text-sm text-muted-foreground">Active users</p>
             </div>
           </div>
         </CardContent>

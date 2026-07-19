@@ -41,7 +41,7 @@ export default function NotificationSettings() {
       >
         <div className="w-full max-w-3xl">
           <motion.div variants={itemAnimation} className="text-center mb-12">
-            <h1 className="text-4xl font-extrabold text-blue-600 leading-snug">
+            <h1 className="text-4xl font-extrabold text-primary leading-snug">
               Notification Preferences
             </h1>
             <p className="mt-2 text-lg text-muted-foreground">
@@ -53,7 +53,7 @@ export default function NotificationSettings() {
             <div className="bg-card rounded-lg shadow-md p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-4">
-                  <Mail className="text-blue-600 w-5 h-5" />
+                  <Mail className="text-primary w-5 h-5" />
                   <Label
                     htmlFor="email-notifications"
                     className="text-lg font-medium"
@@ -77,7 +77,7 @@ export default function NotificationSettings() {
             <div className="bg-card rounded-lg shadow-md p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-4">
-                  <Bell className="text-blue-600 w-5 h-5" />
+                  <Bell className="text-primary w-5 h-5" />
                   <Label
                     htmlFor="push-notifications"
                     className="text-lg font-medium"
@@ -100,7 +100,7 @@ export default function NotificationSettings() {
             <div className="bg-card rounded-lg shadow-md p-6">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-4">
-                  <Mail className="text-blue-600 w-5 h-5" />
+                  <Mail className="text-primary w-5 h-5" />
                   <Label
                     htmlFor="digest-emails"
                     className="text-lg font-medium"
@@ -130,9 +130,9 @@ export default function NotificationSettings() {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-4">
                   {doNotDisturb ? (
-                    <Moon className="text-blue-600 w-5 h-5" />
+                    <Moon className="text-primary w-5 h-5" />
                   ) : (
-                    <Sun className="text-blue-600 w-5 h-5" />
+                    <Sun className="text-primary w-5 h-5" />
                   )}
                   <Label
                     htmlFor="do-not-disturb"
@@ -158,7 +158,7 @@ export default function NotificationSettings() {
           <div className="mt-8 text-center">
             <Tooltip>
               <TooltipTrigger asChild>
-                <button className="text-blue-600 hover:text-blue-800 transition-colors duration-200 flex items-center justify-center mx-auto">
+                <button className="text-primary hover:text-primary/80 transition-colors duration-200 flex items-center justify-center mx-auto">
                   <Info className="w-5 h-5 mr-2" />
                   <span className="text-sm">
                     Learn more about our notification system

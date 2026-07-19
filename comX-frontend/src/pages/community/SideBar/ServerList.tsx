@@ -30,8 +30,8 @@ export default function ServerList() {
                 className={cn(
                   "w-12 h-12 rounded-full bg-card flex items-center justify-center transition-all duration-200 group relative shadow-md",
                   activeServer === item.id
-                    ? "rounded-2xl bg-gradient-to-r from-blue-500 to-blue-700 text-white shadow-lg"
-                    : "hover:bg-blue-500 hover:text-white"
+                    ? "rounded-2xl bg-primary text-primary-foreground shadow-lg"
+                    : "hover:bg-primary hover:text-primary-foreground"
                 )}
                 onClick={() => {
                   dispatch(setActiveServer(item.id));
@@ -40,7 +40,7 @@ export default function ServerList() {
                 <item.icon className="h-6 w-6" />
                 <div
                   className={cn(
-                    "absolute left-0 w-1 bg-blue-500 rounded-r-full transition-all duration-200",
+                    "absolute left-0 w-1 bg-primary rounded-r-full transition-all duration-200",
                     currentUrl.at(-1) === item.name ? "h-10" : "h-2 group-hover:h-5"
                   )}
                 ></div>
