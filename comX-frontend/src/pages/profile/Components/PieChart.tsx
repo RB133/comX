@@ -14,9 +14,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import ProfileAPI from "@/api/profile/ProfileAPI";
-import ErrorPage from "@/pages/general/ErrorPage";
 import { PRIORITY_LEVELS } from "@/lib/priority";
+import { PublicProfile } from "@/types/UserProfile";
 
 const RADIAN = Math.PI / 180;
 
@@ -99,7 +98,7 @@ const renderActiveShape = (rawProps: unknown) => {
   );
 };
 
-export default function PieChartTask() {
+export default function PieChartTask({ profile }: { profile: PublicProfile }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [animationComplete, setAnimationComplete] = useState(false);
 
@@ -107,11 +106,6 @@ export default function PieChartTask() {
     const timer = setTimeout(() => setAnimationComplete(true), 1000);
     return () => clearTimeout(timer);
   }, []);
-
-  const { profile, profileLoading, profileError } = ProfileAPI();
-
-  if (profileLoading) return <div>Loading...</div>;
-  if (profileError) return <ErrorPage />;
 
   const data = PRIORITY_LEVELS.map(({ key, label, color }) => ({
     name: label,

@@ -2,8 +2,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import ProfileAPI from "@/api/profile/ProfileAPI";
 import { DEFAULT_AVATAR_URL } from "@/lib/constants";
+import { PublicProfile } from "@/types/UserProfile";
 
 type ConnectionSummary = { name: string; username: string; avatar: string };
 
@@ -24,17 +24,14 @@ const ConnectionCard = ({ user }: { user: ConnectionSummary }) => (
   </Link>
 );
 
-export default function FollowerList() {
+export default function FollowerList({ profile }: { profile: PublicProfile }) {
   const [activeTab, setActiveTab] = useState<"following" | "followers">("following");
-  const { profile, profileLoading } = ProfileAPI();
 
   const tabVariants = {
     hidden: { x: "-100%", opacity: 0 },
     visible: { x: 0, opacity: 1, transition: { duration: 0.5 } },
     exit: { x: "100%", opacity: 0, transition: { duration: 0.5 } },
   };
-
-  if (profileLoading) return <div>Loading...</div>;
 
   const connections = activeTab === "following" ? profile.following : profile.followers;
 

@@ -24,12 +24,19 @@ export default function LogoutAPI() {
       navigate("/login");
     },
     onError(error: unknown) {
+      // Clearing the local session should always succeed, even if the
+      // network request itself failed — there's no reason to trap the user
+      // in a logged-in-looking state just because one request didn't land.
+      dispatch(clearUser());
+      queryClient.clear();
+      navigate("/login");
+
       if (axios.isAxiosError(error)) {
         const errorMessage =
-          error.response?.data?.message || "Unable to log out right now.";
+          error.response?.data?.message || "Unable to reach the server, but you've been logged out locally.";
         toast.error(errorMessage);
       } else {
-        toast.error("Unable to log out right now.");
+        toast.error("Unable to reach the server, but you've been logged out locally.");
       }
     },
   });

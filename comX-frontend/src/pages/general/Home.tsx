@@ -14,9 +14,11 @@ export default function HomePage() {
   }, [dispatch]);
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="w-full flex flex-col items-center justify-center overflow-hidden rounded-md pt-24 md:pt-32 lg:pt-40 z-0">
+      {/* flex-1 + items-center centers the hero in the space below the navbar,
+          regardless of navbar height or viewport size — no guessed padding. */}
+      <div className="flex-1 w-full flex flex-col items-center justify-center overflow-hidden rounded-md z-0">
         <h1 className="text-4xl md:text-4xl lg:text-6xl font-semibold max-w-7xl mx-auto text-center relative z-20 py-6 bg-clip-text text-transparent bg-gradient-to-b from-neutral-800 via-neutral-700 to-neutral-700">
           A Unified Workspace for Software Teams
           <br /> <Cover>COM-X</Cover>
@@ -40,6 +42,6 @@ export default function HomePage() {
         </div>
         <Toaster />
       </div>
-    </>
+    </div>
   );
 }

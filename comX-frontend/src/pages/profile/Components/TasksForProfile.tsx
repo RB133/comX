@@ -10,8 +10,7 @@ import {
 } from "@/components/ui/table";
 import { CheckCircle, Clock, Disc, PlayCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import ProfileAPI from "@/api/profile/ProfileAPI";
-import ErrorPage from "@/pages/general/ErrorPage";
+import { PublicProfile } from "@/types/UserProfile";
 
 type Task = {
   id: number;
@@ -20,15 +19,10 @@ type Task = {
   date: string;
 };
 
-export default function TaskForProfile() {
+export default function TaskForProfile({ profile }: { profile: PublicProfile }) {
   const [activeTab, setActiveTab] = useState<
     "COMPLETED" | "PENDING" | "INPROGRESS" | "ALL"
   >("COMPLETED");
-
-  const { profile, profileLoading, profileError } = ProfileAPI();
-
-  if (profileLoading) return <div>Loading...</div>;
-  if (profileError) return <ErrorPage />;
 
   const tasks: Task[] = profile.Task.map((task) => ({
     id: task.id,

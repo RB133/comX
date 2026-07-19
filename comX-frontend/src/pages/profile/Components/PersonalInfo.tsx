@@ -20,20 +20,15 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
-import ErrorPage from "@/pages/general/ErrorPage";
-import ProfileAPI from "@/api/profile/ProfileAPI";
 import LogoutAPI from "@/api/auth/LogoutAPI";
 import PersonalInfoSettings from "./Settings/PersonalInfoSettings";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
+import { PublicProfile } from "@/types/UserProfile";
 
-export default function PersonalInfo() {
-  const { profile, profileLoading, profileError } = ProfileAPI();
+export default function PersonalInfo({ profile }: { profile: PublicProfile }) {
   const { handleLogout, logoutPending } = LogoutAPI();
   const user = useSelector((state: RootState) => state.userDetails);
-
-  if (profileLoading) return <div>Loading...</div>;
-  if (profileError) return <ErrorPage />;
 
   const projects = profile.projects.length;
   const isOwnProfile = user.user?.username === profile.username;
