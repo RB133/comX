@@ -1,27 +1,54 @@
-import { lazy, Suspense } from "react";
+import { ComponentType, lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import HomePage from "./pages/general/Home";
 import NotFoundPage from "./pages/general/404Page";
 import ErrorPage from "./pages/general/ErrorPage";
 
-const SignUp = lazy(() => import("./pages/auth/Signup"));
-const LoginPage = lazy(() => import("./pages/auth/Login"));
-const Contact = lazy(() => import("./pages/general/Contact"));
-const Profile = lazy(() => import("./pages/profile/Profile"));
-const ChatApp = lazy(() => import("./pages/chatApp/ChatApp"));
-const Dashboard = lazy(() => import("./pages/dashboard/DashBoard"));
-const CommunityLayout = lazy(() => import("./pages/community/Community"));
-const MainCalendar = lazy(() => import("./pages/Calendar/MainCalendar"));
-const BasicInformation = lazy(() => import("./pages/community-settings/BasicInfo"));
-const MemberManagement = lazy(() => import("./pages/community-settings/MemberManagement"));
-const NotificationSettings = lazy(() => import("./pages/community-settings/NotificationSettings"));
-const Permissions = lazy(() => import("./pages/community-settings/Permissions"));
-const ProjectDashboard = lazy(() => import("./pages/project/ProjectDashboard"));
-const TaskPage = lazy(() => import("./pages/tasks/TasksPage"));
-const ChatSkeleton = lazy(() => import("./pages/chatApp/ChatSkeleton"));
-const Code = lazy(() => import("./pages/code/Code"));
-const Call = lazy(() => import("./pages/call/Call"));
+/**
+ * Wraps React.lazy() so a stale chunk reference (a tab left open across a
+ * new deploy, which renames every chunk file) self-heals with a single
+ * automatic reload instead of showing the user an error. If the reload
+ * doesn't fix it, the failure is a real error and is allowed to propagate
+ * normally to the route's errorElement.
+ */
+function lazyWithReload<T extends ComponentType<unknown>>(
+  componentImport: () => Promise<{ default: T }>
+) {
+  return lazy(async () => {
+    const reloadedKey = "chunk-load-reloaded";
+    try {
+      const component = await componentImport();
+      sessionStorage.removeItem(reloadedKey);
+      return component;
+    } catch (error) {
+      if (sessionStorage.getItem(reloadedKey) !== "true") {
+        sessionStorage.setItem(reloadedKey, "true");
+        window.location.reload();
+        return new Promise<never>(() => {}); // reload is already underway
+      }
+      throw error;
+    }
+  });
+}
+
+const SignUp = lazyWithReload(() => import("./pages/auth/Signup"));
+const LoginPage = lazyWithReload(() => import("./pages/auth/Login"));
+const Contact = lazyWithReload(() => import("./pages/general/Contact"));
+const Profile = lazyWithReload(() => import("./pages/profile/Profile"));
+const ChatApp = lazyWithReload(() => import("./pages/chatApp/ChatApp"));
+const Dashboard = lazyWithReload(() => import("./pages/dashboard/DashBoard"));
+const CommunityLayout = lazyWithReload(() => import("./pages/community/Community"));
+const MainCalendar = lazyWithReload(() => import("./pages/Calendar/MainCalendar"));
+const BasicInformation = lazyWithReload(() => import("./pages/community-settings/BasicInfo"));
+const MemberManagement = lazyWithReload(() => import("./pages/community-settings/MemberManagement"));
+const NotificationSettings = lazyWithReload(() => import("./pages/community-settings/NotificationSettings"));
+const Permissions = lazyWithReload(() => import("./pages/community-settings/Permissions"));
+const ProjectDashboard = lazyWithReload(() => import("./pages/project/ProjectDashboard"));
+const TaskPage = lazyWithReload(() => import("./pages/tasks/TasksPage"));
+const ChatSkeleton = lazyWithReload(() => import("./pages/chatApp/ChatSkeleton"));
+const Code = lazyWithReload(() => import("./pages/code/Code"));
+const Call = lazyWithReload(() => import("./pages/call/Call"));
 
 // Created once at module scope so the query cache survives re-renders.
 const queryClient = new QueryClient();
