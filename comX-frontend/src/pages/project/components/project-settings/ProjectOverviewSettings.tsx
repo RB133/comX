@@ -31,7 +31,7 @@ import DeleteProjectAPI from "@/api/project/DeleteProjectAPI";
 export default function ProjectOverviewSettings({
   project,
 }: {
-  project: { name: string; description: string; deadline: Date };
+  project: { name: string; description: string | null; deadline: string };
 }) {
   const [deadline, setDeadline] = useState<Date>(new Date(Date.now()));
   const [name, setName] = useState<string>("");

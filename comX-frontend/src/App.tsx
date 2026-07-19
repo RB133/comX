@@ -1,9 +1,19 @@
 import { ComponentType, lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 import HomePage from "./pages/general/Home";
 import NotFoundPage from "./pages/general/404Page";
 import ErrorPage from "./pages/general/ErrorPage";
+import PageLoader from "./components/PageLoader";
+
+function getErrorMessage(error: unknown): string {
+  if (axios.isAxiosError(error)) {
+    return error.response?.data?.message || error.message || "Something went wrong.";
+  }
+  return error instanceof Error ? error.message : "Something went wrong.";
+}
 
 /**
  * Wraps React.lazy() so a stale chunk reference (a tab left open across a
@@ -51,10 +61,20 @@ const Code = lazyWithReload(() => import("./pages/code/Code"));
 const Call = lazyWithReload(() => import("./pages/call/Call"));
 
 // Created once at module scope so the query cache survives re-renders.
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (error) => {
+      // The 401 interceptor in api-client.ts already logs the user out and
+      // redirects on an expired/invalid session — a toast here would just
+      // be redundant noise on top of that.
+      if (axios.isAxiosError(error) && error.response?.status === 401) return;
+      toast.error(getErrorMessage(error));
+    },
+  }),
+});
 
 const withSuspense = (element: React.ReactNode) => (
-  <Suspense fallback={<div>Loading...</div>}>{element}</Suspense>
+  <Suspense fallback={<PageLoader />}>{element}</Suspense>
 );
 
 function App() {
@@ -148,11 +168,10 @@ function App() {
   ]);
 
   return (
-    <>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <Toaster position="top-right" />
+    </QueryClientProvider>
   );
 }
 

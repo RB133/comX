@@ -1,4 +1,3 @@
-import ProjectAPI from "@/api/project/ProjectAPI";
 import { ItemPicker } from "@/components/Item-Picker";
 import {
   AlertDialog,
@@ -15,9 +14,8 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { LabelInputContainer } from "@/pages/auth/components/SignUpExtraComponents";
-import ErrorPage from "@/pages/general/ErrorPage";
 import { Task } from "@/types/tasks";
-import { Member } from "@/types/UserProfile";
+import { ProjectDetails } from "@/types/Project";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { Label } from "@radix-ui/react-label";
 import { useMutation , useQueryClient } from "@tanstack/react-query";
@@ -29,7 +27,13 @@ import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 
 
-export default function CreateTask({ milestone }: { milestone: string }) {
+export default function CreateTask({
+  milestone,
+  project,
+}: {
+  milestone: string;
+  project: ProjectDetails;
+}) {
   const { ID, projectId } = useParams();
 
   const [end, setEnd] = useState<Date>(new Date(Date.now()));
@@ -77,17 +81,6 @@ export default function CreateTask({ milestone }: { milestone: string }) {
       }
     },
   });
-
-  const { project, projectLoading, projectError } = ProjectAPI();
-  
-
-  if (projectLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (projectError) {
-    return <ErrorPage />;
-  }
 
   return (
     <div className="mr-4">
@@ -147,7 +140,7 @@ export default function CreateTask({ milestone }: { milestone: string }) {
             <LabelInputContainer className="mb-4">
               <Label htmlFor="task-assignee">Assignee</Label>
               <ItemPicker
-                itemList={project.projectMembers.map((item: Member) => {
+                itemList={project.projectMembers.map((item) => {
                   return { id: item.id, value: item.name };
                 })}
                 value={assignee}

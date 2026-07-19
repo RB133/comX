@@ -6,30 +6,22 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import ErrorPage from "@/pages/general/ErrorPage";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Calendar } from "lucide-react";
 import ProjectOverviewSettings from "./project-settings/ProjectOverviewSettings";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
-import ProjectAPI from "@/api/project/ProjectAPI";
-import TasksAPI from "@/api/tasks/TasksAPI";
+import { ProjectDetails } from "@/types/Project";
+import { TaskGet } from "@/types/tasks";
 
-export default function ProjectOverview() {
-
+export default function ProjectOverview({
+  project,
+  tasks,
+}: {
+  project: ProjectDetails;
+  tasks: TaskGet[];
+}) {
   const user = useSelector((state: RootState) => state.userDetails);
-
-  const { project, projectLoading, projectError } = ProjectAPI();
-  const { tasks, tasksLoading, tasksError } = TasksAPI();
-
-
-  if (projectLoading || tasksLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (projectError || tasksError) {
-    return <ErrorPage />;
-  }
 
   const isAdmin = user.user?.id === project.ownerId;
 

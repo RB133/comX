@@ -4,7 +4,8 @@ import { endOfMonth, isSameDay, parseISO } from "date-fns";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import CalendarAPI from "@/api/calendar/CalendarAPI";
-import ErrorPage from "../general/ErrorPage";
+import InlineError from "@/components/InlineError";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface CalendarEvent {
   id: string;
@@ -59,8 +60,21 @@ export default function MainCalendar() {
     }
   }, [year, activeChannel, currentDate]);
 
-  if (tasksLoading) return <div>Loading...</div>;
-  if (tasksError) return <ErrorPage />;
+  if (tasksLoading) {
+    return (
+      <div className="flex flex-col h-screen w-full p-4 gap-1">
+        <div className="grid grid-cols-7 gap-1 w-full">
+          {weekdays.map((day) => (
+            <Skeleton key={day} className="h-6 w-full" />
+          ))}
+          {Array.from({ length: 35 }).map((_, i) => (
+            <Skeleton key={i} className="aspect-square w-full" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+  if (tasksError) return <InlineError message="Couldn't load the calendar." />;
 
   const events: CalendarEvent[] = Array.isArray(tasks) ? tasks : [];
 

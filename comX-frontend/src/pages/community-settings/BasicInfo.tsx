@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import ErrorPage from "@/pages/general/ErrorPage";
+import InlineError from "@/components/InlineError";
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,6 @@ import { Label } from "@/components/ui/label";
 import { Users, FileText, Image, Hash, Key, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import CommunityAPI from "@/api/community/CommunityAPI";
 import { CommunitySettingsAPI } from "@/api/community/CommunitySettingsAPI";
@@ -63,12 +63,29 @@ export default function BasicInformation() {
 
   // Show loading state
   if (communityLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-full">
+        <div className="text-center mb-12 flex flex-col items-center gap-2">
+          <Skeleton className="h-9 w-64" />
+          <Skeleton className="h-5 w-80" />
+        </div>
+        <Card className="w-full h-full rounded-none border-none flex items-center">
+          <CardContent className="space-y-6 w-full">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="space-y-2">
+                <Skeleton className="h-4 w-40" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   // Handle error state
   if (communityError) {
-    return <ErrorPage />;
+    return <InlineError message="Couldn't load this community's settings." />;
   }
 
   // Community details do not currently include owner metadata.
@@ -252,7 +269,6 @@ export default function BasicInformation() {
             )}
           </CardContent>
         </Card>
-        <Toaster />
       </div>
     </>
   );

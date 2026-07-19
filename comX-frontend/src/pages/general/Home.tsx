@@ -3,7 +3,6 @@ import { Cover } from "@/components/ui/cover";
 import { SparklesCore } from "@/components/ui/sparkles";
 import { setTab } from "@/state/tab/tabSlice";
 import { useEffect } from "react";
-import { Toaster } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
 export default function HomePage() {
@@ -40,7 +39,6 @@ export default function HomePage() {
 
           <div className="absolute inset-0 w-full h-full bg-white [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]"></div>
         </div>
-        <Toaster />
       </div>
     </div>
   );

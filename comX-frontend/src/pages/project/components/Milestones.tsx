@@ -9,13 +9,11 @@ import { Progress } from "@radix-ui/react-progress";
 import { CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
-import ErrorPage from "@/pages/general/ErrorPage";
 import MilestonesSettings from "./project-settings/MilestoneSettings";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import CreateTask from "./create-task/CreateTask";
-import ProjectAPI from "@/api/project/ProjectAPI";
-import TasksAPI from "@/api/tasks/TasksAPI";
+import { ProjectDetails } from "@/types/Project";
 import { TaskGet } from "@/types/tasks";
 
 function milestoneStats(tasks: TaskGet[], milestone: string) {
@@ -32,20 +30,14 @@ function milestoneStats(tasks: TaskGet[], milestone: string) {
   return { percentage, dueDate, hasTasks: total > 0 };
 }
 
-export default function Milestones() {
+export default function Milestones({
+  project,
+  tasks,
+}: {
+  project: ProjectDetails;
+  tasks: TaskGet[];
+}) {
   const user = useSelector((state: RootState) => state.userDetails);
-
-  const { project, projectLoading, projectError } = ProjectAPI();
-
-  const { tasks, tasksLoading, tasksError } = TasksAPI();
-
-  if (projectLoading || tasksLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (projectError || tasksError) {
-    return <ErrorPage />;
-  }
 
   const isAdmin = user.user?.id === project.ownerId;
 
@@ -90,7 +82,7 @@ export default function Milestones() {
                   </p>
                   <Progress value={percentage} className="mt-2" />
                 </div>
-                {isAdmin && <CreateTask milestone={milestone} />}
+                {isAdmin && <CreateTask milestone={milestone} project={project} />}
                 <div className="w-10 flex justify-center item-center">
                   <Badge variant={hasTasks && percentage === 100 ? "default" : "secondary"}>
                     {percentage}%

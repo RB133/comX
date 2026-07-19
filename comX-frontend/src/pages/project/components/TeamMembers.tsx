@@ -7,26 +7,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import ErrorPage from "@/pages/general/ErrorPage";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import TeamMembersSettings from "./project-settings/TeamMembersSettings";
-import ProjectAPI from "@/api/project/ProjectAPI";
+import { ProjectDetails } from "@/types/Project";
 
-export default function TeamMembers() {
-
+export default function TeamMembers({ project }: { project: ProjectDetails }) {
   const user = useSelector((state: RootState) => state.userDetails);
-
-  const { project, projectLoading, projectError } = ProjectAPI();
-
-
-  if (projectLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (projectError) {
-    return <ErrorPage />;
-  }
 
   const isAdmin = user.user?.id === project.ownerId;
 

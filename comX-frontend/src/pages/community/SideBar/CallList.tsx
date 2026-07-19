@@ -1,19 +1,9 @@
-import ErrorPage from "@/pages/general/ErrorPage";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import CommunityHeader from "./CommunityHeader";
-import AllProjectAPI from "@/api/project/AllProjectsAPI";
 
+// The project list this reads from is already loaded and error-checked by
+// the parent Sidebar before this ever mounts (same shared, cached query).
 export default function CallList() {
-  const { projectsLoading, projectsError } = AllProjectAPI();
-
-  if (projectsLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (projectsError) {
-    return <ErrorPage />;
-  }
-
   return (
     <>
       <div className="w-60 bg-card flex flex-col border-r">

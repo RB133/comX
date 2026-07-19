@@ -7,7 +7,8 @@ import { RootState } from "@/state/store";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "@/lib/api-client";
 import { useQuery } from "@tanstack/react-query";
-import ErrorPage from "@/pages/general/ErrorPage";
+import InlineError from "@/components/InlineError";
+import { Skeleton } from "@/components/ui/skeleton";
 import ServerList from "./ServerList";
 import CalendarList from "./CalendarList";
 import SettingsList from "./SettingList";
@@ -76,11 +77,22 @@ const Sidebar = React.memo(function Sidebar() {
   }, [activeServer, dispatch, navigate, projects, taskList,projectsLoading]);
 
   if (projectsLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="h-screen w-60 bg-muted flex flex-col border-r p-3 space-y-3">
+        <Skeleton className="h-12 w-full" />
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Skeleton key={i} className="h-9 w-full rounded-lg" />
+        ))}
+      </div>
+    );
   }
 
   if (projectsError || taskError) {
-    return <ErrorPage />;
+    return (
+      <div className="h-screen w-60 bg-muted border-r flex items-center">
+        <InlineError message="Couldn't load this community." />
+      </div>
+    );
   }
 
   const SidebarContent = () => (

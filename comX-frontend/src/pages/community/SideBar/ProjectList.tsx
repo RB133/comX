@@ -1,4 +1,3 @@
-import ErrorPage from "@/pages/general/ErrorPage";
 import CreateProject from "@/pages/project/create-project/CreateProject";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { FolderGit2 } from "lucide-react";
@@ -13,15 +12,9 @@ export default function ProjectList() {
 
   const navigate = useNavigate();
 
-  const { projects, projectsLoading, projectsError } = AllProjectAPI();
-
-  if (projectsLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (projectsError) {
-    return <ErrorPage />;
-  }
+  // Already loaded and error-checked by the parent Sidebar (same shared,
+  // cached query) before this component ever mounts.
+  const { projects } = AllProjectAPI();
 
   return (
     <>

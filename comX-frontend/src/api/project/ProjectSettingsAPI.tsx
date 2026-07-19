@@ -1,6 +1,5 @@
 import { RootState } from "@/state/store";
-import { Milestone } from "@/types/Project";
-import { Member } from "@/types/UserProfile";
+import { Milestone, ProjectMember } from "@/types/Project";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { api } from "@/lib/api-client";
@@ -100,8 +99,8 @@ export function EditTeamMembers({
   project,
   projectMembers,
 }: {
-  project: Member[];
-  projectMembers: Member[];
+  project: ProjectMember[];
+  projectMembers: ProjectMember[];
 }) {
   const { ID, projectId } = useParams();
 

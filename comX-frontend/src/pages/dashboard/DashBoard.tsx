@@ -6,13 +6,13 @@ import { Community } from "@/types/Community";
 import useAuthCheck from "@/hooks/useAuthCheck";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
-import { Toaster } from "react-hot-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import ErrorPage from "../general/ErrorPage";
+import InlineError from "@/components/InlineError";
 import CommunityCard from "./components/CommunityCard";
 import CreateCommunity from "./components/CreateCommunity";
 import JoinCommunity from "./components/JoinCommunity";
 import LastTask from "./components/Last-Task";
+import DashboardSkeleton from "./components/DashboardSkeleton";
 
 const fetchCommunityList = async () => {
   const response = await api.get(`/community/get-user-communities`);
@@ -31,11 +31,15 @@ export default function Dashboard() {
   });
 
   if (isPending) {
-    return <div>Loading...</div>;
+    return <DashboardSkeleton />;
   }
 
   if (isError) {
-    return <ErrorPage />;
+    return (
+      <div className="min-h-screen bg-muted/40 p-4 sm:p-6 lg:p-8">
+        <InlineError message="Couldn't load your dashboard. Please refresh the page." />
+      </div>
+    );
   }
 
   return (
@@ -89,7 +93,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <Toaster />
     </div>
   );
 }

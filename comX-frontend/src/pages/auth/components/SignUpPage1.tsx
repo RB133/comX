@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { api } from "@/lib/api-client";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 import { UserData, UserDataSchema } from "@/types/UserProfile";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -173,7 +173,6 @@ export default function SignUpFormPage1() {
           </button>
         )}
       </form>
-      <Toaster />
     </div>
   );
 }

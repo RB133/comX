@@ -9,8 +9,9 @@ import { Milestone } from "@/types/Project";
 import CreateProjectMemberManagement from "./CreateProjectMemberManagement";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useParams } from "react-router-dom";
-import { Member } from "@/types/UserProfile";
-import ErrorPage from "@/pages/general/ErrorPage";
+import { ProjectMember } from "@/types/Project";
+import InlineError from "@/components/InlineError";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertDialogCancel } from "@radix-ui/react-alert-dialog";
 import { X } from "lucide-react";
@@ -24,8 +25,8 @@ const CreateProjectComponent: React.FC = () => {
     CommunityMembersAPI();
 
   const [availableMembers, setAvailableMembers] =
-    useState<Member[]>(communityMembers);
-  const [projectMembers, setProjectMembers] = useState<Member[]>([]);
+    useState<ProjectMember[]>(communityMembers);
+  const [projectMembers, setProjectMembers] = useState<ProjectMember[]>([]);
   const [deadline, setDeadline] = useState<Date>(new Date());
   const [milestones, setMilestones] = useState<Milestone[]>([]);
 
@@ -45,11 +46,17 @@ const CreateProjectComponent: React.FC = () => {
   };
 
   if (communityMembersLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-full mx-auto p-6 space-y-8">
+        <Skeleton className="h-9 w-64" />
+        <Skeleton className="h-24 w-full" />
+        <Skeleton className="h-40 w-full" />
+      </div>
+    );
   }
 
   if (communityMembersError) {
-    return <ErrorPage />;
+    return <InlineError message="Couldn't load community members." />;
   }
 
   return (

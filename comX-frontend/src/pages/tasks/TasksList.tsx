@@ -1,4 +1,5 @@
 import { TaskGet } from "@/types/tasks";
+import { ProjectDetails } from "@/types/Project";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,19 +13,19 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { CalendarIcon } from "lucide-react";
 import { useParams } from "react-router-dom";
-import ProjectAPI from "@/api/project/ProjectAPI";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import TaskFxn from "@/api/tasks/TasksFxnAPI";
-import ErrorPage from "../general/ErrorPage";
 import { formatDate } from "@/lib/date";
 import { getStatusInfo } from "@/lib/taskStatus";
 
 export default function TasksList({
   cards,
+  project,
   setActive,
 }: {
   cards: TaskGet[];
+  project: ProjectDetails;
   setActive: React.Dispatch<React.SetStateAction<TaskGet | null>>;
 }) {
   return (
@@ -43,6 +44,7 @@ export default function TasksList({
                 <TaskItem
                   key={`card-${card.title}-${card.id}`}
                   card={card}
+                  project={project}
                   setActive={setActive}
                 />
               ))}
@@ -56,9 +58,11 @@ export default function TasksList({
 
 function TaskItem({
   card,
+  project,
   setActive,
 }: {
   card: TaskGet;
+  project: ProjectDetails;
   setActive: (card: TaskGet) => void;
 }) {
   const user = useSelector((state: RootState) => state.userDetails);
@@ -66,8 +70,6 @@ function TaskItem({
   const { color, icon: StatusIcon, label } = getStatusInfo(card.status);
 
   const { projectId, ID } = useParams();
-
-  const { project, projectLoading, projectError } = ProjectAPI();
 
   const { handleTaskVerdict, taskVerdictPending } = TaskFxn();
 
@@ -80,9 +82,6 @@ function TaskItem({
       projectId: parseInt(projectId!, 10),
     });
   };
-
-  if (projectLoading) return <div>Loading...</div>;
-  if (projectError) return <ErrorPage />;
 
   const isAdmin = user.user?.id === project.ownerId;
 

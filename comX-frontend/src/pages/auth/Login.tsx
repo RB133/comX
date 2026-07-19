@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Label } from "@radix-ui/react-label";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { api } from "@/lib/api-client";
@@ -115,7 +115,6 @@ function LoginInForm() {
           </button>
         )}
       </form>
-      <Toaster />
     </div>
   );
 }

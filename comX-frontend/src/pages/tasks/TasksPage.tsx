@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Filter } from "lucide-react";
 import TasksList from "./TasksList";
 import { TaskGet } from "@/types/tasks";
 import SingleTask from "./SingelTask";
 import { useParams } from "react-router-dom";
-import ErrorPage from "../general/ErrorPage";
-import { Toaster } from "react-hot-toast";
+import InlineError from "@/components/InlineError";
 import TasksAPI from "@/api/tasks/TasksAPI";
+import ProjectAPI from "@/api/project/ProjectAPI";
 
 export default function TaskPage() {
   const { projectId } = useParams();
@@ -33,7 +34,8 @@ export default function TaskPage() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [active]);
 
-  const {tasks,tasksLoading,tasksError} = TasksAPI();
+  const { tasks, tasksLoading, tasksError } = TasksAPI();
+  const { project, projectLoading, projectError } = ProjectAPI();
 
   useEffect(() => {
     if (active === null) return;
@@ -48,12 +50,20 @@ export default function TaskPage() {
     );
   }
 
-  if (tasksLoading) {
-    return <div>Loading...</div>;
+  if (tasksLoading || projectLoading) {
+    return (
+      <Card className="w-full h-full overflow-x-hidden overflow-y-scroll no-scrollbar">
+        <CardContent className="mt-12 space-y-4">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Skeleton key={i} className="h-16 w-full rounded-lg" />
+          ))}
+        </CardContent>
+      </Card>
+    );
   }
 
-  if (tasksError) {
-    return <ErrorPage />;
+  if (tasksError || projectError) {
+    return <InlineError message="Couldn't load these tasks. Please try again." />;
   }
 
   return (
@@ -72,7 +82,7 @@ export default function TaskPage() {
           </AnimatePresence>
           <SingleTask active={active} setActive={setActive} />
           <ul className="mx-auto w-full gap-4">
-            <TasksList cards={tasks} setActive={setActive} />
+            <TasksList cards={tasks} project={project} setActive={setActive} />
           </ul>
         </CardContent>
         <Button
@@ -84,7 +94,6 @@ export default function TaskPage() {
           <Filter className="h-4 w-4 mr-2" />
           Filter
         </Button>
-        <Toaster />
       </Card>
     </>
   );

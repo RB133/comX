@@ -67,7 +67,7 @@ export default function CalendarList() {
                 }`}
                 onClick={() => dispatch(setActiveChannel(category.id))}
               >
-                {category.link}
+                {category.icon}
                 <span className="truncate">{category.name}</span>
               </button>
             </div>

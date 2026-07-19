@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import CreateProjectMemberManagement from "../../create-project/CreateProjectMemberManagement";
 import { useEffect, useState } from "react";
-import { Member } from "@/types/UserProfile";
+import { ProjectMember } from "@/types/Project";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
 import { EditTeamMembers } from "@/api/project/ProjectSettingsAPI";
@@ -21,13 +21,13 @@ import { EditTeamMembers } from "@/api/project/ProjectSettingsAPI";
 export default function TeamMembersSettings({
   project,
 }: {
-  project: { projectMembers: Member[] };
+  project: { projectMembers: ProjectMember[] };
 }) {
 
   const user = useSelector((state: RootState) => state.userDetails);
 
-  const [availableMembers, setAvailableMembers] = useState<Member[]>([]);
-  const [projectMembers, setProjectMembers] = useState<Member[]>(
+  const [availableMembers, setAvailableMembers] = useState<ProjectMember[]>([]);
+  const [projectMembers, setProjectMembers] = useState<ProjectMember[]>(
     project.projectMembers
   );
 

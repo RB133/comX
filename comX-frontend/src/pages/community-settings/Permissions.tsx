@@ -2,7 +2,7 @@
 
 import { ReactNode, useState } from "react";
 import { motion } from "framer-motion";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import {
   Users,
   Shield,
@@ -201,7 +201,6 @@ export default function Permissions() {
           </Card>
         </motion.div>
       </motion.div>
-      <Toaster />
     </div>
   );
 }

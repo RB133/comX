@@ -1,5 +1,6 @@
 import { useState } from "react";
-import ErrorPage from "@/pages/general/ErrorPage";
+import InlineError from "@/components/InlineError";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -58,12 +59,30 @@ export default function MemberManagement() {
   };
 
   if (communityMembersLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="h-full overflow-scroll w-full no-scrollbar p-4 md:p-8 space-y-6">
+        <div className="text-center mb-12 flex flex-col items-center gap-2">
+          <Skeleton className="h-9 w-64" />
+          <Skeleton className="h-5 w-80" />
+        </div>
+        <div className="flex gap-4 justify-center">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-20 w-40 rounded-lg" />
+          ))}
+        </div>
+        <Skeleton className="h-10 w-full max-w-md mx-auto" />
+        <div className="space-y-3">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Skeleton key={i} className="h-14 w-full rounded-lg" />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   // Handle error case
   if (communityMembersError) {
-    return <ErrorPage />;
+    return <InlineError message="Couldn't load community members." />;
   }
 
   return (

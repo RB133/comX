@@ -23,6 +23,10 @@ interface HeatmapProps {
 
 const DAYS_IN_WEEK = 7;
 const WEEKS_IN_YEAR = 53;
+// Data cells are placed at column (week index + 3), so the grid needs two
+// extra columns beyond the week count: one for weekday labels, one so the
+// very last (most recent) week isn't pushed into an implicit, unsized track.
+const TOTAL_COLUMNS = WEEKS_IN_YEAR + 2;
 const MARGIN_LEFT = 32;
 // No upper bound: the grid should always stretch to fill its container
 // exactly, however wide that is. Only a floor, so cells never shrink past
@@ -83,10 +87,17 @@ const CustomHeatmap = ({
 
   const startDate = data[0].date;
 
-  // Generate month labels based on start date
+  // Generate month labels based on start date. Placement uses the integer
+  // week index directly (matching how data cells are placed below) instead
+  // of round-tripping through pixel math — that round trip made label
+  // columns sensitive to sub-pixel cellSize differences between browser
+  // zoom levels, causing labels to visibly jump between weeks.
   const monthLabels = useMemo(() => {
     const labels = [];
-    for (let i = 0; i < 12; i++) {
+    // i goes one month past 12 so the wrap-around label (e.g. a second
+    // "Jul" a year later) is generated the same way as every other label,
+    // instead of as a separately hardcoded, error-prone special case.
+    for (let i = 0; i <= 12; i++) {
       const date = new Date(startDate);
       date.setMonth(startDate.getMonth() + i);
       const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -95,25 +106,22 @@ const CustomHeatmap = ({
           (7 * 24 * 60 * 60 * 1000)
       );
 
-      if (weekIndex < WEEKS_IN_YEAR) {
-        labels.push({
-          label: monthNames[date.getMonth()],
-          x: weekIndex * cellSize + MARGIN_LEFT,
-        });
+      if (weekIndex >= 0 && weekIndex < WEEKS_IN_YEAR) {
+        labels.push({ label: monthNames[date.getMonth()], weekIndex });
       }
     }
     return labels;
-  }, [startDate, cellSize]);
+  }, [startDate]);
 
   return (
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: `repeat(${WEEKS_IN_YEAR + 1}, ${cellSize}px)`,
+        gridTemplateColumns: `repeat(${TOTAL_COLUMNS}, ${cellSize}px)`,
         gridTemplateRows: `repeat(${DAYS_IN_WEEK + 2}, ${cellSize}px)`,
         gap: `${GAP}px`,
         position: "relative",
-        width: `${(WEEKS_IN_YEAR + 1) * cellSize + MARGIN_LEFT}px`,
+        width: `${TOTAL_COLUMNS * cellSize + MARGIN_LEFT}px`,
         height: `${(DAYS_IN_WEEK + 2) * cellSize}px`,
       }}
     >
@@ -122,7 +130,7 @@ const CustomHeatmap = ({
         <div
           key={index}
           style={{
-            gridColumnStart: Math.floor(month.x / cellSize) + 2,
+            gridColumnStart: month.weekIndex + 3,
             gridRowStart: 1,
             fontSize: "12px",
             textAlign: "left",
@@ -131,20 +139,6 @@ const CustomHeatmap = ({
           {month.label}
         </div>
       ))}
-      <div
-        key={12}
-        style={{
-          gridColumnStart:
-            Math.floor(
-              (monthLabels[0].x + monthLabels[11].x + 25) / cellSize
-            ) + 2,
-          gridRowStart: 1,
-          fontSize: "12px",
-          textAlign: "left",
-        }}
-      >
-        {monthLabels[0].label}
-      </div>
 
       {/* Weekday labels */}
       {weekdayNames.map((day, index) => (
@@ -206,8 +200,16 @@ export default function ImprovedCodeHeatmap({
   // Solve for the cell size that makes the grid exactly fill the container's
   // measured width, so there's never dead space on the right.
   const cellSize = width
-    ? Math.max(MIN_CELL_SIZE, (width - MARGIN_LEFT) / (WEEKS_IN_YEAR + 1))
+    ? Math.max(MIN_CELL_SIZE, (width - MARGIN_LEFT) / TOTAL_COLUMNS)
     : 19;
+
+  // If the grid is ever wider than the container (only possible on very
+  // narrow screens, where cellSize hits the floor), default to showing
+  // today's end of the calendar instead of making the user scroll to it.
+  useEffect(() => {
+    const el = ref.current;
+    if (el) el.scrollLeft = el.scrollWidth;
+  }, [ref, cellSize]);
 
   return (
     <Card className="w-full mx-auto">

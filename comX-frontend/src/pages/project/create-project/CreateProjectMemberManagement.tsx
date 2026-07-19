@@ -21,11 +21,12 @@ import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useDebounce } from "@/hooks/useDebounce";
-import ErrorPage from "@/pages/general/ErrorPage";
+import InlineError from "@/components/InlineError";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
-import { Member } from "@/types/UserProfile";
+import { ProjectMember } from "@/types/Project";
 import CommunityMembersAPI from "@/api/community/CommunityMembersAPI";
 
 export default function CreateProjectMemberManagement({
@@ -34,13 +35,13 @@ export default function CreateProjectMemberManagement({
   availableMembers,
   setAvailableMembers,
 }: {
-  projectMembers: Member[];
-  setProjectMembers: React.Dispatch<React.SetStateAction<Member[]>>;
-  availableMembers: Member[];
-  setAvailableMembers: React.Dispatch<React.SetStateAction<Member[]>>;
+  projectMembers: ProjectMember[];
+  setProjectMembers: React.Dispatch<React.SetStateAction<ProjectMember[]>>;
+  availableMembers: ProjectMember[];
+  setAvailableMembers: React.Dispatch<React.SetStateAction<ProjectMember[]>>;
 }) {
 
-  const [activeMember, setActiveMember] = useState<Member | null>(null);
+  const [activeMember, setActiveMember] = useState<ProjectMember | null>(null);
   const [search, setSearch] = useState<string>("");
 
   const user = useSelector((state: RootState) => state.userDetails);
@@ -92,23 +93,28 @@ export default function CreateProjectMemberManagement({
   };
 
   // Function to move a member from available to project
-  const moveToProject = (member: Member) => {
+  const moveToProject = (member: ProjectMember) => {
     setProjectMembers((current) => [...current, member]);
     setAvailableMembers((current) => current.filter((m) => m.id !== member.id));
   };
 
   // Function to move a member from project to available
-  const moveToAvailable = (member: Member) => {
+  const moveToAvailable = (member: ProjectMember) => {
     setAvailableMembers((current) => [...current, member]);
     setProjectMembers((current) => current.filter((m) => m.id !== member.id));
   };
 
   if (communityMembersLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="grid md:grid-cols-2 gap-6 mt-4">
+        <Skeleton className="h-48 w-full rounded-lg" />
+        <Skeleton className="h-48 w-full rounded-lg" />
+      </div>
+    );
   }
 
   if (communityMembersError) {
-    return <ErrorPage />;
+    return <InlineError message="Couldn't load community members." />;
   }
 
   return (
@@ -212,7 +218,7 @@ export default function CreateProjectMemberManagement({
   );
 }
 
-const SortableMember: React.FC<{ member: Member }> = ({ member }) => {
+const SortableMember: React.FC<{ member: ProjectMember }> = ({ member }) => {
   const { attributes, listeners, setNodeRef } = useSortable({
     id: member.id,
   });

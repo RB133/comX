@@ -8,7 +8,8 @@ import { RootState } from "@/state/store";
 import useSocket from "@/hooks/useSocket";
 import { useParams } from "react-router-dom";
 import ProjectAPI from "@/api/project/ProjectAPI";
-import ErrorPage from "../general/ErrorPage";
+import InlineError from "@/components/InlineError";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar } from "@/components/ui/avatar";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { DEFAULT_AVATAR_URL } from "@/lib/constants";
@@ -68,8 +69,19 @@ export default function ChatApp() {
 
   const { project, projectLoading, projectError } = ProjectAPI();
 
-  if (projectLoading) return <div>Loading...</div>;
-  if (projectError) return <ErrorPage />;
+  if (projectLoading) {
+    return (
+      <div className="flex flex-col h-screen w-full p-4 gap-4">
+        {[true, false, true].map((isOwn, i) => (
+          <div key={i} className={`flex gap-2 ${isOwn ? "flex-row-reverse self-end" : ""}`}>
+            <Skeleton className="h-10 w-10 rounded-full shrink-0" />
+            <Skeleton className="h-12 w-56 rounded-lg" />
+          </div>
+        ))}
+      </div>
+    );
+  }
+  if (projectError) return <InlineError message="Couldn't load this chat." />;
 
   const members: { id: number; name: string; avatar: string }[] = project.projectMembers;
   const currentUserId = user.user?.id;

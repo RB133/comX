@@ -9,7 +9,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import CommunityHeader from "./CommunityHeader";
 import UserControlBox from "./UserControlBox";
 import AllProjectAPI from "@/api/project/AllProjectsAPI";
-import ErrorPage from "@/pages/general/ErrorPage";
 
 const GroupList = React.memo(function GroupList() {
   const groups = Groups;
@@ -30,19 +29,13 @@ const GroupList = React.memo(function GroupList() {
     );
   };
 
-  const { projects, projectsLoading, projectsError } = AllProjectAPI();
+  // Already loaded and error-checked by the parent Sidebar (same shared,
+  // cached query) before this component ever mounts.
+  const { projects } = AllProjectAPI();
 
   useEffect(() => {
     dispatch(setActiveChannel(1));
   }, [dispatch]);
-
-  if (projectsLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (projectsError) {
-    return <ErrorPage />;
-  }
 
   return (
     <>
